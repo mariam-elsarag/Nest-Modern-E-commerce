@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import type { FormListItemType } from "../../components/shared/form_builder/Form_Builder-types";
+import { handleError } from "../../common/utils/handleError";
 import Form_Builder from "../../components/shared/form_builder/Form_Builder";
 import Button from "../../components/shared/button/Button";
-import { emailRegex, passwordPattern } from "../../common/constant/validator";
-import { handleError } from "../../common/utils/handleError";
 
-const Login = () => {
+const Activate_Account = () => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   // ___________ useform _________
   const {
     control,
@@ -18,8 +19,7 @@ const Login = () => {
     handleSubmit,
   } = useForm({
     defaultValues: {
-      email: null,
-      password: null,
+      otp: null,
     },
     mode: "onChange",
   });
@@ -27,42 +27,27 @@ const Login = () => {
   const formList: FormListItemType[] = [
     {
       id: "1",
-      formType: "input",
-      type: "text",
-      name: "email",
-      label: "email",
-      fieldName: "email",
-      inputMode: "email",
+      formType: "otp",
+      name: "opt",
+      label: "otp",
+      fieldName: "otp",
       validator: {
         required: "required_field",
         pattern: {
-          value: emailRegex,
-          message: "email_pattern_error",
+          value: /^[0-9]+$/,
+          message: "must_be_number",
+        },
+        validate: (value) => {
+          return value?.length === 6 || "required_field";
         },
       },
-    },
-    {
-      id: "2",
-      formType: "password",
-      name: "password",
-      label: "password",
-      fieldName: "password",
-      validator: {
-        required: "required_field",
-        pattern: {
-          value: passwordPattern,
-          message: "password_pattern_error",
-        },
-      },
-      showForgetPassword: true,
-      inlineError: true,
     },
   ];
-
   // _________________function __________-
   const onSubmit = async (data) => {
     try {
       setLoading(true);
+      navigate(`/login`);
     } catch (err) {
       handleError(err, t);
     } finally {
@@ -77,17 +62,16 @@ const Login = () => {
       <fieldset className="flex flex-col gap-6">
         <Form_Builder formList={formList} control={control} errors={errors} />
       </fieldset>
-      <footer className="flex flex-col gap-6">
-        <Button
-          loading={loading}
-          disabled={loading || !isValid}
-          text="login"
-          type="submit"
-          hasFullWidth
-        />
-      </footer>
+
+      <Button
+        loading={loading}
+        disabled={loading || !isValid}
+        text="activate"
+        type="submit"
+        hasFullWidth
+      />
     </form>
   );
 };
 
-export default Login;
+export default Activate_Account;

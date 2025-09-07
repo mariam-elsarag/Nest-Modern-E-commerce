@@ -3,8 +3,9 @@ import type { FormListItemType } from "./Form_Builder-types";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import Button from "../button/Button";
-import { CloseIcon, UploadCloudIcon } from "~/assets/icons/Icon";
-import { truncateText } from "~/common/utils/truncateText";
+
+import { CloseIcon, UploadCloudIcon } from "../../../assets/icons/Icon";
+import { truncateText } from "../../../common/utils/truncateText";
 
 const maxFileSizeInMB = Number(import.meta.env.VITE_REACT_APP_IMAGE_SIZE || 5);
 const maxFileSizeInBytes = maxFileSizeInMB * 1024 * 1024;

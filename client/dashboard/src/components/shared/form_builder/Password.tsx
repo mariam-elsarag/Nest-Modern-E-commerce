@@ -2,7 +2,7 @@ import React from "react";
 import type { FormListItemType } from "./Form_Builder-types";
 import { Link } from "react-router";
 import { useTranslation } from "react-i18next";
-import { InfoIcon } from "~/assets/icons/Icon";
+import { InfoIcon } from "../../../assets/icons/Icon";
 
 type PasswordPropsType = {
   value: string;
@@ -23,7 +23,9 @@ const Password = ({
   const { t } = useTranslation();
   return (
     <div
-      className={`flex flex-col ${item?.inlineError || item?.showForgetPassword ? "gap-4" : ""} `}
+      className={`flex flex-col ${
+        item?.inlineError || item?.showForgetPassword ? "gap-4" : ""
+      } `}
     >
       <input
         id={item?.id}
@@ -32,7 +34,9 @@ const Password = ({
         type="password"
         disabled={disabled}
         value={value}
-        className={`flex-1 w-full input main_h ${isInvalid ? "invalid" : ""} ${item.inputClassName || ""}`}
+        className={`flex-1 w-full input main_h ${isInvalid ? "invalid" : ""} ${
+          item.inputClassName || ""
+        }`}
         onChange={(e) => handleChange(e)}
       />
       <div className="felx flex-col gap-1">
