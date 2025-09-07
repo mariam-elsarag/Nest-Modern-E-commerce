@@ -1,6 +1,6 @@
 # Modern Ecommerce
 
-Modern Ecommerce is a UI-based ecommerce application built with **React Router Framework** and **server-side rendering**, powered by a **Nest Server** backend.  
+Modern Ecommerce is a UI-based ecommerce application built with **React Router Framework** and **server-side rendering**, powered by **Nest Server** backend.  
 It includes essential ecommerce features like product listings, authentication, profile management (orders, wishlist, password change, account details, and address updates), cart, checkout, and home page.
 
 ---
