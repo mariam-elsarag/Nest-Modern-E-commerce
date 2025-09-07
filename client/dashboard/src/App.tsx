@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { languages } from "./common/constant/constant";
 import { currentLanguageCode, switchLang } from "./common/utils/switchLang";
-import { useTranslation } from "react-i18next";
+
 import Cookies from "js-cookie";
 
 const App = () => {
@@ -12,7 +12,7 @@ const App = () => {
 
     Cookies.set("i18next", currentLanguageCode);
   }, [currentLanguage]);
-  return <></>;
+  return <>ddd</>;
 };
 
 export default App;
