@@ -4,7 +4,7 @@ import React, {
   useState,
   type ReactNode,
 } from "react";
-import { useNavigate } from "react-router-dom";
+
 import type {
   AuthContextType,
   AuthProviderType,
@@ -16,7 +16,6 @@ import Cookies from "js-cookie";
 const AuthContext = createContext<AuthContextType | null>(null);
 
 const AuthProvider = ({ children }: AuthProviderType) => {
-  const navigate = useNavigate();
   const [token, setToken] = useState<string | null>(Cookies.get("token"));
 
   const [user, setUser] = useState<UserType>({
@@ -46,12 +45,11 @@ const AuthProvider = ({ children }: AuthProviderType) => {
     });
   };
 
-  const logout = (nav = "/") => {
+  const logout = () => {
     Cookies.remove("token");
     localStorage.clear();
     setToken(null);
     setUser({ id: null, fullName: null, avatar: null, role: null });
-    navigate(nav);
   };
 
   return (

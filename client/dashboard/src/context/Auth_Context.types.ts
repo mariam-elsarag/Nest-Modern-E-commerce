@@ -16,7 +16,7 @@ export type AuthContextType = {
   user: UserType;
   setUser: React.Dispatch<React.SetStateAction<UserType>>;
   login: (data: LoginType, rememberUser: boolean) => void;
-  logout: (redirect?: string) => void;
+  logout: () => void;
 };
 
 export type AuthProviderType = {

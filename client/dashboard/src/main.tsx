@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 
 import App from "./App.tsx";
 
-// prime react
+// primereact
 import { PrimeReactProvider } from "primereact/api";
 import "primereact/resources/themes/tailwind-light/theme.css";
 
@@ -16,12 +16,16 @@ import "./assets/styles/config/tailwind_config.css";
 
 //style
 import "./assets/styles/base/style.css";
+import { AuthProvider } from "./context/Auth_Context.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <PrimeReactProvider>
-      <App />
-    </PrimeReactProvider>
+    <AuthProvider>
+      <PrimeReactProvider>
+        <App />
+      </PrimeReactProvider>
+    </AuthProvider>
+
     <ToastContainer
       position="top-right"
       autoClose={3000}
