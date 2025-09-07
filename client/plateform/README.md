@@ -1,6 +1,6 @@
 # Modern Ecommerce
 
-Modern Ecommerce is a UI-based ecommerce application built with **React Router Framework** and **server-side rendering**, powered by a **JSON Server** backend.  
+Modern Ecommerce is a UI-based ecommerce application built with **React Router Framework** and **server-side rendering**, powered by a **Nest Server** backend.  
 It includes essential ecommerce features like product listings, authentication, profile management (orders, wishlist, password change, account details, and address updates), cart, checkout, and home page.
 
 ---
@@ -13,7 +13,6 @@ It includes essential ecommerce features like product listings, authentication, 
 - **Cart & Checkout**
 - **Home Page**
 - **Server-Side Rendering with React Router**
-- **Mock API using JSON Server**
 
 ---
 
@@ -22,20 +21,13 @@ It includes essential ecommerce features like product listings, authentication, 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/mariam-elsarag/modern-ecommerce.git
-cd modern-ecommerce
+git clone https://github.com/mariam-elsarag/Nest-Modern-E-commerce.git
 ```
 
 ### 2. Install dependencies
 
 ```
 npm install
-```
-
-### 3.Run JSON Server
-
-```
-npx json-server --watch ./app/db/db.json --port 5000
 ```
 
 ### 4.Start development server
@@ -83,8 +75,6 @@ npm run dev
 │   │   ├── layout/              # Navbar, Footer, Layout parts
 │   │   └── shared/              # UI Components (Filter, Badge, Card)
 │   │
-│   ├── db/
-│   │   └── db.json              # JSON Server mock data
 │   │
 │   ├── hooks/
 │   │   ├── useGetData.ts
@@ -115,7 +105,6 @@ npm run dev
 ## Tech Stack
 
 - React Router Framework
-- JSON Server
 - React + TypeScript
 - Sass
 - Tailwind CSS
@@ -126,4 +115,3 @@ npm run dev
 - `npm run dev`
 - `npm run build`
 - `npm run start`
-- `npx json-server --watch ./app/db/db.json --port 5000`
