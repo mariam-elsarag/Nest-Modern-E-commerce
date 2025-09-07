@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans:
+    "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  --breakpoint-xs: 450px;
+  --color-primary-100: #f0f1ff;
+  --color-primary-200: #e3e5ff;
+  --color-primary-300: #b7bfff;
+  --color-primary-400: #a8b2ff;
+  --color-primary-500: #97a6ff;
+  --color-primary-600: #869aff;
+  --color-primary-700: #728fff;
+  --color-primary-800: #5c83ff;
+  --color-primary-900: #4078ff;
+
+  --color-neutral-black-100: #e6e7e8;
+  --color-neutral-black-200: #b6b7bc;
+  --color-neutral-black-300: #878a92;
+  --color-neutral-black-400: #71747e;
+  --color-neutral-black-500: #5c5f6a;
+  --color-neutral-black-600: #474b57;
+  --color-neutral-black-700: #333845;
+  --color-neutral-black-800: #202533;
+  --color-neutral-black-900: #0e1422;
+
+  --color-neutral-white-100: #f6f6f6;
+  --color-neutral-white-200: #e9e9eb;
+  --color-neutral-white-900: #ffffff;
+
+  --color-semantic-blue-100: #e8effd;
+  --color-semantic-blue-200: #d1defb;
+  --color-semantic-blue-300: #bacefa;
+  --color-semantic-blue-400: #a3bef8;
+  --color-semantic-blue-500: #8cadf6;
+  --color-semantic-blue-600: #759df4;
+  --color-semantic-blue-700: #5e8cf3;
+  --color-semantic-blue-800: #477cf1;
+  --color-semantic-blue-900: #306cef;
+
+  --color-semantic-green-100: #d5e5d7;
+  --color-semantic-green-200: #c1d8c4;
+  --color-semantic-green-300: #98be9e;
+  --color-semantic-green-400: #83b18b;
+  --color-semantic-green-500: #6fa479;
+  --color-semantic-green-600: #5a9868;
+  --color-semantic-green-700: #458b56;
+  --color-semantic-green-800: #2c7f45;
+  --color-semantic-green-900: #057234;
+
+  --color-semantic-red-100: #fbd9d0;
+  --color-semantic-red-200: #f8c5b9;
+  --color-semantic-red-300: #ee9f8d;
+  --color-semantic-red-400: #e88c77;
+  --color-semantic-red-500: #e17862;
+  --color-semantic-red-600: #d9644e;
+  --color-semantic-red-700: #d14f3a;
+  --color-semantic-red-800: #c83727;
+  --color-semantic-red-900: #be1313;
+
+  --color-semantic-yellow-100: #fff1d8;
+  --color-semantic-yellow-200: #ffeac4;
+  --color-semantic-yellow-300: #ffdc9e;
+  --color-semantic-yellow-400: #ffd58a;
+  --color-semantic-yellow-500: #fdcf76;
+  --color-semantic-yellow-600: #fbc862;
+  --color-semantic-yellow-700: #f9c14c;
+  --color-semantic-yellow-800: #f6bb33;
+  --color-semantic-yellow-900: #f3b40a;
+}
+
+@layer utilities {
+  .main_h {
+    @apply h-[40px] md:h-[45px];
+  }
+  .section_gap {
+    @apply flex flex-col gap-20;
+  }
+  .section_p {
+    @apply py-8 md:py-10 lg:py-16;
+  }
+  .color_container {
+    @apply w-8 h-8 rounded-full flex items-center justify-center border cursor-pointer transition-all ease-in-out duration-300;
+  }
+  .size_container {
+    @apply w-10 h-10 flex items-center justify-center rounded-[4px] border text-neutral-black-500  font-medium  cursor-pointer transition-all ease-in-out duration-300;
+  }
+}

@@ -1,0 +1,31 @@
+.p-dialog-mask {
+  background: #0000000c !important;
+  backdrop-filter: blur(5px);
+}
+.p-dialog {
+  border-radius: 12px;
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  -ms-border-radius: 12px;
+  -o-border-radius: 12px;
+}
+.p-dialog-header {
+  padding: 0px !important;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+
+  &-icons {
+    display: none;
+  }
+}
+.p-dialog-content {
+  border-radius: 12px;
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  -ms-border-radius: 12px;
+  -o-border-radius: 12px;
+
+  @media (max-width: 1536px) {
+    padding: 20px 16px 16px;
+  }
+}
