@@ -1,12 +1,12 @@
 import { useAuth } from "../context/Auth_Context";
 import { Navigate, Outlet } from "react-router-dom";
 
-const Protect_Route = () => {
+const Public_Route = () => {
   const { token } = useAuth();
-  if (!token) {
-    return <Navigate to="/login" replace />;
+  if (token) {
+    return <Navigate to="/dashboard" replace />;
   }
   return <Outlet />;
 };
 
-export default Protect_Route;
+export default Public_Route;

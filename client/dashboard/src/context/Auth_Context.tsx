@@ -16,7 +16,9 @@ import Cookies from "js-cookie";
 const AuthContext = createContext<AuthContextType | null>(null);
 
 const AuthProvider = ({ children }: AuthProviderType) => {
-  const [token, setToken] = useState<string | null>(Cookies.get("token"));
+  const [token, setToken] = useState<string | null>(
+    Cookies.get("token") || "kkddk"
+  );
 
   const [user, setUser] = useState<UserType>({
     id: localStorage.getItem("id"),
