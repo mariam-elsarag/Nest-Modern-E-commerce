@@ -67,6 +67,8 @@
   --color-semantic-yellow-700: #f9c14c;
   --color-semantic-yellow-800: #f6bb33;
   --color-semantic-yellow-900: #f3b40a;
+
+  --color-primary: #1c1d22;
 }
 
 @layer utilities {
@@ -74,6 +76,6 @@
     @apply h-[40px] md:h-[45px];
   }
   .page_wraper {
-    @apply flex flex-col gap-10;
+    @apply flex flex-col gap-5;
   }
 }

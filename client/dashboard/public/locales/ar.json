@@ -31,5 +31,19 @@
   "customers": "العملاء",
   "reviews": "المراجعات",
   "settings": "الإعدادات",
-  "logout": "تسجيل الخروج"
+  "logout": "تسجيل الخروج",
+  "total_sales": "إجمالي المبيعات",
+  "January": "يناير",
+  "February": "فبراير",
+  "March": "مارس",
+  "April": "أبريل",
+  "May": "مايو",
+  "June": "يونيو",
+  "July": "يوليو",
+  "August": "أغسطس",
+  "September": "سبتمبر",
+  "October": "أكتوبر",
+  "November": "نوفمبر",
+  "December": "ديسمبر",
+  "this_month": "هذا الشهر"
 }
