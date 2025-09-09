@@ -47,7 +47,8 @@
   font-size: 14px;
 }
 
-.body, .input, .input::placeholder {
+.body, .p-breadcrumb .p-menuitem,
+.p-breadcrumb .p-menuitem-text, .input, .input::placeholder {
   font-size: 14px;
 }
 
@@ -72,8 +73,6 @@ body,
   max-width: 1536px;
   width: 100%;
   margin: auto;
-  padding-left: 16px;
-  padding-right: 16px;
 }
 
 .invalid, .input.invalid {
@@ -271,4 +270,67 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 .p-inputotp .p-inputtext:enabled:focus {
   box-shadow: none !important;
   border: 1px solid var(--color-neutral-black-500) !important;
+}
+
+.p-breadcrumb {
+  background: transparent !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  border: none;
+}
+.p-breadcrumb-list {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.p-breadcrumb .p-menuitem,
+.p-breadcrumb .p-menuitem-text {
+  color: var(--color-neutral-black-500);
+}
+.p-breadcrumb .p-menuitem-separator svg {
+  color: var(--color-neutral-black-400);
+  width: 12px;
+  height: 12px;
+}
+.p-breadcrumb li:last-of-type .p-menuitem-text {
+  color: var(--color-neutral-black-900) !important;
+}
+
+body:dir(rtl) .p-menuitem-separator {
+  transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+}
+
+.p-checkbox {
+  width: 18px !important;
+  height: 18px !important;
+}
+.p-checkbox .p-checkbox-box {
+  width: 18px !important;
+  height: 18px !important;
+  background: white;
+  border: 2px solid var(--color-neutral-black-100);
+  border-radius: 5px !important;
+  -webkit-border-radius: 5px !important;
+  -moz-border-radius: 5px !important;
+  -ms-border-radius: 5px !important;
+  -o-border-radius: 5px !important;
+}
+.p-checkbox.p-highlight .p-checkbox-box {
+  border: 2px solid var(--color-neutral-black-900);
+  background-color: var(--color-neutral-black-900);
+}
+.p-checkbox.p-highlight .p-checkbox-box.p-disabled {
+  border: 2px solid var(--color-neutral-black-200);
+  background-color: var(--color-neutral-black-200);
+}
+.p-checkbox.p-disabled {
+  border: 2px solid var(--color-neutral-black-200);
+}
+
+.p-invalid .p-checkbox-box {
+  border: 2px solid var(--color-semantic-red-900);
 }/*# sourceMappingURL=style.css.map */

@@ -1,6 +1,6 @@
-import React, { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { languages } from "./common/constant/constant";
-import { currentLanguageCode, switchLang } from "./common/utils/switchLang";
+import { currentLanguageCode } from "./common/utils/switchLang";
 
 import Cookies from "js-cookie";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -33,7 +33,10 @@ const router = createBrowserRouter([
     children: [
       {
         element: <App_Layout />,
-        children: [{ index: true, element: <Statistics /> }],
+        children: [
+          { index: true, element: <Statistics /> },
+          { path: "*", element: <Page_Not_Found /> },
+        ],
       },
     ],
   },
@@ -52,8 +55,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-  // 👇 Global catch-all
-  { path: "*", element: <Page_Not_Found /> },
 ]);
 
 const App = () => {

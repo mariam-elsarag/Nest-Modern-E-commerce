@@ -49,7 +49,7 @@ const Button = ({
     outline: `bg-white border border-neutral-black-200 text-neutral-black-500  ${
       hasHover ? "hover:text-neutral-black-900" : ""
     }`,
-    tertiery: `bg-white text-neutral-black-800 ${
+    tertiery: `bg-white text-neutral-black-500 ${
       hasHover ? "hover:bg-neutral-white-100" : ""
     }`,
     outline_dark:

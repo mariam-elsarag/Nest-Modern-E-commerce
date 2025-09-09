@@ -24,5 +24,12 @@
   "must_be_number": "يجب أن يكون رقمًا",
   "you_are_not_authorized_to_login": "غير مصرح لك بتسجيل الدخول",
   "success_send_otp": "تم إرسال رمز التحقق بنجاح.",
-  "successfully_logged_in": "تم تسجيل الدخول بنجاح."
+  "successfully_logged_in": "تم تسجيل الدخول بنجاح.",
+  "dashboard": "لوحة التحكم",
+  "products": "المنتجات",
+  "orders": "الطلبات",
+  "customers": "العملاء",
+  "reviews": "المراجعات",
+  "settings": "الإعدادات",
+  "logout": "تسجيل الخروج"
 }

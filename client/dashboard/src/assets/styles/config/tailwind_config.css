@@ -73,4 +73,7 @@
   .main_h {
     @apply h-[40px] md:h-[45px];
   }
+  .page_wraper {
+    @apply flex flex-col gap-10;
+  }
 }

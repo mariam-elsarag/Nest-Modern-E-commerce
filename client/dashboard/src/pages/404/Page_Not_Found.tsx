@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const Page_Not_Found = () => {
   return (
     <section className="h-dvh grid gap-6">
-      <div className=" h-full rounded-2xl bg-white flex items-center">
+      <div className=" h-full   flex items-center">
         <div className="p-6 text-center flex w-fit flex-col gap-4 sm:gap-2 sm:mx-auto sm:flex-row">
           <h1 className=" px-4 text-7xl md:text-5xl lg:text-6xl flex items-center justify-center font-bold text-neutral-black-900 sm:border-r sm:border-gray-400 ">
             404

@@ -24,5 +24,12 @@
   "must_be_number": "Must be a number",
   "you_are_not_authorized_to_login": "You are not authorized to login",
   "success_send_otp": "The verification code has been sent successfully.",
-  "successfully_logged_in": "You have successfully logged in."
+  "successfully_logged_in": "You have successfully logged in.",
+  "dashboard": "Dashboard",
+  "products": "Products",
+  "orders": "Orders",
+  "customers": "Customers",
+  "reviews": "Reviews",
+  "settings": "Settings",
+  "logout": "Logout"
 }

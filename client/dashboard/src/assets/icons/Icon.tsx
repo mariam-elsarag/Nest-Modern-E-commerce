@@ -1,3 +1,49 @@
+import type { iconProps } from "./icon.type";
+
+export const DashboardIcon = ({
+  width = "24",
+  height = "24",
+  fill = "var(--color-neutral-black-500)",
+}: iconProps) => {
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 24 25"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M18.9231 11.9231H14.3077C13.9891 11.9231 13.7308 12.1814 13.7308 12.5V19.4231C13.7308 19.7417 13.9891 20 14.3077 20H18.9231C19.2417 20 19.5 19.7417 19.5 19.4231V12.5C19.5 12.1814 19.2417 11.9231 18.9231 11.9231Z"
+        stroke={fill}
+        strokeWidth="1.43"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M18.9231 5H14.3077C13.9891 5 13.7308 5.2583 13.7308 5.57692V7.89615C13.7308 8.21478 13.9891 8.47308 14.3077 8.47308H18.9231C19.2417 8.47308 19.5 8.21478 19.5 7.89615V5.57692C19.5 5.2583 19.2417 5 18.9231 5Z"
+        stroke={fill}
+        strokeWidth="1.43"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M9.69231 5H5.07692C4.7583 5 4.5 5.2583 4.5 5.57692V12.5C4.5 12.8186 4.7583 13.0769 5.07692 13.0769H9.69231C10.0109 13.0769 10.2692 12.8186 10.2692 12.5V5.57692C10.2692 5.2583 10.0109 5 9.69231 5Z"
+        stroke={fill}
+        strokeWidth="1.43"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M9.69231 16.5269H5.07692C4.7583 16.5269 4.5 16.7852 4.5 17.1038V19.4231C4.5 19.7417 4.7583 20 5.07692 20H9.69231C10.0109 20 10.2692 19.7417 10.2692 19.4231V17.1038C10.2692 16.7852 10.0109 16.5269 9.69231 16.5269Z"
+        stroke={fill}
+        strokeWidth="1.43"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
 export const SearchIcon = ({
   width = "24",
   height = "24",
@@ -1124,9 +1170,9 @@ export const UploadCloudIcon = ({
       <path
         d="M12.5 21V13.5M12.5 13.5L10.5 15.5M12.5 13.5L14.5 15.5M7 18.7101C4.10851 17.8496 2 15.171 2 12C2 8.13401 5.13401 5 9 5C11.8892 5 14.3696 6.75042 15.4386 9.24864C15.9299 9.08728 16.4547 9 17 9C19.7614 9 22 11.2386 22 14C22 16.419 20.2822 18.4367 18 18.9"
         stroke={fill}
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
