@@ -11,6 +11,7 @@ const Empty = ({
   des,
   btnName,
   btnCta,
+  size,
 }: EmptyPropsType) => {
   const { t } = useTranslation();
   return (

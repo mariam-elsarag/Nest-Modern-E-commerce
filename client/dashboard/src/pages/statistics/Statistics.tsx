@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import Line_Chart from "../../components/shared/chart/Line_Chart";
 import Chart_Wraper from "../../components/shared/chart/Chart_Wraper";
 import Dount_Chart from "../../components/shared/chart/Dount_Chart";
+import Latest_Orders from "./components/Latest_Orders";
 
 const Statistics = () => {
   const { t } = useTranslation();
@@ -112,6 +113,7 @@ const Statistics = () => {
           <Dount_Chart chart={orderData} />
         </Chart_Wraper>
       </section>
+      <Latest_Orders />
     </Page_Wraper>
   );
 };

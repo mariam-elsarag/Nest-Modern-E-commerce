@@ -4,4 +4,5 @@ export type EmptyPropsType = {
   des?: string;
   btnName?: string;
   btnCta?: () => void;
+  size?: "sm" | "lg";
 };

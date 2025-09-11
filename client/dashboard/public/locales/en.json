@@ -52,5 +52,15 @@
   "revenue": "revnue",
   "completed_orders": "Completed",
   "pending_orderd": "Pending",
-  "cancelled_orders": "Cancelled"
+  "cancelled_orders": "Cancelled",
+  "latest_order": "Latest Orders",
+  "title": "Title",
+  "date": "Date",
+  "quantity": "Quantity",
+  "total": "Total",
+  "status": "Status",
+  "pending": "Pending",
+  "cancelled": "Cancelled",
+  "completed": "Completed",
+  "shipped": "Shipped"
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { handleError } from "~/common/utils/handleError";
-import axiosInstance from "~/services/axiosInstance";
+import axiosInstance from "../services/axiosInstance";
+import { handleError } from "../common/utils/handleError";
 
 function useGetData<T>(endpoint: string) {
   const { t } = useTranslation();
