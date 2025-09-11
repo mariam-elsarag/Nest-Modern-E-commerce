@@ -7,6 +7,8 @@ import Product_Item from "../../../components/shared/product/Product_Item";
 import { currentLanguageCode } from "../../../common/utils/switchLang";
 import { formatDateToMonth } from "./../../../common/utils/formatDateToMonth";
 import { formatPrice } from "../../../common/utils/formatPrice";
+import { orderStatusBadge } from "../../../common/lists/Badges_List";
+import Badge from "../../../components/shared/badge/Badge";
 
 export const data: OrderType[] = [
   {
@@ -88,7 +90,14 @@ const columns = [
     field: "price",
     body: (item) => (item?.price ? formatPrice(item?.price) : 0),
   },
-  { header: "status", field: "status" },
+  {
+    header: "status",
+    field: "status",
+    body: (item) => {
+      const { text, type } = orderStatusBadge(item?.status);
+      return <Badge text={text} type={type} />;
+    },
+  },
 ];
 const Latest_Orders = () => {
   const { data: k, loading } = useGetData(API.dashboard.latestOrders);
