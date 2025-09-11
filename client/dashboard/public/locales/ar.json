@@ -45,5 +45,22 @@
   "October": "أكتوبر",
   "November": "نوفمبر",
   "December": "ديسمبر",
-  "this_month": "هذا الشهر"
+  "this_month": "هذا الشهر",
+  "monthly_goal": "الأهداف الشهرية: {{goal}}",
+  "_left": "متبقي {{number}}",
+  "left": "متبقي",
+  "revenue": "الإيرادات",
+  "completed_orders": "المكتملة",
+  "pending_orderd": "قيد الانتظار",
+  "cancelled_orders": "الملغاة",
+  "latest_order": "أحدث الطلبات",
+  "title": "العنوان",
+  "date": "التاريخ",
+  "quantity": "الكمية",
+  "total": "الإجمالي",
+  "status": "الحالة",
+  "pending": "قيد الانتظار",
+  "cancelled": "ملغى",
+  "completed": "مكتمل",
+  "shipped": "تم الشحن"
 }
