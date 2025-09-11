@@ -1,23 +1,20 @@
 import { Chart } from "primereact/chart";
 import React, { useEffect, useState } from "react";
-import type { TypeChartProps } from "../../../common/types/Type";
+import type { TypeChartProps } from "./chart.types";
 import { useTranslation } from "react-i18next";
 
 type LineChartProps = {
   chart: TypeChartProps;
+  hideScales: boolean;
 };
-const Line_Chart = ({ chart }: LineChartProps) => {
+const Line_Chart = ({ chart, hideScales }: LineChartProps) => {
   const { t } = useTranslation();
   const [chartData, setChartData] = useState({});
   const [chartOptions, setChartOptions] = useState({});
 
   useEffect(() => {
     const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue("--text-color");
-    const textColorSecondary = documentStyle.getPropertyValue(
-      "--text-color-secondary"
-    );
-    const surfaceBorder = documentStyle.getPropertyValue("--surface-border");
+
     const data = {
       labels: chart?.labels?.map((item) => t(item)),
       datasets: chart?.datasets?.map((item) => ({
@@ -36,10 +33,22 @@ const Line_Chart = ({ chart }: LineChartProps) => {
       },
       scales: {
         x: {
-          display: false,
+          display: hideScales,
+          ticks: {
+            color: documentStyle.getPropertyValue("--color-neutral-black-200"),
+          },
+          grid: {
+            color: documentStyle.getPropertyValue("--color-neutral-white-100"),
+          },
         },
         y: {
-          display: false,
+          display: hideScales,
+          ticks: {
+            color: documentStyle.getPropertyValue("--color-neutral-black-200"),
+          },
+          grid: {
+            color: documentStyle.getPropertyValue("--color-neutral-white-100"),
+          },
         },
       },
     };
@@ -48,12 +57,12 @@ const Line_Chart = ({ chart }: LineChartProps) => {
     setChartOptions(options);
   }, [chart, t]);
   return (
-    <div className="h-[50px] w-full ">
+    <div className=" w-full h-full ">
       <Chart
         type="line"
         data={chartData}
         options={chartOptions}
-        className="h-[50px] w-full"
+        className="h-full w-full"
       />
     </div>
   );

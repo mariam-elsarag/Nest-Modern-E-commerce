@@ -48,5 +48,9 @@
   "this_month": "THIS MONTH",
   "monthly_goal": "Monthly GOALS : {{goal}}",
   "_left": "{{number}} left",
-  "left": "left"
+  "left": "left",
+  "revenue": "revnue",
+  "completed_orders": "Completed",
+  "pending_orderd": "Pending",
+  "cancelled_orders": "Cancelled"
 }

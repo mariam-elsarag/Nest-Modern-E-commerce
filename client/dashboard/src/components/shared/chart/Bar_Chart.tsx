@@ -1,6 +1,6 @@
 import { Chart } from "primereact/chart";
 import React, { useEffect, useState } from "react";
-import type { TypeChartProps } from "../../../common/types/Type";
+import type { TypeChartProps } from "./chart.types";
 import { data } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 

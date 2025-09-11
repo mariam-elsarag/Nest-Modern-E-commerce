@@ -1,5 +1,5 @@
 import React from "react";
-import type { StatCartProps } from "../../../common/types/Type";
+import type { StatCartProps } from "../../../components/shared/chart/chart.types";
 import { useTranslation } from "react-i18next";
 import { formatPrice } from "../../../common/utils/formatPrice";
 import Bar_Chart from "../../../components/shared/chart/Bar_Chart";
@@ -9,7 +9,7 @@ import Progress_Bar from "../../../components/shared/progress/Progress_Bar";
 const Stat_Card = ({ data }: StatCartProps) => {
   const { t } = useTranslation();
   return (
-    <div className="bg-white border border-neutral-white-100 overflow-x-hidden rounded-lg p-6 flex flex-col gap-10 ">
+    <div className=" layer shadow_sm overflow-x-hidden rounded-lg p-6 flex flex-col gap-10 ">
       <header className="flex items-center gap-1 justify-between">
         {/* title */}
         <div className="flex flex-col gap-1.5">
@@ -29,9 +29,13 @@ const Stat_Card = ({ data }: StatCartProps) => {
         </p>
       </header>
       {data?.type === "bar" ? (
-        <Bar_Chart chart={data?.chartData} />
+        <div className="h-[50px]">
+          <Bar_Chart chart={data?.chartData} />
+        </div>
       ) : data?.type === "line" ? (
-        <Line_Chart chart={data?.chartData} />
+        <div className="h-[50px]">
+          <Line_Chart chart={data?.chartData} hideScales={false} />
+        </div>
       ) : (
         <Progress_Bar goal={data?.monthlyGoal} currentValue={data?.value} />
       )}

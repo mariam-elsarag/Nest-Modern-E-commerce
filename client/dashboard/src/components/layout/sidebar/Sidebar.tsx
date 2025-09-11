@@ -85,7 +85,7 @@ const Sidebar = ({ isOpen, setToggleSidebar }: SidebarPropsType) => {
     >
       <div
         ref={sideRef}
-        className={`bg-white w-[260px] ${
+        className={`bg-white shadow_sm w-[260px] ${
           isOpen
             ? `flex translate-x-0 `
             : `${

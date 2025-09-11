@@ -78,4 +78,7 @@
   .page_wraper {
     @apply flex flex-col gap-5;
   }
+  .layer {
+    @apply bg-white border border-neutral-white-200 rounded-lg;
+  }
 }
