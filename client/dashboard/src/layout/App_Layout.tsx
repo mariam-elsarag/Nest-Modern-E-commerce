@@ -5,12 +5,14 @@ import Sidebar from "../components/layout/sidebar/Sidebar";
 const App_Layout = () => {
   const [toggleSidebar, setToggleSidebar] = useState(false);
   return (
-    <section className="min-h-dvh bg-neutral-white-100 w-full container relative flex items-start">
-      <Sidebar isOpen={toggleSidebar} setToggleSidebar={setToggleSidebar} />
-      <div className={`w-full md:w-[calc(100%_-_260px_-_30px)] ms-auto`}>
-        <Outlet context={{ setToggleSidebar }} />
-      </div>
-    </section>
+    <div className="bg-neutral-white-100 min-h-dvh">
+      <section className="  w-full container relative flex items-start">
+        <Sidebar isOpen={toggleSidebar} setToggleSidebar={setToggleSidebar} />
+        <div className={`w-full md:w-[calc(100%_-_260px_-_10px)] ms-auto`}>
+          <Outlet context={{ setToggleSidebar }} />
+        </div>
+      </section>
+    </div>
   );
 };
 

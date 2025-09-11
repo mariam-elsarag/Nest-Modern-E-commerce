@@ -12,8 +12,10 @@ export type TypeChartProps = {
 
 export type StatCartProps = {
   title: string;
+  subTitle: string;
   value: number;
   isPirce: boolean;
   type: "progress" | "bar" | "line";
-  chartData: TypeChartProps;
+  chartData?: TypeChartProps;
+  monthlyGoal?: number;
 };

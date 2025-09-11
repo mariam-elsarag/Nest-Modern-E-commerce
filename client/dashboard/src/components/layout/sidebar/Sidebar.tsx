@@ -80,7 +80,7 @@ const Sidebar = ({ isOpen, setToggleSidebar }: SidebarPropsType) => {
   return (
     <aside
       className={`${
-        isOpen ? "fixed md:relative inset-0  backdrop-blur-[6px] " : ""
+        isOpen ? "fixed md:relative inset-0  backdrop-blur-[6px] z-50 " : ""
       }`}
     >
       <div
