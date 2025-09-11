@@ -9,6 +9,7 @@ import { formatDateToMonth } from "./../../../common/utils/formatDateToMonth";
 import { formatPrice } from "../../../common/utils/formatPrice";
 import { orderStatusBadge } from "../../../common/lists/Badges_List";
 import Badge from "../../../components/shared/badge/Badge";
+import { useNavigate } from "react-router-dom";
 
 export const data: OrderType[] = [
   {
@@ -101,6 +102,7 @@ const columns = [
 ];
 const Latest_Orders = () => {
   const { data: k, loading } = useGetData(API.dashboard.latestOrders);
+  const navigate = useNavigate();
   return (
     <Table_Layout<OrderType>
       title="latest_order"
@@ -110,7 +112,7 @@ const Latest_Orders = () => {
       columns={columns}
       emptyText="no_recent_orders_yet"
       rowAction={(row) => {
-        console.log("Clicked row:", row);
+        navigate(`/orders/${row?.id}`);
       }}
     />
   );
