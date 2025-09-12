@@ -43,7 +43,7 @@ const sidebarList: SidebarListType[] = [
   {
     icon: UsersIcon,
     path: "users",
-    title: "customers",
+    title: "users",
   },
   {
     icon: StarIcon,
@@ -137,6 +137,7 @@ const Sidebar = ({ isOpen, setToggleSidebar }: SidebarPropsType) => {
         <footer className="flex flex-col gap-4">
           {buttonsList?.map((btn) => (
             <Button
+              key={btn?.title}
               icon={btn?.icon}
               variant="tertiery"
               text={btn?.title}
