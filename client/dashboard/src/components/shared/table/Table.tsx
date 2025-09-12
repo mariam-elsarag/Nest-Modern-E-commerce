@@ -15,7 +15,7 @@ const Table = <T,>({
   emptyText,
 }: TableProps<T>) => {
   const { t } = useTranslation();
-  console.log(data, "s");
+
   return (
     <section className="overflow-x-auto pb-1">
       <div>
@@ -35,7 +35,7 @@ const Table = <T,>({
             </thead>
 
             <tbody>
-              {Array.from({ length: 5 }).map((_, index) => (
+              {Array.from({ length: 3 }).map((_, index) => (
                 <tr
                   key={index}
                   className="not-last-of-type:border-b not-last-of-type:border-neutral-white-200 not-last-of-type:border-dashed"
@@ -62,7 +62,7 @@ const Table = <T,>({
               }
             }}
             emptyMessage={
-              <div className="min-h-[55vh] flex items-center">
+              <div className="min-h-[30vh] flex items-center">
                 <Empty size="sm" des={emptyText} />
               </div>
             }
