@@ -12,3 +12,12 @@ export const orderStatusBadge = (data) => {
       return { text: data, type: "default" };
   }
 };
+
+export const userStatusBadge = (data) => {
+  switch (data) {
+    case "blocked":
+      return { text: "blocked", type: "error" };
+    default:
+      return { text: "active", type: "default" };
+  }
+};
