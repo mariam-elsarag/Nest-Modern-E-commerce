@@ -26,7 +26,7 @@ const Table = <T,>({
                 {columns?.map((item) => (
                   <th
                     key={item.field}
-                    className="text-on-surface-tertiary-variant title_md font-medium text-start"
+                    className="text-neutral-black-500 body font-medium text-start border-y border-neutral-black-100 h-[44px]"
                   >
                     {t(item?.header)}
                   </th>
@@ -35,12 +35,15 @@ const Table = <T,>({
             </thead>
 
             <tbody>
-              {Array.from({ length: 3 }).map((_, index) => (
-                <tr key={index} className="">
+              {Array.from({ length: 5 }).map((_, index) => (
+                <tr
+                  key={index}
+                  className="not-last-of-type:border-b not-last-of-type:border-neutral-white-200 not-last-of-type:border-dashed"
+                >
                   {columns?.map((_, columnIndex) => (
                     <td
                       key={columnIndex}
-                      className={` text-nowrap p-4 text-start `}
+                      className={` text-nowrap p-4 text-start body font-medium h-[80px]  `}
                     >
                       <Skeleton height="16px" borderRadius={50} width="100%" />
                     </td>
@@ -58,7 +61,11 @@ const Table = <T,>({
                 rowAction(row, e);
               }
             }}
-            emptyMessage={<Empty size="sm" des={emptyText} />}
+            emptyMessage={
+              <div className="min-h-[55vh] flex items-center">
+                <Empty size="sm" des={emptyText} />
+              </div>
+            }
           >
             {columns?.map(
               (item, index) =>
