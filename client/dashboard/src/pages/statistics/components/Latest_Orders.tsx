@@ -1,5 +1,3 @@
-import React from "react";
-import Table_Layout from "../../../components/shared/table/Table_Layout";
 import type { OrderType } from "../../../common/types/Type";
 import useGetData from "../../../hooks/useGetData";
 import { API } from "../../../services/apiUrl";
@@ -10,6 +8,8 @@ import { formatPrice } from "../../../common/utils/formatPrice";
 import { orderStatusBadge } from "../../../common/lists/Badges_List";
 import Badge from "../../../components/shared/badge/Badge";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import Table from "../../../components/shared/table/Table";
 
 export const data: OrderType[] = [
   {
@@ -103,18 +103,20 @@ const columns = [
 const Latest_Orders = () => {
   const { data: k, loading } = useGetData(API.dashboard.latestOrders);
   const navigate = useNavigate();
+  const { t } = useTranslation();
   return (
-    <Table_Layout<OrderType>
-      title="latest_order"
-      hasPagination={false}
-      data={data ?? []}
-      loading={loading}
-      columns={columns}
-      emptyText="no_recent_orders_yet"
-      rowAction={(row) => {
-        navigate(`/orders/${row?.id}`);
-      }}
-    />
+    <section className={`layer shadow_sm p-6 flex flex-col gap-6 `}>
+      <h2 className="text-primary h4 font-medium">{t("latest_order")}</h2>
+      <Table<OrderType>
+        loading={loading}
+        emptyText="no_latest_orders_yet"
+        columns={columns}
+        data={data}
+        rowAction={(row) => {
+          navigate("/orders/");
+        }}
+      />
+    </section>
   );
 };
 export default Latest_Orders;
