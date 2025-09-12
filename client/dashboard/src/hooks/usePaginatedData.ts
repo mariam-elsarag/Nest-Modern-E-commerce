@@ -4,12 +4,12 @@ import axiosInstance from "../services/axiosInstance";
 type UsePaginatedDataProps = {
   endpoint: string;
   type?: "pages" | "scroll";
-  queryDefault?: object;
+  queryDefault?: object | null;
 };
 function usePaginatedData<T = { id: number }>({
   endpoint,
   type = "pages",
-  queryDefault = {},
+  queryDefault = null,
 }: UsePaginatedDataProps) {
   const [data, setData] = useState<T[]>([]);
   const [page, setPage] = useState<number>(1);
