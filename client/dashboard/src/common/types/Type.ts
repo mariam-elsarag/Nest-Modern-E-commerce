@@ -10,12 +10,17 @@ export interface OrderType {
 }
 
 export interface UserType {
+  id: number;
   fullName: string;
   avatar: string | null;
+  email: string;
+  address: string | null;
+  status: "active" | "blocked" | "deleted";
+  phone: string;
 }
 
 export interface ReviewType {
   id: number;
-  user: UserType;
+  user: Pick<UserType, "avatar" | "fullName">;
   review: string;
 }
