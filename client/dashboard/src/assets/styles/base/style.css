@@ -109,7 +109,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 }
 
 .loader {
-  color: var(--color-neutral-black-900);
+  color: var(--color-primary-900);
   font-size: 7px;
   position: relative;
   text-indent: -9999em;
@@ -357,11 +357,13 @@ body:dir(rtl) .p-menuitem-separator {
   width: fit-content;
   padding: 16px !important;
   text-align: start;
-  border-bottom: 1px dashed var(--color-neutral-white-200) !important;
   color: var(--color-neutral-black-500);
   height: 80px;
   font-weight: 500;
   text-wrap: nowrap;
+}
+.p-datatable .p-datatable-tbody tr td:not(:last-of-type) {
+  border-bottom: 1px dashed var(--color-neutral-white-200) !important;
 }
 .p-datatable .p-datatable-tbody tr.p-datatable-emptymessage:hover {
   background: transparent;
