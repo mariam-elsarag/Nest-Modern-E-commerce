@@ -29,7 +29,7 @@
   "products": "المنتجات",
   "orders": "الطلبات",
   "customers": "العملاء",
-  "reviews": "المراجعات",
+  "reviews": "تقيمات",
   "settings": "الإعدادات",
   "logout": "تسجيل الخروج",
   "total_sales": "إجمالي المبيعات",
@@ -62,5 +62,11 @@
   "pending": "قيد الانتظار",
   "cancelled": "ملغى",
   "completed": "مكتمل",
-  "shipped": "تم الشحن"
+  "shipped": "تم الشحن",
+  "no_reviews_yet": "لا توجد تقيمات بعد",
+  "review": "تقيمات",
+  "name": "الاسم",
+  "action": "",
+  "no_latest_orders_yet": "لا توجد طلبات حديثة بعد",
+  "search_review": "بحث في تقيمات"
 }
