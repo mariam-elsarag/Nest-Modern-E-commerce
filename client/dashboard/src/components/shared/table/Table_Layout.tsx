@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import Table from "./Table";
 import usePaginatedData from "../../../hooks/usePaginatedData";
 import Search from "../search/Search";
+import Pagination from "../pagination/Pagination";
 
 const Table_Layout = <T,>({
   title,
@@ -15,8 +16,17 @@ const Table_Layout = <T,>({
   search_placeholder,
 }: TableLayoutProps) => {
   const { t } = useTranslation();
-  const { data, loading, searchLoader, setSearchLoader, query, setQuery } =
-    usePaginatedData<T>({ endpoint: endpoint });
+  const {
+    data,
+    loading,
+    searchLoader,
+    setSearchLoader,
+    query,
+    setQuery,
+    page,
+    pages,
+    handlePagination,
+  } = usePaginatedData<T>({ endpoint: endpoint });
   return (
     <section className={`layer shadow_sm p-6 flex flex-col gap-6`}>
       <header className="flex items-center justify-between gap-2">
@@ -38,6 +48,13 @@ const Table_Layout = <T,>({
         data={data}
         rowAction={rowAction}
       />
+      {hasPagination && (
+        <Pagination
+          currentPage={page}
+          pages={pages}
+          onPageChange={handlePagination}
+        />
+      )}
     </section>
   );
 };
