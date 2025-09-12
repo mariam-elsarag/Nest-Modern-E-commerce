@@ -28,6 +28,9 @@ const Statistics = lazy(() => import("./pages/statistics/Statistics"));
 // reviews
 const Reviews = lazy(() => import("./pages/reviews/Review"));
 
+// users
+const Users_List = lazy(() => import("./pages/users/User_List"));
+
 // 404
 const Page_Not_Found = lazy(() => import("./pages/404/Page_Not_Found"));
 
@@ -41,6 +44,15 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <Statistics /> },
           { path: "reviews", element: <Reviews /> },
+          {
+            path: "users",
+            children: [
+              {
+                index: true,
+                element: <Users_List />,
+              },
+            ],
+          },
           { path: "*", element: <Page_Not_Found /> },
         ],
       },
