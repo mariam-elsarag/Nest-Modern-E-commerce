@@ -33,7 +33,7 @@ const Review = () => {
     <Page_Wraper label="reviews">
       <Table_Layout<ReviewType>
         title="reviews"
-        hasPagination={false}
+        hasPagination={true}
         columns={columns}
         emptyText="no_reviews_yet"
         endpoint={API.review.list}
