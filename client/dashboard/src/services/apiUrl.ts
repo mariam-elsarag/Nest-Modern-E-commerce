@@ -3,4 +3,7 @@ export const API = {
   dashboard: {
     latestOrders: "",
   },
+  review: {
+    list: "",
+  },
 };

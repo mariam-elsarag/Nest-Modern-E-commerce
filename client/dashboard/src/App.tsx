@@ -24,6 +24,11 @@ const Activate_Account = lazy(() => import("./pages/auth/Activate_Account"));
 // protected route
 
 const Statistics = lazy(() => import("./pages/statistics/Statistics"));
+
+// reviews
+const Reviews = lazy(() => import("./pages/reviews/Review"));
+
+// 404
 const Page_Not_Found = lazy(() => import("./pages/404/Page_Not_Found"));
 
 const router = createBrowserRouter([
@@ -35,6 +40,7 @@ const router = createBrowserRouter([
         element: <App_Layout />,
         children: [
           { index: true, element: <Statistics /> },
+          { path: "reviews", element: <Reviews /> },
           { path: "*", element: <Page_Not_Found /> },
         ],
       },
