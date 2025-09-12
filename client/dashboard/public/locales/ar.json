@@ -68,5 +68,13 @@
   "name": "الاسم",
   "action": "",
   "no_latest_orders_yet": "لا توجد طلبات حديثة بعد",
-  "search_review": "بحث في تقيمات"
+  "search_review": "بحث في تقيمات",
+  "users": "المستخدمون",
+  "admin": "المسؤولون",
+  "no_users_yet": "لا يوجد مستخدمون بعد",
+  "no_admin_yet": "لا يوجد مسؤولون بعد",
+  "address": "العنوان",
+  "search_user": "بحث عن العملاء",
+  "search_admin": "بحث عن المسؤولين",
+  "phone": "الهاتف"
 }

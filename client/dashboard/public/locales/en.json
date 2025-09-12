@@ -68,5 +68,13 @@
   "name": "Name",
   "action": "Action",
   "no_latest_orders_yet": "No latest orders yet",
-  "search_review": "Search reviews"
+  "search_review": "Search reviews",
+  "users": "Users",
+  "admin": "Admin",
+  "no_users_yet": "No users yet",
+  "no_admin_yet": "No Admins yet",
+  "address": "Address",
+  "search_user": "Search customers",
+  "search_admin": "Search admins",
+  "phone": "Phone"
 }
