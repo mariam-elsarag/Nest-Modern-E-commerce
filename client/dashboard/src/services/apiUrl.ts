@@ -3,6 +3,9 @@ export const API = {
   dashboard: {
     latestOrders: "",
   },
+  users: {
+    list: "",
+  },
   review: {
     list: "",
   },
