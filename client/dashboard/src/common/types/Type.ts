@@ -8,3 +8,14 @@ export interface OrderType {
   price: number;
   quantity: number;
 }
+
+export interface UserType {
+  fullName: string;
+  avatar: string | null;
+}
+
+export interface ReviewType {
+  id: number;
+  user: UserType;
+  review: string;
+}
