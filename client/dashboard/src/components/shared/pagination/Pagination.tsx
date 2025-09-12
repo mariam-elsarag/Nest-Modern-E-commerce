@@ -1,8 +1,7 @@
-import React from "react";
+import { ChevronIcon } from "../../../assets/icons/Icon";
+import { currentLanguageCode } from "../../../common/utils/switchLang";
+import { DOTS, usePagination } from "../../../hooks/usePagination";
 import type { PaginationPropsType } from "./Pagination.types";
-import { DOTS, usePagination } from "~/hooks/usePagination";
-import { currentLanguageCode } from "~/common/utils/switchLang";
-import { ChevronIcon } from "~/assets/icons/Icon";
 
 const Pagination = ({
   currentPage,
