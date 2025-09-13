@@ -1,4 +1,4 @@
-import React from "react";
+import React, { type JSX } from "react";
 import type { TableLayoutProps } from "./Table.types";
 import { useTranslation } from "react-i18next";
 import Table from "./Table";
@@ -6,6 +6,7 @@ import usePaginatedData from "../../../hooks/usePaginatedData";
 import Search from "../search/Search";
 import Pagination from "../pagination/Pagination";
 import Tab from "../tab/Tab";
+import Button from "../button/Button";
 
 const Table_Layout = <T,>({
   title,
@@ -19,9 +20,10 @@ const Table_Layout = <T,>({
   tapType,
   tapList,
   onClick,
-  tapValue,
-  tapClick,
-}: TableLayoutProps) => {
+  hasBtn,
+  btnCta,
+  btnName,
+}: TableLayoutProps<T>): JSX.Element => {
   const { t } = useTranslation();
   const {
     data,
@@ -34,8 +36,9 @@ const Table_Layout = <T,>({
     pages,
     handlePagination,
   } = usePaginatedData<T>({ endpoint: endpoint });
+
   return (
-    <main className={`${hasTap ? "flex flex-col gap-6" : ""}`}>
+    <main className={` ${hasTap ? "flex flex-col gap-6" : ""}`}>
       {hasTap && (
         <Tab
           type={tapType}
@@ -48,15 +51,18 @@ const Table_Layout = <T,>({
       <section className={`layer shadow_sm p-6 flex flex-col gap-6`}>
         <header className="flex items-center justify-between gap-2">
           {title && <h2 className="text-primary h4 font-medium">{t(title)}</h2>}
-          {search_placeholder && (
-            <Search
-              placeholder={search_placeholder}
-              searchLoader={searchLoader}
-              setSearchLoader={setSearchLoader}
-              search={query}
-              setSearch={setQuery}
-            />
-          )}
+          <div className="flex items-center flex-row-reverse gap-4">
+            {search_placeholder && (
+              <Search
+                placeholder={search_placeholder}
+                searchLoader={searchLoader}
+                setSearchLoader={setSearchLoader}
+                search={query}
+                setSearch={setQuery}
+              />
+            )}
+            {hasBtn && <Button text={btnName} handleClick={btnCta} />}
+          </div>
         </header>
         <Table<T>
           loading={loading}

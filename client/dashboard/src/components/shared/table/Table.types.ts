@@ -18,10 +18,11 @@ export type TableProps<T> = Partial<Omit<TapProps, "type" | "list">> & {
   tapList: TapList[];
 };
 
-export type TableLayoutProps<T> = TableProps<T> & {
+export type TableLayoutProps<T> = Partial<TableProps<T>> & {
   title?: string;
   hasPagination?: boolean;
   endpoint: string;
-  tapValue?: string;
-  tapClick?: (item: any) => void;
+  hasBtn?: boolean;
+  btnCta?: () => void;
+  btnName?: string;
 };
