@@ -1,15 +1,23 @@
+import type { BreadCrumbProps } from "primereact/breadcrumb";
 import React from "react";
-import type { PageHeaderProps } from "../header/page_header/Page_Header.types";
-import Page_Header from "../header/page_header/Page_Header";
+import Bread_Crumb from "../../breadCrumb/Bread_Crumb";
 
-type PageWraperProps = PageHeaderProps & {
+type PageWraperProps = BreadCrumbProps & {
   children: React.ReactNode;
+  containerClassName?: string;
 };
-const Page_Wraper = ({ label, list, children }: PageWraperProps) => {
+const Page_Wraper = ({
+  label,
+  list,
+  children,
+  containerClassName,
+}: PageWraperProps) => {
   return (
-    <section className="page_wraper">
-      <Page_Header label={label} list={list} />
-      <div className="px-4 flex flex-col gap-8 pb-10 ">{children}</div>
+    <section className="page_wraper px-4 pb-10  ">
+      {(label || list?.length > 0) && <Bread_Crumb label={label} list={list} />}
+      <div className={` flex flex-col gap-6   ${containerClassName ?? ""} `}>
+        {children}
+      </div>
     </section>
   );
 };

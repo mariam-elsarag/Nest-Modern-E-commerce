@@ -85,7 +85,7 @@ const Sidebar = ({ isOpen, setToggleSidebar }: SidebarPropsType) => {
     >
       <div
         ref={sideRef}
-        className={`bg-white shadow_sm w-[260px] ${
+        className={`bg-white border-s !border-neutral-white-200 w-[260px] ${
           isOpen
             ? `flex translate-x-0 `
             : `${
@@ -95,7 +95,7 @@ const Sidebar = ({ isOpen, setToggleSidebar }: SidebarPropsType) => {
               } md:translate-x-0`
         } flex flex-col transition-all ease-in-out duration-300 justify-between gap-5 px-5 pb-6 border border-neutral-white-900 h-dvh overflow-auto fixed min-h-[600px] start-0 `}
       >
-        <header className="min-h-[72px] flex items-center justify-center">
+        <header className="min-h-[60px] flex items-center justify-center">
           <Link to="/" className="flex items-center justify-center text-center">
             <img src={Logo} alt="logo" className="h-10 " />
           </Link>

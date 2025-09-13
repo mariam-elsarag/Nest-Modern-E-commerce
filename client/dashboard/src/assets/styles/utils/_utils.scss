@@ -4,6 +4,13 @@
 .shadow_sm {
   box-shadow: 0px 0px 30px 0px #0000000d;
 }
+.main_drop_shadow {
+  filter: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.063));
+  -webkit-filter: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.063));
+}
+.nav_shadow {
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
 .container {
   max-width: 1536px;
   width: 100%;

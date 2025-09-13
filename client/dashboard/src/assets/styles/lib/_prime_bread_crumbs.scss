@@ -23,6 +23,7 @@
   li:last-of-type {
     .p-menuitem-text {
       color: var(--color-neutral-black-900) !important;
+      cursor: default;
     }
   }
 }

@@ -69,6 +69,15 @@ body,
   box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.0509803922);
 }
 
+.main_drop_shadow {
+  filter: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.063));
+  -webkit-filter: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.063));
+}
+
+.nav_shadow {
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
 .container {
   max-width: 1536px;
   width: 100%;
@@ -293,6 +302,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 }
 .p-breadcrumb li:last-of-type .p-menuitem-text {
   color: var(--color-neutral-black-900) !important;
+  cursor: default;
 }
 
 body:dir(rtl) .p-menuitem-separator {

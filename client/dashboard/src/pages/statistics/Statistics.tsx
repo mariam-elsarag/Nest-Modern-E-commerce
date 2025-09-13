@@ -99,7 +99,7 @@ const Statistics = () => {
     ],
   };
   return (
-    <Page_Wraper label="dashboard">
+    <Page_Wraper>
       <section className="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         {statCartData?.map((data) => (
           <Stat_Card key={data?.title} data={data} />

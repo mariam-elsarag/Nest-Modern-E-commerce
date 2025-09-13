@@ -73,10 +73,10 @@
 
 @layer utilities {
   .main_h {
-    @apply h-[40px] md:h-[45px];
+    @apply h-[40px];
   }
   .page_wraper {
-    @apply flex flex-col gap-5;
+    @apply flex flex-col gap-6;
   }
   .layer {
     @apply bg-white border border-neutral-white-200 rounded-lg;
