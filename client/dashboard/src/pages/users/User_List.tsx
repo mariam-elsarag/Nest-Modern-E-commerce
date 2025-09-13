@@ -6,6 +6,7 @@ import { API } from "../../services/apiUrl";
 import Avatar from "../../components/shared/avatar/Avatar";
 import { userStatusBadge } from "../../common/lists/Badges_List";
 import Badge from "../../components/shared/badge/Badge";
+import { useNavigate } from "react-router-dom";
 
 const tapList = [
   {
@@ -17,11 +18,12 @@ const tapList = [
   {
     name: "admin",
     value: "admin",
-    fieldName: "admin",
+    fieldName: "role",
   },
 ];
 const User_List = () => {
   const [filter, setFilter] = useState("user");
+  const navigate = useNavigate();
   const columns = [
     {
       header: "name",
@@ -58,8 +60,9 @@ const User_List = () => {
       },
     },
   ];
+
   return (
-    <Page_Wraper label="users">
+    <Page_Wraper>
       <Table_Layout<UserType>
         title={filter === "user" ? "users" : "admin"}
         hasPagination={true}
@@ -72,6 +75,11 @@ const User_List = () => {
         tapType="click"
         onClick={(val) => {
           setFilter(val);
+        }}
+        hasBtn={filter === "admin"}
+        btnName="add_admin"
+        btnCta={() => {
+          navigate("/users/create");
         }}
       />
     </Page_Wraper>

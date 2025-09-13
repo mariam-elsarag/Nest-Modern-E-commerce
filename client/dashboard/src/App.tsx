@@ -30,6 +30,7 @@ const Reviews = lazy(() => import("./pages/reviews/Review"));
 
 // users
 const Users_List = lazy(() => import("./pages/users/User_List"));
+const Users_Management = lazy(() => import("./pages/users/Manage_User"));
 
 // 404
 const Page_Not_Found = lazy(() => import("./pages/404/Page_Not_Found"));
@@ -51,6 +52,11 @@ const router = createBrowserRouter([
                 index: true,
                 element: <Users_List />,
               },
+              {
+                path: "create",
+                element: <Users_Management />,
+              },
+              { path: ":id/edit", element: <Users_Management /> },
             ],
           },
           { path: "*", element: <Page_Not_Found /> },

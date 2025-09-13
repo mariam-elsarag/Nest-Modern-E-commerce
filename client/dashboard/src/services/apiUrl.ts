@@ -5,6 +5,7 @@ export const API = {
   },
   users: {
     list: "",
+    add_admin: "",
   },
   review: {
     list: "",
