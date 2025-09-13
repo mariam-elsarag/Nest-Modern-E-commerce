@@ -122,10 +122,9 @@ const List_Item = ({
         </div>
       ) : (
         list?.map((item, index) => {
-          let isActive =
-            (item?.default &&
-              !(currentValue || currentValue?.[item?.fieldName])) ||
-            currentValue?.[item?.fieldName];
+          let isActive = currentValue
+            ? currentValue?.[item?.fieldName] == item?.value
+            : item?.default;
 
           return type === "navLink" ? (
             <NavLink
