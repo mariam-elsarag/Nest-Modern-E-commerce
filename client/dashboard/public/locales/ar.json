@@ -76,5 +76,11 @@
   "address": "العنوان",
   "search_user": "بحث عن العملاء",
   "search_admin": "بحث عن المسؤولين",
-  "phone": "الهاتف"
+  "phone": "الهاتف",
+  "add_admin": "إضافة مشرف",
+  "update_admin": "تحديث المشرف",
+  "max_length_error": "الحد الأقصى لعدد الأحرف هو {{number}}",
+  "save": "حفظ",
+  "invite": "دعوة",
+  "phone_pattern_error": "يرجى إدخال رقم هاتف مصري صالح (مثال: 010xxxxxxxx)"
 }

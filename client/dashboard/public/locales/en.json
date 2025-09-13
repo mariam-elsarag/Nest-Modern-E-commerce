@@ -76,5 +76,11 @@
   "address": "Address",
   "search_user": "Search customers",
   "search_admin": "Search admins",
-  "phone": "Phone"
+  "phone": "Phone",
+  "add_admin": "Add Admin",
+  "update_admin": "Update Admin",
+  "max_length_error": "The maximum number of characters is {{number}}",
+  "save": "Save",
+  "invite": "Invite",
+  "phone_pattern_error": "Please enter a valid Egyptian phone number (e.g., 010xxxxxxxx)."
 }
