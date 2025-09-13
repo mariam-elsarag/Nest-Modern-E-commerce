@@ -1,5 +1,28 @@
 import type { iconProps } from "./icon.type";
 
+export const NotificationIcon = ({
+  width = "24",
+  height = "24",
+  fill = "var(--color-neutral-black-500)",
+}: iconProps) => {
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M10 18.1765H5.44439C4.56653 18.1765 4.14075 17.1028 4.78001 16.5012C5.55856 15.7684 6.00001 14.7467 6.00001 13.6776V11C6.00001 7.6863 8.68631 5 12 5M10 18.1765V19C10 20.1046 10.8954 21 12 21C13.1046 21 14 20.1046 14 19V18.1765M10 18.1765H14M14 18.1765H18.5556C19.4335 18.1765 19.8593 17.1028 19.22 16.5012C18.4415 15.7684 18 14.7467 18 13.6776V11C18 7.68629 15.3137 5 12 5M12 5V3.5"
+        stroke={fill}
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+};
 export const DashboardIcon = ({
   width = "24",
   height = "24",
