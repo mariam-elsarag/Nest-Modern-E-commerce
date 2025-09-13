@@ -1,9 +1,5 @@
-export type BreadCrumbListType = {
-  label: string | undefined;
-  template?: () => void;
-};
+import type React from "react";
 
 export type PageHeaderProps = {
-  label?: string;
-  list?: BreadCrumbListType[];
+  setToggleSidebar: React.Dispatch<React.SetStateAction<boolean>>;
 };
