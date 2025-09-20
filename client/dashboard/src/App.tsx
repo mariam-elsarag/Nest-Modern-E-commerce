@@ -28,6 +28,9 @@ const Statistics = lazy(() => import("./pages/statistics/Statistics"));
 // reviews
 const Reviews = lazy(() => import("./pages/reviews/Review"));
 
+// reviews
+const Order = lazy(() => import("./pages/order/Order"));
+
 // users
 const Users_List = lazy(() => import("./pages/users/User_List"));
 const Users_Management = lazy(() => import("./pages/users/Manage_User"));
@@ -45,6 +48,7 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <Statistics /> },
           { path: "reviews", element: <Reviews /> },
+          { path: "orders", element: <Order /> },
           {
             path: "users",
             children: [

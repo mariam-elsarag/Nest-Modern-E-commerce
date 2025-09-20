@@ -10,4 +10,7 @@ export const API = {
   review: {
     list: "",
   },
+  orders: {
+    list: "",
+  },
 };

@@ -82,5 +82,7 @@
   "max_length_error": "الحد الأقصى لعدد الأحرف هو {{number}}",
   "save": "حفظ",
   "invite": "دعوة",
-  "phone_pattern_error": "يرجى إدخال رقم هاتف مصري صالح (مثال: 010xxxxxxxx)"
+  "phone_pattern_error": "يرجى إدخال رقم هاتف مصري صالح (مثال: 010xxxxxxxx)",
+  "no_orders_yet": "لا توجد طلبات بعد",
+  "search_order": "بحث عن طلب"
 }

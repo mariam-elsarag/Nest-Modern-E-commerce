@@ -32,7 +32,6 @@ const Review = () => {
   return (
     <Page_Wraper label="reviews">
       <Table_Layout<ReviewType>
-        title="reviews"
         hasPagination={true}
         columns={columns}
         emptyText="no_reviews_yet"
