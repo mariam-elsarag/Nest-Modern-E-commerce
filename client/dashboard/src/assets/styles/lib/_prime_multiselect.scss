@@ -1,0 +1,93 @@
+@use "../utils/font";
+
+.p-multiselect {
+  border: 1px solid var(--color-neutral-black-200);
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -o-border-radius: 6px;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  &:not(.p-disabled).p-focus {
+    border: 1px solid var(--color-neutral-black-300);
+    box-shadow: none !important;
+  }
+  .p-multiselect-label {
+    font-weight: 400;
+    padding: 10px 15px;
+    text-transform: capitalize;
+    color: var(--color-neutral-black-300);
+  }
+  &.p-inputwrapper-filled {
+    .p-multiselect-label {
+      color: var(--color-neutral-black-500);
+    }
+  }
+}
+.p-multiselect-panel {
+  padding: 10px 15px;
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -o-border-radius: 6px;
+  .p-multiselect-header {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    .p-multiselect-filter-container {
+      display: flex;
+      align-items: center;
+      height: 35px;
+      svg {
+        top: 50%;
+        transform: translateY(-50%);
+        -webkit-transform: translateY(-50%);
+        -moz-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        -o-transform: translateY(-50%);
+      }
+      .p-multiselect-filter {
+        border: 1px solid var(--color-neutral-black-200);
+        border-radius: 6px;
+        -webkit-border-radius: 6px;
+        -moz-border-radius: 6px;
+        -ms-border-radius: 6px;
+        -o-border-radius: 6px;
+        display: flex;
+        align-items: center;
+        height: 35px;
+        padding: 0px 10px;
+        &.p-inputtext:enabled:focus {
+          box-shadow: none;
+          border: 1px solid var(--color-neutral-black-200);
+        }
+      }
+    }
+  }
+  .p-multiselect-items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    .p-multiselect-item {
+      @extend .body;
+      font-weight: 400;
+      color: var(--color-neutral-black-500);
+      text-transform: capitalize;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      &.p-highlight {
+        color: var(--color-neutral-black-500);
+        background: var(--color-neutral-white-100);
+      }
+      &.p-focus {
+        color: var(--color-neutral-black-500);
+        background: var(--color-neutral-white-100);
+      }
+    }
+  }
+}

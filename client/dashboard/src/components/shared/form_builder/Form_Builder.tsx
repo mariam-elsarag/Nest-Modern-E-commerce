@@ -13,6 +13,9 @@ import Phone_Number from "./Phone_Number";
 import Upload_Media from "./Upload_Media";
 import { InfoIcon } from "../../../assets/icons/Icon";
 import { InputOtp } from "primereact/inputotp";
+import { Dropdown } from "primereact/dropdown";
+import { MultiSelect } from "primereact/multiselect";
+import { InputSwitch } from "primereact/inputswitch";
 
 const Form_Builder = ({
   formList,
@@ -51,6 +54,7 @@ const Form_Builder = ({
               }
             }}
             min={0}
+            onKeyDown={item?.onKeyDown}
             onWheel={(e) => e.currentTarget.blur()}
           />
         );
@@ -124,7 +128,47 @@ const Form_Builder = ({
             }}
           />
         );
-
+      case "dropdown":
+        return (
+          <div>
+            <Dropdown
+              options={item?.optionList}
+              value={field?.value}
+              onChange={(e) => {
+                if (item?.action && item?.fieldName) {
+                  item?.action(e?.value);
+                }
+                field?.onChange(e);
+              }}
+              disabled={item?.disabled || loading || item?.loading}
+              placeholder={t(item?.placeholder || "")}
+              className={`flex-1 w-full !p-0  ${error ? "invalid" : ""} `}
+              optionLabel="name"
+              inputId={item?.id}
+              filter={item?.hasFilter || false}
+              loading={item?.loading ? true : false}
+            />
+          </div>
+        );
+      case "multiselect":
+        return (
+          <MultiSelect
+            options={item?.optionList}
+            value={field?.value}
+            onChange={(e) => {
+              field?.onChange(e);
+            }}
+            disabled={item?.disabled || loading}
+            placeholder={t(item?.placeholder || "")}
+            className={`flex-1 w-full !p-0 ${
+              item?.disabled || loading ? "disabled_input" : ""
+            } ${error ? "invalid" : ""}  `}
+            optionLabel="name"
+            inputId={item?.id}
+            filter={item?.hasFilter || false}
+            maxSelectedLabels={2}
+          />
+        );
       case "media":
         return (
           <Upload_Media
@@ -139,6 +183,24 @@ const Form_Builder = ({
             disabled={item.disabled || loading}
             item={item}
           />
+        );
+      case "switch":
+        return (
+          <div className="flex flex-row-reverse items-center gap-2 max-w-[350px]">
+            <label
+              className=" flex-1 body font-medium text-neutral-black-400"
+              htmlFor={item?.id}
+            >
+              {t(item?.text)}
+            </label>
+            <InputSwitch
+              inputId={item?.id}
+              invalid={error?.message || errors?.[item?.fieldName]?.message}
+              checked={field?.value}
+              onChange={(e) => field?.onChange(e.value)}
+              disabled={item?.disabled || loading}
+            />
+          </div>
         );
       default:
         return <></>;

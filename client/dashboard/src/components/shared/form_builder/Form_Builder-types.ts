@@ -1,3 +1,4 @@
+import type React from "react";
 import type { Control, FieldErrors } from "react-hook-form";
 
 export type FormType =
@@ -7,7 +8,10 @@ export type FormType =
   | "password"
   | "textarea"
   | "rate"
-  | "media";
+  | "media"
+  | "dropdown"
+  | "multiselect"
+  | "switch";
 
 type OptionListType = {
   name: string;
@@ -20,6 +24,7 @@ export type FormListItemType = {
   type?: string;
   fieldName: string;
   label?: string;
+  text?: string;
   labelClassName?: string;
   inputClassName?: string;
   containerClassName?: string;
@@ -43,6 +48,7 @@ export type FormListItemType = {
   disabled?: boolean;
   autFocus?: boolean;
   loading?: boolean;
+  hasFilter?: boolean;
   errorFill?: string;
   inlineError?: boolean;
   isMultiple?: boolean;
@@ -57,6 +63,7 @@ export type FormListItemType = {
     e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
     field: any
   ) => void;
+  onKeyDown?: (e: React.KeyboardEvent) => void;
 };
 type FormValues = {
   [key: string]: any;

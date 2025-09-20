@@ -1,0 +1,21 @@
+.p-inputswitch {
+  width: 52px;
+  height: 32px;
+  &.p-highlight .p-inputswitch-slider {
+    background: var(--color-neutral-black-900);
+  }
+  .p-inputswitch-slider {
+    background: var(--color-neutral-black-100);
+    &::before {
+      width: 24px;
+      height: 24px;
+      margin-top: -12px;
+    }
+  }
+  &.p-disabled .p-inputswitch-slider {
+    background: var(--color-neutral-black-100);
+  }
+  &.p-invalid > .p-inputswitch-slider {
+    border: 1px solid var(--color-semantic-red-900);
+  }
+}
