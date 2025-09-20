@@ -62,9 +62,15 @@ const User_List = () => {
   ];
 
   return (
-    <Page_Wraper>
+    <Page_Wraper
+      label={filter === "user" ? "users" : "admin"}
+      hasBtn={filter === "admin"}
+      btnName="add_admin"
+      btnCta={() => {
+        navigate("/users/create");
+      }}
+    >
       <Table_Layout<UserType>
-        title={filter === "user" ? "users" : "admin"}
         hasPagination={true}
         columns={columns}
         emptyText={filter === "user" ? "no_users_yet" : "no_admin_yet"}
@@ -75,11 +81,6 @@ const User_List = () => {
         tapType="click"
         onClick={(val) => {
           setFilter(val);
-        }}
-        hasBtn={filter === "admin"}
-        btnName="add_admin"
-        btnCta={() => {
-          navigate("/users/create");
         }}
       />
     </Page_Wraper>

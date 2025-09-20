@@ -11,7 +11,7 @@ const Bread_Crumb = ({ label, list }: BreadCrumbProps) => {
       {list?.length > 0 ? (
         <BreadCrumb model={list} />
       ) : label ? (
-        <span className="body font-medium text-neutral-black-900">
+        <span className="h3 font-medium text-neutral-black-900">
           {t(label)}
         </span>
       ) : null}

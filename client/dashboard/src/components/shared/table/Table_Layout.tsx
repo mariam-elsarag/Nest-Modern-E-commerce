@@ -9,7 +9,6 @@ import Tab from "../tab/Tab";
 import Button from "../button/Button";
 
 const Table_Layout = <T,>({
-  title,
   hasPagination = true,
   emptyText,
   columns,
@@ -20,9 +19,6 @@ const Table_Layout = <T,>({
   tapType,
   tapList,
   onClick,
-  hasBtn,
-  btnCta,
-  btnName,
 }: TableLayoutProps<T>): JSX.Element => {
   const { t } = useTranslation();
   const {
@@ -49,20 +45,16 @@ const Table_Layout = <T,>({
         />
       )}
       <section className={`layer shadow_sm p-6 flex flex-col gap-6`}>
-        <header className="flex items-center justify-between gap-2">
-          {title && <h2 className="text-primary h4 font-medium">{t(title)}</h2>}
-          <div className="flex items-center flex-row-reverse gap-4">
-            {search_placeholder && (
-              <Search
-                placeholder={search_placeholder}
-                searchLoader={searchLoader}
-                setSearchLoader={setSearchLoader}
-                search={query}
-                setSearch={setQuery}
-              />
-            )}
-            {hasBtn && <Button text={btnName} handleClick={btnCta} />}
-          </div>
+        <header className="flex items-center justify-end gap-2">
+          {search_placeholder && (
+            <Search
+              placeholder={search_placeholder}
+              searchLoader={searchLoader}
+              setSearchLoader={setSearchLoader}
+              search={query}
+              setSearch={setQuery}
+            />
+          )}
         </header>
         <Table<T>
           loading={loading}
