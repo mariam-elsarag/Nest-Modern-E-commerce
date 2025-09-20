@@ -3,7 +3,7 @@ export interface OrderType {
   image: string | null;
   title: string;
   title_ar: string;
-  createdAt: date;
+  createdAt: string;
   status: "pending" | "completed" | "cancelled" | "shipped";
   price: number;
   quantity: number;
@@ -23,4 +23,26 @@ export interface ReviewType {
   id: number;
   user: Pick<UserType, "avatar" | "fullName">;
   review: string;
+}
+export interface CategoryType {
+  id: number;
+  title: string;
+  title_ar: string;
+}
+
+export interface ProductType {
+  id: number;
+  image: string | null;
+  title: string;
+  title_ar: string;
+  sku: number | string;
+  price: number;
+  quantity: number;
+  status: "inStock" | "outOfStock" | "lowStock";
+  categores: CategoryType[];
+  description?: string;
+  description_ar?: string;
+  discountPrice?: number;
+  isFeatured?: boolean;
+  createdAt?: string;
 }

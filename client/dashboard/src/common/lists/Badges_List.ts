@@ -21,3 +21,14 @@ export const userStatusBadge = (data) => {
       return { text: "active", type: "default" };
   }
 };
+
+export const productStatusBadge = (data) => {
+  switch (data) {
+    case "inStock":
+      return { text: "inStock", type: "success" };
+    case "outOfStock":
+      return { text: "outOfStock", type: "error" };
+    default:
+      return { text: "lowStock", type: "warning" };
+  }
+};

@@ -8,6 +8,7 @@ const Badge = ({ type = "default", text }: BadgeProps) => {
   const variant = {
     primary: "bg-semantic-blue-100 text-primary-900",
     pending: "bg-semantic-yellow-100 text-semantic-yellow-800",
+    warning: "bg-semantic-yellow-100 text-semantic-yellow-800",
     error: "bg-semantic-red-100 text-semantic-red-900",
     success: "bg-semantic-green-100 text-semantic-green-900",
     default: "bg-neutral-white-100 text-neutral-black-500",

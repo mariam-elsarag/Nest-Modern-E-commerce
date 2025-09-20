@@ -84,5 +84,12 @@
   "invite": "دعوة",
   "phone_pattern_error": "يرجى إدخال رقم هاتف مصري صالح (مثال: 010xxxxxxxx)",
   "no_orders_yet": "لا توجد طلبات بعد",
-  "search_order": "بحث عن طلب"
+  "search_order": "بحث عن طلب",
+  "price": "السعر",
+  "stock": "المخزون",
+  "categories": "الفئات",
+  "sku": "رمز المنتج",
+  "no_product_yet": "لا توجد منتجات بعد",
+  "search_product": "بحث عن منتج",
+  "add_product": "إضافة منتج"
 }

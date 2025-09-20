@@ -84,5 +84,12 @@
   "invite": "Invite",
   "phone_pattern_error": "Please enter a valid Egyptian phone number (e.g., 010xxxxxxxx).",
   "no_orders_yet": "You don’t have any orders yet",
-  "search_order": "Search Order"
+  "search_order": "Search Order",
+  "price": "Price",
+  "stock": "Stock",
+  "categories": "Categories",
+  "sku": "SKU",
+  "no_product_yet": "You don’t have any products yet",
+  "search_product": "Search Product",
+  "add_product": "Add product"
 }

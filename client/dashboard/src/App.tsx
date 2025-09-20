@@ -28,6 +28,12 @@ const Statistics = lazy(() => import("./pages/statistics/Statistics"));
 // reviews
 const Reviews = lazy(() => import("./pages/reviews/Review"));
 
+// products
+const Product_List = lazy(() => import("./pages/product/Product_List"));
+const Product_Management = lazy(
+  () => import("./pages/product/Product_Management")
+);
+
 // reviews
 const Order = lazy(() => import("./pages/order/Order"));
 
@@ -61,6 +67,17 @@ const router = createBrowserRouter([
                 element: <Users_Management />,
               },
               { path: ":id/edit", element: <Users_Management /> },
+            ],
+          },
+          {
+            path: "products",
+            children: [
+              { index: true, element: <Product_List /> },
+              {
+                path: "create",
+                element: <Product_Management />,
+              },
+              { path: ":id/edit", element: <Product_Management /> },
             ],
           },
           { path: "*", element: <Page_Not_Found /> },

@@ -13,4 +13,7 @@ export const API = {
   orders: {
     list: "",
   },
+  product: {
+    main: "",
+  },
 };
