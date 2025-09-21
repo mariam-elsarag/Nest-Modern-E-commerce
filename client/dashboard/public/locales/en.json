@@ -91,5 +91,12 @@
   "sku": "SKU",
   "no_product_yet": "You don’t have any products yet",
   "search_product": "Search Product",
-  "add_product": "Add product"
+  "add_product": "Add product",
+  "must_be_max_10_digits_and_optional_2_decimals": "Must be a maximum of 10 digits and up to 2 decimal places",
+  "min_price_error": "Min price is {{number}}$",
+  "title_ar": "Title (ar)",
+  "sku_pattern": "SKU format: ABC-XYZ-123 (use 3 letters, dash, 3 letters, dash, 3 numbers)",
+  "max_quantity_error": "Max quantity is {{number}}",
+  "min_quantity_error": "Min quantity is {{number}}",
+  "show_as_featured": "Mark this product to be shown in the featured section"
 }
