@@ -3,7 +3,11 @@ import { languages } from "./common/constant/constant";
 import { currentLanguageCode } from "./common/utils/switchLang";
 
 import Cookies from "js-cookie";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 
 // layout
 import App_Layout from "./layout/App_Layout";
@@ -41,6 +45,20 @@ const Order = lazy(() => import("./pages/order/Order"));
 const Users_List = lazy(() => import("./pages/users/User_List"));
 const Users_Management = lazy(() => import("./pages/users/Manage_User"));
 
+// contact
+const Contact = lazy(() => import("./pages/contact/Contact"));
+
+// content
+const Content_Layout = lazy(() => import("./pages/content/Content_Layout"));
+const Content_Faq = lazy(() => import("./pages/content/faq/Faq"));
+const Content_Faq_Layout = lazy(() => import("./pages/content/faq/Faq_Layout"));
+const Content_Faq_managment = lazy(
+  () => import("./pages/content/faq/Faq_Managment")
+);
+const Content_Privacy_And_Terms = lazy(
+  () => import("./pages/content/Privacy_And_Terms")
+);
+
 // 404
 const Page_Not_Found = lazy(() => import("./pages/404/Page_Not_Found"));
 
@@ -55,6 +73,37 @@ const router = createBrowserRouter([
           { index: true, element: <Statistics /> },
           { path: "reviews", element: <Reviews /> },
           { path: "orders", element: <Order /> },
+          { path: "contact", element: <Contact /> },
+          {
+            path: "website",
+            element: <Content_Layout />,
+            children: [
+              {
+                path: "faq",
+                element: <Content_Faq_Layout />,
+                children: [
+                  { index: true, element: <Content_Faq /> },
+                  {
+                    path: ":id/edit",
+                    element: <Content_Faq_managment />,
+                  },
+                  {
+                    path: "create",
+                    element: <Content_Faq_managment />,
+                  },
+                ],
+              },
+
+              {
+                path: "terms-and-conditions",
+                element: <Content_Privacy_And_Terms />,
+              },
+              {
+                path: "privacy-policy",
+                element: <Content_Privacy_And_Terms />,
+              },
+            ],
+          },
           {
             path: "users",
             children: [
