@@ -4,14 +4,18 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import Button from "../button/Button";
 
-import { CloseIcon, UploadCloudIcon } from "../../../assets/icons/Icon";
+import {
+  CloseIcon,
+  UploadCloudIcon,
+  UploadIcon,
+} from "../../../assets/icons/Icon";
 import { truncateText } from "../../../common/utils/truncateText";
 
 const maxFileSizeInMB = Number(import.meta.env.VITE_REACT_APP_IMAGE_SIZE || 5);
 const maxFileSizeInBytes = maxFileSizeInMB * 1024 * 1024;
 
 type UploadMediaProps = {
-  variant?: "file" | "profile";
+  variant?: "file" | "profile" | "upload";
   validTypes?: string[];
   setError?: (name?: string, error?: any) => void;
   error?: any;
@@ -69,7 +73,18 @@ const Upload_Media: React.FC<UploadMediaProps> = ({
 
       filesToProcess.forEach((file, idx) => {
         if (!validTypes.includes(file.type)) {
-          toast.error(t("error_image_type"));
+          toast.error(
+            t("error_image_type", {
+              types: validTypes
+                ?.map((item) => {
+                  if (item === "image/jpeg" || item === "image/jpg")
+                    return "JPG";
+                  if (item === "image/png") return "PNG";
+                  return item;
+                })
+                .join(", "),
+            })
+          );
           return;
         }
 
@@ -149,7 +164,7 @@ const Upload_Media: React.FC<UploadMediaProps> = ({
     e.target.value = "";
   };
 
-  const handleRemove = (key: string | number, type?: "id" | "index") => {
+  const handleRemove = (key: string | number) => {
     if (isMultiple) {
       if (!Array.isArray(value)) {
         setMedia(null);
@@ -160,7 +175,7 @@ const Upload_Media: React.FC<UploadMediaProps> = ({
       const updated = value.filter((itm: any, idx: number) => {
         const itemId = itm?.id ?? idx;
 
-        if (itm?.id && itemId === key && type === "id") {
+        if (itm?.id && itemId === key) {
           setListDeleteImages?.((prev: any[]) => [...prev, itm.id]);
         }
 
@@ -230,7 +245,71 @@ const Upload_Media: React.FC<UploadMediaProps> = ({
       </div>
     );
   }
-  return <div>Upload_Media</div>;
-};
 
+  return (
+    <div className={`flex flex-col ${media ? "gap-7" : ""} `}>
+      <label
+        htmlFor={item?.id}
+        className="input main_h flex items-center gap-2"
+      >
+        <UploadIcon />
+        <span className="body font-medium text-neutral-black-300">
+          {t(item?.placeholder)}
+        </span>
+      </label>
+      <section className="flex items-center gap-8">
+        {!item?.isMultiple && media ? (
+          <Image_Item
+            item={media}
+            handleRemove={handleRemove}
+            isMultiple={false}
+          />
+        ) : (
+          media?.length > 0 &&
+          media?.map((item, idx) => (
+            <Image_Item
+              key={idx}
+              item={item}
+              handleRemove={handleRemove}
+              isMultiple={true}
+            />
+          ))
+        )}
+      </section>
+      <input
+        type="file"
+        id={item?.id}
+        className="hidden"
+        multiple={item?.isMultiple}
+        accept=".jpg,.png,.jpeg"
+        onChange={(e) => handleFileChange(e.target.files, e)}
+        disabled={disabled}
+        ref={fileInputRef}
+      />
+    </div>
+  );
+};
+const Image_Item = ({ item, handleRemove, isMultiple }) => {
+  console.log(item, "");
+  return (
+    <figure className="relative w-14 h-14  rounded-[4px] bg-neutral-white-100 flex items-center justify-center">
+      <Button
+        className="absolute top-[-15px] border border-neutral-black-100 !bg-neutral-white-100  !p-0 end-[-15px] "
+        icon={<CloseIcon />}
+        variant="tertiery"
+        size="xxs"
+        round="full"
+        handleClick={() => {
+          handleRemove(item?.id);
+        }}
+      />
+
+      <img
+        src={isMultiple ? item?.preview : item}
+        alt="product image"
+        className="h-[39px] "
+      />
+    </figure>
+  );
+};
 export default Upload_Media;
