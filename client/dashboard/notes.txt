@@ -1,0 +1,24 @@
+🔑 Best practice (combined approach)
+
+In Settings:
+
+Add a toggle: Enable Tax.
+
+Add a default tax rate (e.g., 15%).
+
+In Product Create/Edit:
+
+Show a "Use default tax" toggle (default: true).
+
+If toggled off → show an input for a custom tax rate (or "No tax").
+
+----------------
+remaning:
+- Contact us ✅
+- websitce contact ✅
+- Settings
+- Notification
+- menue component
+_________________
+backend:
+1- need endpoint to get default rate
