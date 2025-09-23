@@ -83,6 +83,16 @@ body,
   width: 100%;
 }
 
+.hide_scroll_bar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide_scroll_bar::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
 .invalid, .input.invalid {
   border: 1px solid var(--color-semantic-red-900);
 }

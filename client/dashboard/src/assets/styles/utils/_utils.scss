@@ -15,3 +15,11 @@
   max-width: 1536px;
   width: 100%;
 }
+.hide_scroll_bar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide_scroll_bar::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
