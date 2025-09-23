@@ -1,5 +1,5 @@
 import type React from "react";
-export type TapList = {
+export type TabList = {
   link_name?: string;
   name?: string;
   image?: string | null;
@@ -12,7 +12,7 @@ export type TapList = {
 
 export type TapProps = {
   type?: "filter" | "click" | "navLink";
-  list: TapList[];
+  list: TabList[];
   currentValue: any;
   setValue: React.Dispatch<React.SetStateAction<any>>;
   containerClassName?: string;

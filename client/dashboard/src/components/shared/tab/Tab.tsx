@@ -57,8 +57,6 @@ const Tab = ({
     setIsDragging(false);
   };
   if (isScroll) {
-    if (!containerRef.current) return;
-
     return (
       <div
         onMouseDown={handleMouseDown}
@@ -130,6 +128,7 @@ const List_Item = ({
             <NavLink
               key={index}
               to={item?.link}
+              end={item.link === "/website"}
               className={({ isActive }) =>
                 `${
                   isActive
