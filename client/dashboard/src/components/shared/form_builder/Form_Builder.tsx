@@ -16,6 +16,8 @@ import { InputOtp } from "primereact/inputotp";
 import { Dropdown } from "primereact/dropdown";
 import { MultiSelect } from "primereact/multiselect";
 import { InputSwitch } from "primereact/inputswitch";
+import Color_Selector from "./Color_Selector";
+import Input_Editor from "./Input_Editor";
 
 const Form_Builder = ({
   formList,
@@ -34,29 +36,53 @@ const Form_Builder = ({
     switch (item.formType) {
       case "input":
         return (
-          <input
-            id={item?.id}
-            inputMode={item?.inputMode ?? "text"}
-            name={item?.name}
-            type={item?.type}
-            value={field.value || item.value || ""}
-            disabled={item.disabled || loading}
-            placeholder={item.placeholder ? t(item.placeholder) : ""}
-            className={`flex-1 w-full input main_h ${
-              isInvalid ? "invalid" : ""
-            } ${item.inputClassName || ""}`}
-            onInput={(e) => item.onInput?.(e, field)}
-            autoFocus={item.autFocus}
-            onChange={(e) => {
-              field.onChange(e);
-              if (item?.action) {
-                item?.action?.(e);
-              }
-            }}
-            min={0}
-            onKeyDown={item?.onKeyDown}
-            onWheel={(e) => e.currentTarget.blur()}
-          />
+          <div className={isInvalid ? "flex flex-col gap-2" : ""}>
+            <input
+              id={item?.id}
+              inputMode={item?.inputMode ?? "text"}
+              name={item?.name}
+              type={item?.type}
+              value={field.value || item.value || ""}
+              disabled={item.disabled || loading}
+              placeholder={item.placeholder ? t(item.placeholder) : ""}
+              className={`flex-1 w-full input main_h ${
+                isInvalid ? "invalid" : ""
+              } ${item.inputClassName || ""}`}
+              onInput={(e) => item.onInput?.(e, field)}
+              autoFocus={item.autFocus}
+              onChange={(e) => {
+                field.onChange(e);
+                if (item?.action) {
+                  item?.action?.(e);
+                }
+              }}
+              min={0}
+              onKeyDown={item?.onKeyDown}
+              onWheel={(e) => e.currentTarget.blur()}
+            />
+            {item?.inlineError && isInvalid && (
+              <p className="flex items-center gap-1">
+                <span>
+                  <InfoIcon
+                    width="20"
+                    height="20"
+                    fill={item?.errorFill ?? "var(--color-semantic-red-900)"}
+                  />
+                </span>
+                <span
+                  className={`text-semantic-red-900 text-xs ${
+                    item?.errorClassName ?? ""
+                  }`}
+                >
+                  {t(
+                    error?.message
+                      ? String(error?.message)
+                      : String(errors[item.fieldName]?.message)
+                  )}
+                </span>
+              </p>
+            )}
+          </div>
         );
       case "password":
         return (
@@ -145,6 +171,7 @@ const Form_Builder = ({
               className={`flex-1 w-full !p-0  ${error ? "invalid" : ""} `}
               optionLabel="name"
               inputId={item?.id}
+              invalid={isInvalid}
               filter={item?.hasFilter || false}
               loading={item?.loading ? true : false}
             />
@@ -152,21 +179,39 @@ const Form_Builder = ({
         );
       case "multiselect":
         return (
-          <MultiSelect
-            options={item?.optionList}
-            value={field?.value}
-            onChange={(e) => {
-              field?.onChange(e);
+          <>
+            <MultiSelect
+              options={item?.optionList}
+              value={field?.value ?? []}
+              onChange={(e) => {
+                field?.onChange(e);
+              }}
+              disabled={item?.disabled || loading}
+              placeholder={t(item?.placeholder || "")}
+              className={`flex-1 w-full !p-0 ${
+                item?.disabled || loading ? "disabled_input" : ""
+              } ${error ? "invalid" : ""}  `}
+              optionLabel="name"
+              invalid={isInvalid}
+              inputId={item?.id}
+              filter={item?.hasFilter || false}
+              maxSelectedLabels={2}
+            />
+          </>
+        );
+      case "editor":
+        return (
+          <Input_Editor
+            id={item?.id}
+            name={item?.name}
+            handleChange={(e) => {
+              field.onChange(e.htmlValue);
             }}
+            value={field?.value || item?.value}
             disabled={item?.disabled || loading}
             placeholder={t(item?.placeholder || "")}
-            className={`flex-1 w-full !p-0 ${
-              item?.disabled || loading ? "disabled_input" : ""
-            } ${error ? "invalid" : ""}  `}
-            optionLabel="name"
-            inputId={item?.id}
-            filter={item?.hasFilter || false}
-            maxSelectedLabels={2}
+            item={item}
+            error={error?.message || errors?.[item.fieldName]?.message}
           />
         );
       case "media":
@@ -175,6 +220,18 @@ const Form_Builder = ({
             variant={item?.variant}
             validTypes={item?.validTypes}
             setError={setError}
+            error={error?.message || errors?.[item?.fieldName]?.message}
+            handleChange={(e) => {
+              field.onChange(e);
+            }}
+            value={field.value || item.value || ""}
+            disabled={item.disabled || loading}
+            item={item}
+          />
+        );
+      case "color":
+        return (
+          <Color_Selector
             error={error?.message || errors?.[item?.fieldName]?.message}
             handleChange={(e) => {
               field.onChange(e);
@@ -229,7 +286,7 @@ const Form_Builder = ({
                     }}
                   />
                 )}
-                {formItem.fieldName && (
+                {formItem.fieldName && formItem?.formType !== "group-label" && (
                   <Controller
                     name={formItem.fieldName}
                     control={control}
@@ -243,7 +300,8 @@ const Form_Builder = ({
                 {formItem.info && !errors?.[formItem.fieldName]?.message && (
                   <p className="text-neutral-white-100 body">{formItem.info}</p>
                 )}
-                {errors?.[formItem.fieldName]?.message &&
+                {formItem?.formType !== "group-label" &&
+                  errors?.[formItem.fieldName]?.message &&
                   !formItem?.inlineError && (
                     <p className="flex items-center gap-1">
                       <span>

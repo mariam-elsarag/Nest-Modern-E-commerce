@@ -11,7 +11,10 @@ export type FormType =
   | "media"
   | "dropdown"
   | "multiselect"
-  | "switch";
+  | "switch"
+  | "group-label"
+  | "color"
+  | "editor";
 
 type OptionListType = {
   name: string;
@@ -32,7 +35,7 @@ export type FormListItemType = {
   optionList?: OptionListType[];
   value?: string | undefined;
   name?: string;
-  variant?: "file" | "profile";
+  variant?: "file" | "profile" | "upload";
   validTypes?: string[];
   inputMode?:
     | "search"
