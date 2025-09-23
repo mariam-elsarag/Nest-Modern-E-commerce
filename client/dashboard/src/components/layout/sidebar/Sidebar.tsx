@@ -1,6 +1,8 @@
 import {
   CartIcon,
   DashboardIcon,
+  DesketopIcon,
+  EmailIcon,
   GearIcon,
   LanguageIcon,
   LogoutIcon,
@@ -49,6 +51,16 @@ const sidebarList: SidebarListType[] = [
     icon: StarIcon,
     path: "reviews",
     title: "reviews",
+  },
+  {
+    icon: EmailIcon,
+    path: "contact",
+    title: "contact",
+  },
+  {
+    icon: DesketopIcon,
+    path: "website",
+    title: "website",
   },
   {
     icon: GearIcon,
