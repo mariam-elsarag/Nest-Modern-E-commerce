@@ -26,7 +26,7 @@ const Table = <T,>({
                 {columns?.map((item) => (
                   <th
                     key={item.field}
-                    className="text-neutral-black-500 body font-medium text-start border-y border-neutral-black-100 h-[44px]"
+                    className="text-neutral-black-500 body font-medium text-start border-y border-neutral-black-100 h-[44px] p-4"
                   >
                     {t(item?.header)}
                   </th>
