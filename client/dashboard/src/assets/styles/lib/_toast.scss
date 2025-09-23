@@ -41,9 +41,11 @@
       width: 4px;
       height: 100%;
     }
+    color: var(--color-neutral-black-500);
+    @extend .body;
     &--success {
       @extend .toast_main_content_style;
-      color: var(--color-semantic-green-900);
+
       .Toastify__toast-icon svg {
         fill: var(--color-semantic-green-900);
       }
@@ -54,7 +56,6 @@
     &--info {
       @extend .toast_main_content_style;
 
-      color: var(--color-neutral-black-900);
       .Toastify__toast-icon svg {
         fill: var(--color-neutral-black-900);
       }
@@ -64,7 +65,7 @@
     }
     &--error {
       @extend .toast_main_content_style;
-      color: var(--color-semantic-red-900);
+
       .Toastify__toast-icon svg {
         fill: var(--color-semantic-red-900);
       }
