@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import type { BreadCrumbListType } from "../../components/breadCrumb/Bread_Crumb.types";
 import { Link } from "react-router-dom";
@@ -16,9 +16,9 @@ import {
   skuPattern,
   taxRatePattern,
 } from "../../common/constant/validator";
-import ProductVariants from "./ProductVariants";
+
 import type { FormListItemType } from "../../components/shared/form_builder/Form_Builder-types";
-import { CloseIcon, TrashIcon } from "../../assets/icons/Icon";
+import { TrashIcon } from "../../assets/icons/Icon";
 import { formatPrice } from "../../common/utils/formatPrice";
 import Table from "../../components/shared/table/Table";
 
