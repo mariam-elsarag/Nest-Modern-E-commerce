@@ -29,6 +29,11 @@ export interface CategoryType {
   title: string;
   title_ar: string;
 }
+export interface ContactType {
+  id: number;
+  fullName: string;
+  message: string;
+}
 
 export interface ProductType {
   id: number;

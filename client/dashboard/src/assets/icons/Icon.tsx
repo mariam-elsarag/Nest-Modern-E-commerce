@@ -1,5 +1,51 @@
 import type { iconProps } from "./icon.type";
 
+export const DesketopIcon = ({
+  width = "24",
+  height = "24",
+  fill = "var(--color-semantic-red-900)",
+}: iconProps) => {
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M10 18H6C4.34315 18 3 16.6569 3 15V6C3 4.34315 4.34315 3 6 3H18C19.6569 3 21 4.34315 21 6V15C21 16.6569 19.6569 18 18 18H14M10 18V21M10 18H14M10 21H14M10 21H9M14 21V18M14 21H15"
+        stroke={fill}
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+export const EmailIcon = ({
+  width = "24",
+  height = "24",
+  fill = "var(--color-semantic-red-900)",
+}: iconProps) => {
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M6 8L10.3359 10.8906C11.3436 11.5624 12.6564 11.5624 13.6641 10.8906L18 8M6 19H18C19.6569 19 21 17.6569 21 16V8C21 6.34315 19.6569 5 18 5H6C4.34315 5 3 6.34315 3 8V16C3 17.6569 4.34315 19 6 19Z"
+        stroke={fill}
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
 export const TrashIcon = ({
   width = "24",
   height = "24",
@@ -16,9 +62,9 @@ export const TrashIcon = ({
       <path
         d="M7.99999 6L8.54414 4.36754C8.81637 3.55086 9.58064 3 10.4415 3H13.5585C14.4193 3 15.1836 3.55086 15.4558 4.36754L16 6M7.99999 6H5.61802C4.87464 6 4.39114 6.78231 4.72359 7.44721L5.21262 8.42527C5.40205 8.80413 5.5091 9.2188 5.52674 9.64201L5.88019 18.1249C5.94714 19.7318 7.26931 21 8.87759 21H15.1224C16.7307 21 18.0528 19.7318 18.1198 18.1249L18.4732 9.64202C18.4909 9.21881 18.5979 8.80413 18.7874 8.42527L19.2764 7.44721C19.6088 6.78231 19.1253 6 18.382 6H16M7.99999 6H16M14.4399 16.5L14.6899 10.5M9.56004 16.5L9.31004 10.5"
         stroke={fill}
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -39,9 +85,9 @@ export const NotificationIcon = ({
       <path
         d="M10 18.1765H5.44439C4.56653 18.1765 4.14075 17.1028 4.78001 16.5012C5.55856 15.7684 6.00001 14.7467 6.00001 13.6776V11C6.00001 7.6863 8.68631 5 12 5M10 18.1765V19C10 20.1046 10.8954 21 12 21C13.1046 21 14 20.1046 14 19V18.1765M10 18.1765H14M14 18.1765H18.5556C19.4335 18.1765 19.8593 17.1028 19.22 16.5012C18.4415 15.7684 18 14.7467 18 13.6776V11C18 7.68629 15.3137 5 12 5M12 5V3.5"
         stroke={fill}
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
