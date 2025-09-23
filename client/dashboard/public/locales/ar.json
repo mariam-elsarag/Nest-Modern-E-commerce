@@ -118,5 +118,20 @@
   "colors": "الألوان",
   "sizes": "المقاسات",
   "no_options_yet": "لا توجد خيارات بعد",
-  "unit_price": "سعر الوحدة"
+  "unit_price": "سعر الوحدة",
+  "contact": "تواصل",
+  "website": "الموقع الإلكتروني",
+  "message": "رسالة",
+  "no_contact_messages_yet": "لا توجد رسائل بعد",
+  "search_by_fullName_email": "ابحث بالاسم أو البريد الإلكتروني",
+  "faq": "الأسئلة الشائعة",
+  "terms_and_conditions": "الشروط والأحكام",
+  "privacy_policy": "سياسة الخصوصية",
+  "answer": "الإجابة",
+  "answer_ar": "الإجابة (عربي)",
+  "question": "السؤال",
+  "question_ar": "السؤال (عربي)",
+  "no_faq_yet": "لا توجد أسئلة شائعة بعد",
+  "add_faq": "إضافة سؤال",
+  "update_faq": "تحديث السؤال"
 }

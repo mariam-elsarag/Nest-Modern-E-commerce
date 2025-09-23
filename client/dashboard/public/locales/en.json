@@ -118,5 +118,20 @@
   "colors": "Colors",
   "sizes": "Sizes",
   "no_options_yet": "No options yet",
-  "unit_price": "Unit price"
+  "unit_price": "Unit price",
+  "contact": "Contact",
+  "website": "Website",
+  "message": "Message",
+  "no_contact_messages_yet": "No messages yet",
+  "search_by_fullName_email": "Search by name or email",
+  "faq": "FAQ",
+  "terms_and_conditions": "Terms and conditions",
+  "privacy_policy": "Privacy Policy",
+  "answer": "Answer",
+  "answer_ar": "Answer (Ar)",
+  "question": "Question",
+  "question_ar": "Question (Ar)",
+  "no_faq_yet": "No FAQs yet",
+  "add_faq": "Add FAQ",
+  "update_faq": "Update FAQ"
 }
