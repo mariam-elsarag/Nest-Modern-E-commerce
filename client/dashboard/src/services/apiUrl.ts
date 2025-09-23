@@ -22,5 +22,6 @@ export const API = {
   website: {
     terms: "",
     privacy: "",
+    faq: "",
   },
 };

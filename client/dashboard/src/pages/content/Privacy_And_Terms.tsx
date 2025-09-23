@@ -71,12 +71,9 @@ const Privacy_And_Terms = () => {
     }
   };
   return (
-    <Page_Wraper>
+    <div className="layer shadow_sm  min-h-[60vh] p-4 grid gap-6">
       <Page_Title title={pageTitle} />
-      <form
-        className="flex flex-col gap-10 px-4"
-        onSubmit={handleSubmit(onSubmit)}
-      >
+      <form className="flex flex-col gap-10 " onSubmit={handleSubmit(onSubmit)}>
         {" "}
         <fieldset className="grid gap-6">
           <Form_Builder formList={formList} control={control} errors={errors} />
@@ -89,7 +86,7 @@ const Privacy_And_Terms = () => {
           hasFullWidth
         />
       </form>
-    </Page_Wraper>
+    </div>
   );
 };
 

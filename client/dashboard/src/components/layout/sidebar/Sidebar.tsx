@@ -59,7 +59,7 @@ const sidebarList: SidebarListType[] = [
   },
   {
     icon: DesketopIcon,
-    path: "website",
+    path: "website/faq",
     title: "website",
   },
   {
@@ -122,6 +122,8 @@ const Sidebar = ({ isOpen, setToggleSidebar }: SidebarPropsType) => {
                 to={item.path}
                 className={({ isActive }) =>
                   `rounded-lg h-[40px] flex items-center gap-2.5 ${
+                    (item.title === "website" &&
+                      location.pathname.startsWith("/website")) ||
                     isActive
                       ? "text-neutral-black-900 bg-neutral-white-100"
                       : "text-neutral-black-500"
@@ -133,6 +135,8 @@ const Sidebar = ({ isOpen, setToggleSidebar }: SidebarPropsType) => {
                     <span>
                       <IconComponent
                         fill={
+                          (item.title === "website" &&
+                            location.pathname.startsWith("/website")) ||
                           isActive
                             ? "var(--color-neutral-black-900)"
                             : "var(--color-neutral-black-500)"
