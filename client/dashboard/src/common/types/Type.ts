@@ -34,6 +34,13 @@ export interface ContactType {
   fullName: string;
   message: string;
 }
+export interface FaqType {
+  id: number;
+  answer: string;
+  answer_ar: string;
+  question: string;
+  question_ar: string;
+}
 
 export interface ProductType {
   id: number;
