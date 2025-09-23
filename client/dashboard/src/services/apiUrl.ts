@@ -19,4 +19,8 @@ export const API = {
   contact: {
     main: "",
   },
+  website: {
+    terms: "",
+    privacy: "",
+  },
 };
