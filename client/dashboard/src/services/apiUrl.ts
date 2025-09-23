@@ -16,4 +16,7 @@ export const API = {
   product: {
     main: "",
   },
+  contact: {
+    main: "",
+  },
 };
