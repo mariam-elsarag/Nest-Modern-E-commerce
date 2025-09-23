@@ -21,4 +21,5 @@ export type TableProps<T> = Partial<Omit<TapProps, "type" | "list">> & {
 export type TableLayoutProps<T> = Partial<TableProps<T>> & {
   hasPagination?: boolean;
   endpoint: string;
+  title?: string;
 };

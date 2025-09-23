@@ -19,6 +19,7 @@ const Table_Layout = <T,>({
   tapType,
   tapList,
   onClick,
+  title,
 }: TableLayoutProps<T>): JSX.Element => {
   const { t } = useTranslation();
   const {
@@ -45,7 +46,16 @@ const Table_Layout = <T,>({
         />
       )}
       <section className={`layer shadow_sm p-6 flex flex-col gap-6`}>
-        <header className="flex items-center justify-end gap-2">
+        <header
+          className={`flex items-center ${
+            title ? "justify-between" : "justify-end"
+          } gap-2`}
+        >
+          {title && (
+            <h3 className="h5 text-neutral-black-900 font-semibold">
+              {t(title)}
+            </h3>
+          )}
           {search_placeholder && (
             <Search
               placeholder={search_placeholder}
