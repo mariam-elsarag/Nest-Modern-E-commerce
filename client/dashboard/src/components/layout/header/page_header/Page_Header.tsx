@@ -27,6 +27,7 @@ const Page_Header = ({ setToggleSidebar }: PageHeaderProps) => {
           className="!h-8 !w-8 !p-0"
           handleClick={() => setToggleSidebar(true)}
           hasHover={false}
+          to="/notification"
         />
       </div>
     </header>
