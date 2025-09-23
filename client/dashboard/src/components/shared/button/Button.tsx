@@ -36,6 +36,7 @@ const Button = ({
     full: "rounded-full",
   };
   const sizes = {
+    xxs: "!h-6 !w-6",
     xs: "!h-[30px] !w-[30px]",
     sm: "h-[38px] px-4 py-3 px-4",
     md: "!w-10 !h-10",
@@ -51,6 +52,9 @@ const Button = ({
     }`,
     tertiery: `bg-white text-neutral-black-500 ${
       hasHover ? "hover:bg-neutral-white-100" : ""
+    }`,
+    tertiery_error: `bg-white text-semantic-red-900 ${
+      hasHover ? "hover:bg-semantic-red-100" : ""
     }`,
     outline_dark:
       "bg-white border border-neutral-black-900 text-neutral-black-900 ",

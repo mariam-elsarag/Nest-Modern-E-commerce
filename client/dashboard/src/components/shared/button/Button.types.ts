@@ -4,8 +4,14 @@ export type ButtonProps = {
   icon?: React.ReactNode;
   iconDirection?: "right" | "left";
   round?: "sm" | "lg" | "full";
-  size?: "xs" | "sm" | "lg" | "md";
-  variant?: "primary" | "outline" | "secondary" | "outline_dark" | "tertiery";
+  size?: "xxs" | "xs" | "sm" | "lg" | "md";
+  variant?:
+    | "primary"
+    | "outline"
+    | "secondary"
+    | "outline_dark"
+    | "tertiery"
+    | "tertiery_error";
   type?: "submit" | "button";
   loading?: boolean;
   hasFullWidth?: boolean;
