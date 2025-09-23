@@ -1,0 +1,75 @@
+@use "../utils/font";
+.editor {
+  border: 1px solid var(--color-neutral-black-200);
+  transition: all ease-in-out 0.3s;
+  -webkit-transition: all ease-in-out 0.3s;
+  -moz-transition: all ease-in-out 0.3s;
+  -ms-transition: all ease-in-out 0.3s;
+  -o-transition: all ease-in-out 0.3s;
+
+  &.error {
+    border: 1px solid var(--color-semantic-red-900);
+  }
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -o-border-radius: 6px;
+  .ql-toolbar.ql-snow {
+    border: none;
+    border-bottom: 1px solid var(--color-neutral-black-200);
+  }
+
+  &:focus-within {
+    border: 1px solid var(--color-neutral-black-300);
+    .ql-toolbar.ql-snow {
+      border-bottom: 1px solid var(--color-neutral-black-300);
+    }
+  }
+
+  .ql-editor,
+  .ql-container.ql-snow {
+    border: none;
+    color: var(--color-neutral-black-500);
+  }
+  .ql-editor {
+    height: 150px;
+
+    overflow-y: auto;
+    stroke: var(--color-neutral-black-200);
+
+    @extend .body;
+  }
+
+  .ql-snow {
+    .ql-stroke {
+      stroke-width: 1.5;
+      stroke: var(--color-neutral-black-200);
+    }
+    .ql-fill {
+      fill: var(--color-neutral-black-200);
+    }
+  }
+}
+.editor.ar {
+  .ql-container.ql-snow {
+    direction: rtl;
+  }
+  .ql-editor {
+    text-align: start;
+  }
+}
+.editor.en {
+  .ql-container.ql-snow {
+    direction: ltr;
+  }
+}
+button:hover,
+button.ql-active {
+  .ql-stroke {
+    stroke: var(--color-neutral-black-300) !important;
+  }
+  .ql-fill {
+    fill: var(--color-neutral-black-300) !important;
+  }
+}
