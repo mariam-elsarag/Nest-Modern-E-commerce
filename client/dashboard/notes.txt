@@ -19,6 +19,16 @@ remaning:
 - Settings
 - Notification
 - menue component
+- refund order
 _________________
 backend:
 1- need endpoint to get default rate
+
+2- notification type(   | "order"
+    | "review"
+    | "contact"
+    | "outOfStock"
+    | "achieveGoal"
+    | "missedGoal") (order,review,hit goal for orders, contact,out of stock products)
+3- invoice ui
+4

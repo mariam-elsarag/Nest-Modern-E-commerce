@@ -41,7 +41,20 @@ export interface FaqType {
   question: string;
   question_ar: string;
 }
-
+export interface NotificationType {
+  notificationId: number;
+  type:
+    | "order"
+    | "review"
+    | "contact"
+    | "outOfStock"
+    | "achieveGoal"
+    | "missedGoal";
+  markAsRead: boolean;
+  id: number;
+  message: string;
+  message_ar: string;
+}
 export interface ProductType {
   id: number;
   image: string | null;

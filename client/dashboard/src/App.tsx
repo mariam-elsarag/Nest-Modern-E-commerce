@@ -59,6 +59,9 @@ const Content_Privacy_And_Terms = lazy(
   () => import("./pages/content/Privacy_And_Terms")
 );
 
+//notification
+const Notifications = lazy(() => import("./pages/notifcation/Notifications"));
+
 // 404
 const Page_Not_Found = lazy(() => import("./pages/404/Page_Not_Found"));
 
@@ -74,6 +77,7 @@ const router = createBrowserRouter([
           { path: "reviews", element: <Reviews /> },
           { path: "orders", element: <Order /> },
           { path: "contact", element: <Contact /> },
+          { path: "notification", element: <Notifications /> },
           {
             path: "website",
             element: <Content_Layout />,

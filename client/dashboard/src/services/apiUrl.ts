@@ -19,6 +19,10 @@ export const API = {
   contact: {
     main: "",
   },
+  notification: {
+    list: "",
+    update: "",
+  },
   website: {
     terms: "",
     privacy: "",
