@@ -16,10 +16,11 @@ If toggled off → show an input for a custom tax rate (or "No tax").
 remaning:
 - Contact us ✅
 - websitce contact ✅
-- Settings
-- Notification
+- Notification ✅
+- Settings ✅
 - menue component
 - refund order
+- order details
 _________________
 backend:
 1- need endpoint to get default rate
