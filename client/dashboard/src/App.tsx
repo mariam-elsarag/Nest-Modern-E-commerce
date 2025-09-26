@@ -48,6 +48,9 @@ const Users_Management = lazy(() => import("./pages/users/Manage_User"));
 // contact
 const Contact = lazy(() => import("./pages/contact/Contact"));
 
+// setting
+const Setting = lazy(() => import("./pages/settings/Setting"));
+
 // content
 const Content_Layout = lazy(() => import("./pages/content/Content_Layout"));
 const Content_Faq = lazy(() => import("./pages/content/faq/Faq"));
@@ -78,6 +81,7 @@ const router = createBrowserRouter([
           { path: "orders", element: <Order /> },
           { path: "contact", element: <Contact /> },
           { path: "notification", element: <Notifications /> },
+          { path: "settings", element: <Setting /> },
           {
             path: "website",
             element: <Content_Layout />,
