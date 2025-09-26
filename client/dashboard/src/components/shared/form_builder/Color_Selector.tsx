@@ -3,6 +3,7 @@ import type { FormListItemType } from "./Form_Builder-types";
 import { useTranslation } from "react-i18next";
 
 import { MultiSelect } from "primereact/multiselect";
+import View_Colors from "./View_Colors";
 
 type ColorSelectorPops = {
   error?: any;
@@ -31,17 +32,7 @@ const Color_Selector = ({
     return <h4 className="text-neutral-black-900 body">{option?.name}</h4>;
   };
   const itemTemplate = (option) => {
-    return (
-      <section className="flex items-center gap-2">
-        <div className="flex items-center gap-2 w-5 h-5 rounded-full">
-          <div
-            style={{ background: option?.value }}
-            className="w-full h-full rounded-full"
-          />
-        </div>
-        <h4 className="text-neutral-black-900 body">{option?.name}</h4>
-      </section>
-    );
+    return <View_Colors color={option?.value} text={option?.name} />;
   };
   return (
     <>
