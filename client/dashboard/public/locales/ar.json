@@ -133,5 +133,10 @@
   "question_ar": "السؤال (عربي)",
   "no_faq_yet": "لا توجد أسئلة شائعة بعد",
   "add_faq": "إضافة سؤال",
-  "update_faq": "تحديث السؤال"
+  "update_faq": "تحديث السؤال",
+  "notifications": "الإشعارات",
+  "main_setting": "الإعدادات الرئيسية",
+  "monthly_order_goal": "الهدف الشهري للطلبات",
+  "color_name": "اسم اللون",
+  "add_color": "إضافة لون"
 }

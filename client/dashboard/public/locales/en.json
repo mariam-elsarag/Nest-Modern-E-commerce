@@ -134,5 +134,9 @@
   "no_faq_yet": "No FAQs yet",
   "add_faq": "Add FAQ",
   "update_faq": "Update FAQ",
-  "notifications": "Notifications"
+  "notifications": "Notifications",
+  "main_setting": "Main settings",
+  "monthly_order_goal": "Monthly Order Goal",
+  "color_name": "Color name",
+  "add_color": "Add color"
 }
