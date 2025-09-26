@@ -474,7 +474,7 @@ const Product_Management = () => {
   return (
     <Page_Wraper
       list={breadcrumbsList}
-      containerClassName="layer shadow_sm min-dh-[85dvh] py-6"
+      containerClassName="layer shadow_sm min-h-[85dvh] py-6"
     >
       <Page_Title title={pageTitle} />
       {/* <ProductVariants /> */}

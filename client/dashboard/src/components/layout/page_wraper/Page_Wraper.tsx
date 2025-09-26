@@ -20,7 +20,7 @@ const Page_Wraper = ({
   btnCta,
 }: PageWraperProps) => {
   return (
-    <section className="page_wraper px-4 pb-10 flex-1 ">
+    <section className="page_wraper  pb-10 flex-1 ">
       <header className="flex items-center justify-between gap-2">
         {(label || list?.length > 0) && (
           <Bread_Crumb label={label} list={list} />
