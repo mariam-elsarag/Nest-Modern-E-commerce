@@ -16,7 +16,7 @@ export class RegisterDto {
   fullName: string;
 
   @IsString()
-  @MaxLength(30)
+  @MaxLength(13)
   @IsNotEmpty()
   @Matches(phoneNumberRegx, {
     message: 'Phone number must be a valid Egyptian number',
@@ -29,6 +29,7 @@ export class RegisterDto {
   email: string;
 
   @IsStrongPassword()
+  @MaxLength(30)
   @IsNotEmpty()
   password: string;
 }

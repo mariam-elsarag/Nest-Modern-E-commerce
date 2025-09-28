@@ -39,7 +39,7 @@ export class User {
   @Column({ type: 'boolean', default: false })
   isPasswordReset: boolean;
 
-  @Column({ type: 'varchar', length: 60, nullable: true })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   password: string | null;
 
   @Column({ type: 'timestamp', nullable: true, default: null })

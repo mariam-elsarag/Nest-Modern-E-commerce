@@ -64,8 +64,8 @@ const Register = () => {
           message: "email_pattern_error",
         },
         maxLength: {
-          value: 80,
-          message: t("max_length_error", { number: 80 }),
+          value: 255,
+          message: t("max_length_error", { number: 255 }),
         },
       },
     },
@@ -84,8 +84,8 @@ const Register = () => {
           message: "phone_pattern_error",
         },
         maxLength: {
-          value: 30,
-          message: t("max_length_error", { number: 30 }),
+          value: 14,
+          message: t("max_length_error", { number: 14 }),
         },
       },
     },

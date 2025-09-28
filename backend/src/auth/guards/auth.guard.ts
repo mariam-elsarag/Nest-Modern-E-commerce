@@ -61,10 +61,7 @@ export class AuthGuard implements CanActivate {
 
         // check if user exist
         if (!user) {
-          throw new UnauthorizedException({
-            message: 'User not found',
-            error: 'Unauthorized',
-          });
+          throw new UnauthorizedException('User not found.');
         }
 
         // check if this endpoint has authorization if yes and role if user not equal to type we want we will have exception
