@@ -15,12 +15,17 @@ import { AccountStatus } from 'src/common/utils/enum';
 import { LoginResponseDto } from './dto/login.response.dto';
 import { JwtPayload } from 'src/common/utils/types';
 import { plainToInstance } from 'class-transformer';
+import { MailService } from 'src/mail/mail.service';
+import { SendOtpDto } from './dto/send-otp.dto';
+import { OtpQueryDto } from './dto/otp-query.dto';
+import { VerifyOtpDto } from './dto/verify-otp.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
+    private readonly mailService: MailService,
   ) {}
   /**
    *Create New account
@@ -31,20 +36,34 @@ export class AuthService {
     const { email, password } = body;
     await this.checkUserExist(email, true);
     const hashPassword = await this.hashPassword(password);
-    let newUser = {
+    const newUser = {
       ...body,
       password: hashPassword,
     };
 
-    newUser = await this.userRepository.save(newUser);
-    // send otp for activate account will be her
+    const user = await this.userRepository.save(newUser);
+    const otp = await this.generateOtp(3, user);
+    await this.mailService.activateAccountEmail(
+      user.email,
+      user.fullName,
+      otp,
+      `${process.env.FRONT_SERVER}/${user?.email}/activate`,
+      'Activate Account',
+      'activate your account',
+      3,
+    );
     return {
       message:
         'Registration successful. We’ve sent an activation code to your email to activate your account.',
-      email: newUser.email,
+      email: user.email,
     };
   }
 
+  /**
+   *Login
+   * @param body
+   * @returns
+   */
   async login(body: LoginDto) {
     const { email, password } = body;
     const user = await this.checkUserExist(email, false);
@@ -74,7 +93,18 @@ export class AuthService {
       }
       if (user.status === AccountStatus.Pending) {
         //will send otp
-
+        if (!user.otpExpiredAt || !this.isOtpExpire(user.otpExpiredAt)) {
+          const otp = await this.generateOtp(3, user);
+          await this.mailService.activateAccountEmail(
+            user.email,
+            user.fullName,
+            otp,
+            `${process.env.FRONT_SERVER}/${user?.email}/activate`,
+            'Activate Account',
+            'activate your account',
+            3,
+          );
+        }
         throw new BadRequestException(
           'Your account is not active. Please verify your account first. An OTP has been sent to your email for verification.',
         );
@@ -88,6 +118,68 @@ export class AuthService {
           excludeExtraneousValues: true,
         },
       );
+    }
+  }
+
+  /**
+   * Send otp
+   * @param body
+   * @param query
+   * @returns message
+   */
+  async sendOtp(body: SendOtpDto, query: OtpQueryDto) {
+    const { email } = body;
+    const user = await this.checkUserExist(email, false);
+    if (user) {
+      const otp = await this.generateOtp(3, user);
+      let type = 'Activate Account';
+      let title = 'activate your account';
+      let link = 'activate';
+      if (query.type === 'forget') {
+        type = 'Forget password';
+        title = 'forget your password';
+        link = 'otp';
+      }
+      await this.mailService.activateAccountEmail(
+        user.email,
+        user.fullName,
+        otp,
+        `${process.env.FRONT_SERVER}/${user?.email}/${link}`,
+        type,
+        title,
+        3,
+      );
+      return { message: 'OTP sent successfully' };
+    }
+  }
+
+  async verifyOtp(body: VerifyOtpDto, query: OtpQueryDto) {
+    const { email, otp } = body;
+    const user = await this.checkUserExist(email, false);
+    if (user) {
+      // check if he has no otp
+      if (!user.otp || !user.otpExpiredAt) {
+        throw new BadRequestException('No OTP was generated for this user');
+      }
+
+      // check expire
+      if (this.isOtpExpire(user.otpExpiredAt)) {
+        throw new BadRequestException('OTP expired');
+      }
+      //check is it a valid otp
+      if (!(await this.comparePassword(otp, user.otp))) {
+        throw new BadRequestException('Invalid Otp');
+      }
+
+      if (query.type === 'forget') {
+        user.isPasswordReset = true;
+      } else {
+        user.status = AccountStatus.Active;
+      }
+      user.otpExpiredAt = null;
+      user.otp = null;
+      await this.userRepository.save(user);
+      return { message: 'OTP verified successfully' };
     }
   }
 

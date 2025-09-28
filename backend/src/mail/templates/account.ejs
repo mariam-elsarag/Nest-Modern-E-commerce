@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Email</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f6f6f6;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      color: #333845;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(14, 20, 34, 0.1);
+    }
+
+    .header {
+      background-color: #f6f6f6;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 1px solid #e9e9eb;
+    }
+
+    .header img {
+      max-height: 40px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* Fallback text logo */
+    .logo-fallback {
+      display: inline-block;
+      font-size: 20px;
+      font-weight: 600;
+      color: #0e1422;
+      border: 2px solid #202533;
+      padding: 6px 14px;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
+
+    .content {
+      padding: 32px 24px;
+      line-height: 1.6;
+      font-size: 16px;
+      color: #5c5f6a;
+    }
+
+    .otp {
+      display: inline-block;
+      border: 1px solid #e6e7e8 !important;
+      padding: 10px 20px;
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: 4px;
+      border-radius: 8px;
+      margin: 16px 0;
+      color: #0e1422;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 12px 20px;
+      margin-top: 20px;
+      background-color: #202533;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .button:hover {
+      background-color: #333845;
+    }
+
+    .footer {
+      padding: 20px;
+      text-align: center;
+      font-size: 13px;
+      color: #878a92;
+      background-color: #f6f6f6;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <!-- Logo (if fails, fallback will still show) -->
+      <img src="https://res.cloudinary.com/dqcdxspmu/image/upload/v1759039179/logo_s6h4uk.png" alt="Ecommerce Logo"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';" />
+      <span class="logo-fallback" style="display:none;">Ecommerce</span>
+    </div>
+
+    <div class="content">
+      <p>Hi <%= fullName %>,</p>
+      <p>
+        Use the following one-time password (OTP) to <%= title %>:
+      </p>
+      <div class="otp">
+        <%= otp %>
+      </div>
+      <p>
+        This OTP will expire in <%= expire %>.
+      </p>
+      <p>
+        You can also click the button below. It will redirect you to our website where you can complete the verification
+        process.
+      </p>
+      <a href="<%= url %>" class="button">
+        <%= type %>
+      </a>
+      <p>If you didn’t request this, please ignore this email.</p>
+    </div>
+
+    <div class="footer">
+      <p>© 2025 Ecommerce. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+
+</html>
