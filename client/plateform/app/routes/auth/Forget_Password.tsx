@@ -9,6 +9,8 @@ import Form_Builder from "~/components/shared/form_builder/Form_Builder";
 import type { FormListItemType } from "~/components/shared/form_builder/Form_Builder-types";
 import Page_Header from "~/components/shared/header/page_header/Page_Header";
 import type { breadCrumbListType } from "~/components/shared/header/page_header/Page_Header.types";
+import { API } from "~/services/apiUrl";
+import axiosInstance from "~/services/axiosInstance";
 
 const Forget_Password = () => {
   const { t } = useTranslation();
@@ -42,6 +44,10 @@ const Forget_Password = () => {
           value: emailRegex,
           message: "email_pattern_error",
         },
+        maxLength: {
+          value: 255,
+          message: t("max_length_error", { number: 255 }),
+        },
       },
     },
   ];
@@ -58,9 +64,15 @@ const Forget_Password = () => {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-      navigate(`/${data?.email}/5/reset-password`);
+      const response = await axiosInstance.post(
+        `${API.auth.sendOtp}?type=forget`,
+        data
+      );
+      if (response.status === 200) {
+        navigate(`/${data?.email}/otp`);
+      }
     } catch (err) {
-      handleError(err, t);
+      handleError(err, t, setError);
     } finally {
       setLoading(false);
     }
@@ -91,7 +103,7 @@ const Forget_Password = () => {
 
             <Button
               loading={loading}
-              disabled={loading || !isValid}
+              disabled={loading}
               text="send_reset_link"
               type="submit"
               hasFullWidth
