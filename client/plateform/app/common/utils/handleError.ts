@@ -16,13 +16,33 @@ export const handleError = <T extends FieldValues>(
     });
     return;
   }
-  console.log(details, "error");
+  console.log(err, "error");
 
   const showToast = () => {
     toast.error(details || "Something went wrong. Please try again.");
   };
 
   switch (details) {
+    case "OTP expired":
+      toast.error(t("otp_expired"));
+      setError("otp", {
+        type: "manual",
+        message: "otp_expired",
+      });
+      break;
+    case "User not found":
+      toast.error(t("user_not_found"));
+      break;
+    case "No OTP was generated for this user":
+      toast.error(t("no_otp_generated"));
+      break;
+    case "Invalid Otp":
+      toast.error(t("invalid_otp"));
+      setError("otp", {
+        type: "manual",
+        message: "invalid_otp",
+      });
+      break;
     case "Email already exists":
       toast.error(t("email_exists"));
       setError("email", {

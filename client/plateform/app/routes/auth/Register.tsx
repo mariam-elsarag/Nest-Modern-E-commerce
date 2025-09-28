@@ -129,8 +129,8 @@ const Register = () => {
       setLoading(true);
       const response = await axiosInstance.post(API.auth.register, data);
       if (response.status === 201) {
-        navigate(`/${response.data.email}/activate-account`);
         toast.success(t("registration_success"));
+        navigate(`/${response.data.email}/activate-account`);
       }
     } catch (err) {
       handleError(err, t, setError);

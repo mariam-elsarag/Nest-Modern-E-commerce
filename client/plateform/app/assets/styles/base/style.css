@@ -331,4 +331,42 @@ body:dir(rtl) .p-menuitem-separator {
 
 .p-invalid .p-checkbox-box {
   border: 2px solid var(--color-semantic-red-900);
+}
+
+.p-inputotp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+@media (max-width: 765px) {
+  .p-inputotp {
+    gap: 10px;
+  }
+}
+.p-inputotp-input {
+  height: 40px;
+  width: 40px;
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -o-border-radius: 6px;
+  border: 1px solid var(--color-neutral-black-200) !important;
+}
+@media (min-width: 745px) {
+  .p-inputotp-input {
+    height: 48px;
+    width: 48px;
+  }
+}
+.p-inputotp-input.p-filled {
+  border: 1px solid var(--color-neutral-black-500) !important;
+}
+.p-inputotp .p-invalid {
+  border: 1px solid var(--color-semantic-red-900) !important;
+}
+.p-inputotp .p-inputtext:enabled:focus {
+  box-shadow: none !important;
+  border: 1px solid var(--color-neutral-black-500) !important;
 }/*# sourceMappingURL=style.css.map */

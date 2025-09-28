@@ -11,6 +11,7 @@ import Rate from "../rate/Rate";
 import Password from "./Password";
 import Phone_Number from "./Phone_Number";
 import Upload_Media from "./Upload_Media";
+import { InputOtp } from "primereact/inputotp";
 
 const Form_Builder = ({
   formList,
@@ -65,6 +66,23 @@ const Form_Builder = ({
               }
             }}
           />
+        );
+      case "otp":
+        return (
+          <div dir="ltr">
+            <InputOtp
+              value={field?.value}
+              onChange={(e) => {
+                field.onChange(e.value);
+              }}
+              disabled={item?.disabled || loading}
+              integerOnly
+              className="otp"
+              length={6}
+              inputProps={{ autoComplete: "off" }}
+              invalid={error?.message || errors?.[item.fieldName]?.message}
+            />
+          </div>
         );
       case "phone":
         return (
