@@ -1,9 +1,44 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import helmet from 'helmet';
+import { GlobalExceptionsFilter } from './common/filters/http-exception.filter';
+import { BadRequestException, ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  // to return error the way i want
+  app.useGlobalFilters(new GlobalExceptionsFilter());
+  // for validator
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidUnknownValues: true,
+      transform: true,
+
+      exceptionFactory: (validationErrors = []) => {
+        // if you wanna show array of join messages
+        // const errors: Record<string, string[]> = {};
+        const errors: Record<string, string> = {};
+
+        for (const error of validationErrors) {
+          if (error.constraints) {
+            // only show fist message
+            errors[error.property] = Object.values(error.constraints)[0];
+          }
+        }
+
+        return new BadRequestException({
+          message: 'Validation failed',
+          error: errors,
+        });
+      },
+    }),
+  );
+  app.enableCors({
+    origin: ['http://localhost:5173', 'http://localhost:5174'],
+    credentials: true,
+  });
+
   app.use(helmet());
   await app.listen(process.env.PORT ?? 8000);
 }

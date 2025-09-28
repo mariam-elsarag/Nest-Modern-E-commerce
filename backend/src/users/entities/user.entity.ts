@@ -1,4 +1,4 @@
-import { AccountStatus, UserRole } from 'src/utils/enum';
+import { AccountStatus, UserRole } from 'src/common/utils/enum';
 import {
   Column,
   CreateDateColumn,
@@ -12,7 +12,7 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 50 })
+  @Column({ type: 'varchar', length: 30 })
   fullName: string;
 
   @Index()
