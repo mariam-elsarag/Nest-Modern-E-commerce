@@ -161,5 +161,11 @@
   "exceed_limit": "has exceeded the limit of {{size}} MB.",
   "error_image_type": "Invalid image format. Please upload a valid image file.",
   "error_file_type": "Invalid file format. Please upload a valid file.",
-  "attachment": "Attachment"
+  "attachment": "Attachment",
+  "account_not_active": "Your account is not active. Please verify your account first. An OTP has been sent to your email for verification.",
+  "invalid_credentials": "The email or password you entered is incorrect.",
+  "account_blocked": "Your account has been blocked. Please contact support for more information.",
+  "registration_success": "Registration successful. We’ve sent an activation code to your email to activate your account.",
+  "email_exists": "Email already exists",
+  "phone_exists": "Phone number already exists"
 }

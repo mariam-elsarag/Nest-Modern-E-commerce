@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import {
   emailRegex,
   passwordPattern,
@@ -14,9 +14,13 @@ import type { breadCrumbListType } from "~/components/shared/header/page_header/
 import Google_Btn from "./components/Google_Btn";
 import Form_Builder from "~/components/shared/form_builder/Form_Builder";
 import Button from "~/components/shared/button/Button";
+import axiosInstance from "~/services/axiosInstance";
+import { API } from "~/services/apiUrl";
+import { toast } from "react-toastify/unstyled";
 
 const Register = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   // ___________ useform _________
   const {
@@ -123,8 +127,13 @@ const Register = () => {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
+      const response = await axiosInstance.post(API.auth.register, data);
+      if (response.status === 201) {
+        navigate(`/${response.data.email}/activate-account`);
+        toast.success(t("registration_success"));
+      }
     } catch (err) {
-      handleError(err, t);
+      handleError(err, t, setError);
     } finally {
       setLoading(false);
     }
@@ -158,7 +167,7 @@ const Register = () => {
             <footer className="flex flex-col gap-6">
               <Button
                 loading={loading}
-                disabled={loading || !isValid}
+                disabled={loading}
                 text="create_account"
                 type="submit"
                 hasFullWidth
