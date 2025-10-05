@@ -7,6 +7,9 @@ import { emailRegex } from "../../common/constant/validator";
 import Form_Builder from "../../components/shared/form_builder/Form_Builder";
 import Button from "../../components/shared/button/Button";
 import { handleError } from "../../common/utils/handleError";
+import axiosInstance from "../../services/axiosInstance";
+import { API } from "../../services/apiUrl";
+import { toast } from "react-toastify";
 
 const Forget_Password = () => {
   const { t } = useTranslation();
@@ -48,7 +51,14 @@ const Forget_Password = () => {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-      navigate(`/${data?.email}/reset-password`);
+      const response = await axiosInstance.post(
+        `${API.auth.sendOtp}?type=forget`,
+        data
+      );
+      if (response.status === 200) {
+        toast.success(t("successfully_send_otp"));
+      }
+      navigate(`/${data?.email}/forget-password`);
     } catch (err) {
       handleError(err, t);
     } finally {

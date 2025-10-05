@@ -1,20 +1,23 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import type { FormListItemType } from "../form_builder/Form_Builder-types";
 import { passwordPattern } from "../../../common/constant/validator";
 import { handleError } from "../../../common/utils/handleError";
 import Form_Builder from "../form_builder/Form_Builder";
 import Button from "../button/Button";
+import axiosInstance from "../../../services/axiosInstance";
+import { API } from "../../../services/apiUrl";
+import { useAuth } from "../../../context/Auth_Context";
+import { toast } from "react-toastify";
 
-type PasswordFormProps = {
-  isRest?: boolean;
-};
-const Password_Form = ({ isRest = true }: PasswordFormProps) => {
+const Password_Form = () => {
   const { t } = useTranslation();
+  const { email } = useParams();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
   // ___________ useform _________
   const {
     control,
@@ -24,6 +27,7 @@ const Password_Form = ({ isRest = true }: PasswordFormProps) => {
     handleSubmit,
   } = useForm({
     defaultValues: {
+      email: email,
       password: null,
       confirmPassword: null,
     },
@@ -31,22 +35,6 @@ const Password_Form = ({ isRest = true }: PasswordFormProps) => {
   });
   // _______________ list ______________
   const formList: FormListItemType[] = [
-    !isRest && {
-      id: "1",
-      formType: "password",
-      name: "old_password",
-      label: "old_password",
-      fieldName: "old_password",
-      validator: {
-        required: "required_field",
-        pattern: {
-          value: passwordPattern,
-          message: "password_pattern_error",
-        },
-      },
-      showForgetPassword: false,
-      inlineError: false,
-    },
     {
       id: "1",
       formType: "password",
@@ -83,7 +71,12 @@ const Password_Form = ({ isRest = true }: PasswordFormProps) => {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-      navigate(`/`);
+
+      const response = await axiosInstance.patch(API.auth.resetPassword, data);
+      if (response.status === 200) {
+        toast.success(t("successfully_reset_password"));
+        navigate(`/login`);
+      }
     } catch (err) {
       handleError(err, t, setError);
     } finally {
@@ -102,9 +95,9 @@ const Password_Form = ({ isRest = true }: PasswordFormProps) => {
       <Button
         loading={loading}
         disabled={loading}
-        text={isRest ? "reset_password" : "change_password"}
+        text="reset_password"
         type="submit"
-        hasFullWidth={isRest}
+        hasFullWidth
       />
     </form>
   );

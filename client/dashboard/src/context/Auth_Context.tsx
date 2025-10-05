@@ -16,9 +16,7 @@ import Cookies from "js-cookie";
 const AuthContext = createContext<AuthContextType | null>(null);
 
 const AuthProvider = ({ children }: AuthProviderType) => {
-  const [token, setToken] = useState<string | null>(
-    Cookies.get("token") || "kkddk"
-  );
+  const [token, setToken] = useState<string | null>(Cookies.get("token"));
 
   const [user, setUser] = useState<UserType>({
     id: localStorage.getItem("id"),
@@ -26,12 +24,8 @@ const AuthProvider = ({ children }: AuthProviderType) => {
     role: localStorage.getItem("role"),
     avatar: localStorage.getItem("avatar"),
   });
-  const login = (data: LoginType, rememberUser: boolean) => {
-    if (rememberUser) {
-      Cookies.set("token", data?.token, { expires: 20 });
-    } else {
-      Cookies.set("token", data?.token);
-    }
+  const login = (data: LoginType) => {
+    Cookies.set("token", data?.token, { expires: 20 });
 
     localStorage.setItem("id", data.id || "");
     localStorage.setItem("avatar", data.avatar || "");

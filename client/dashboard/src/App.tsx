@@ -23,7 +23,7 @@ import Full_Page_Loader from "./components/shared/loaders/Full_Page_Loader";
 const Login = lazy(() => import("./pages/auth/Login"));
 const Forget_Password = lazy(() => import("./pages/auth/Forget_Password"));
 const Reset_Password = lazy(() => import("./pages/auth/Reset_Password"));
-const Activate_Account = lazy(() => import("./pages/auth/Activate_Account"));
+const Otp = lazy(() => import("./pages/auth/Otp"));
 
 // protected route
 
@@ -152,7 +152,8 @@ const router = createBrowserRouter([
           { path: "login", element: <Login /> },
           { path: "forget-password", element: <Forget_Password /> },
           { path: ":email/reset-password", element: <Reset_Password /> },
-          { path: ":email/activate-account", element: <Activate_Account /> },
+          { path: ":email/activate-account", element: <Otp /> },
+          { path: ":email/forget-password", element: <Otp /> },
         ],
       },
     ],

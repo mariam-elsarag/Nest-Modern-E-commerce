@@ -15,7 +15,7 @@ export type AuthContextType = {
   setToken: React.Dispatch<React.SetStateAction<string | null>>;
   user: UserType;
   setUser: React.Dispatch<React.SetStateAction<UserType>>;
-  login: (data: LoginType, rememberUser: boolean) => void;
+  login: (data: LoginType) => void;
   logout: () => void;
 };
 
