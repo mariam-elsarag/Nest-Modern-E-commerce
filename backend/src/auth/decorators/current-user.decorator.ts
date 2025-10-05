@@ -1,5 +1,10 @@
-import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import {
+  createParamDecorator,
+  ExecutionContext,
+  SetMetadata,
+} from '@nestjs/common';
 import { CURETNT_USER_KEY } from 'src/common/utils/const';
+import { UserRole } from 'src/common/utils/enum';
 import { JwtPayload } from 'src/common/utils/types';
 
 export const currentUser = createParamDecorator(
@@ -12,3 +17,5 @@ export const currentUser = createParamDecorator(
     return true;
   },
 );
+// Roles method decrator
+export const Roles = (...roles: UserRole[]) => SetMetadata('roles', roles);

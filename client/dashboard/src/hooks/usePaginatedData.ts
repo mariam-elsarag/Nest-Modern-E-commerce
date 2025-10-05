@@ -37,27 +37,27 @@ function usePaginatedData<T = { id: number }>({
       }
 
       const results = currentData?.results || [];
-      // if (results.length > 0) {
-      //   if (Array.isArray(results)) {
-      //     if (type === "pages") {
-      //       setData(results);
-      //     } else {
-      //       setData((prevData) => {
-      //         const allData =
-      //           currentPage === 1 ? [...results] : [...prevData, ...results];
-      //         const uniqueData = allData.reduce<T[]>((acc, item) => {
-      //           if (!acc.some((existing) => existing.id === item.id)) {
-      //             acc.push(item);
-      //           }
-      //           return acc;
-      //         }, []);
-      //         return uniqueData;
-      //       });
-      //     }
-      //   }
-      // } else {
-      //   setData(currentData);
-      // }
+      if (results.length > 0) {
+        if (Array.isArray(results)) {
+          if (type === "pages") {
+            setData(results);
+          } else {
+            setData((prevData) => {
+              const allData =
+                currentPage === 1 ? [...results] : [...prevData, ...results];
+              const uniqueData = allData.reduce<T[]>((acc, item) => {
+                if (!acc.some((existing) => existing.id === item.id)) {
+                  acc.push(item);
+                }
+                return acc;
+              }, []);
+              return uniqueData;
+            });
+          }
+        }
+      } else {
+        setData(results);
+      }
     } catch (err) {
       setError(err);
     } finally {

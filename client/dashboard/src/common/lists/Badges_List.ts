@@ -15,6 +15,8 @@ export const orderStatusBadge = (data) => {
 
 export const userStatusBadge = (data) => {
   switch (data) {
+    case "pending":
+      return { text: "pending", type: "pending" };
     case "blocked":
       return { text: "blocked", type: "error" };
     default:

@@ -159,5 +159,7 @@
   "not_authorized": "أنت غير مصرح لك بالوصول إلى هذه المنصة.",
   "successfully_login": "تم تسجيل الدخول بنجاح.",
   "acctivate_account": "تفعيل الحساب",
-  "successfully_reset_password": "تم إعادة تعيين كلمة المرور بنجاح."
+  "successfully_reset_password": "تم إعادة تعيين كلمة المرور بنجاح.",
+  "active": "نشط",
+  "blocked": "محظور"
 }

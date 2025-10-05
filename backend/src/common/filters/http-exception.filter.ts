@@ -24,7 +24,7 @@ export class GlobalExceptionsFilter implements ExceptionFilter {
 
     let message = 'Internal server error';
     let error: Record<string, any> = {};
-
+    let details: Record<string, any> | null = null;
     if (
       typeof exceptionRes === 'object' &&
       exceptionRes !== null &&
@@ -33,6 +33,7 @@ export class GlobalExceptionsFilter implements ExceptionFilter {
       const responseObj = exceptionRes as Record<string, any>;
 
       message = responseObj.message ?? 'Internal server error';
+      details = responseObj.details ?? null;
 
       if ('error' in responseObj) {
         error = responseObj.error;
@@ -41,10 +42,19 @@ export class GlobalExceptionsFilter implements ExceptionFilter {
       message = exception.message;
     }
 
-    res.status(status).json({
-      statusCode: status,
-      message,
-      error: Object.keys(error).length > 0 ? error : undefined,
-    });
+    if (!details) {
+      res.status(status).json({
+        statusCode: status,
+        message,
+        error: Object.keys(error).length > 0 ? error : undefined,
+      });
+    } else {
+      res.status(status).json({
+        statusCode: status,
+        message,
+        details,
+        error: Object.keys(error).length > 0 ? error : undefined,
+      });
+    }
   }
 }

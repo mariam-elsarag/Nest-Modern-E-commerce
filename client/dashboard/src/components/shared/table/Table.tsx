@@ -73,7 +73,7 @@ const Table = <T,>({
                   <Column
                     key={index}
                     dir={currentLanguageCode === "en" ? "ltr" : "rtl"}
-                    field={item.field}
+                    field={item?.field}
                     body={item?.body}
                     header={t(item?.header)}
                     bodyClassName={`${rowAction ? "cursor-pointer" : ""}  `}

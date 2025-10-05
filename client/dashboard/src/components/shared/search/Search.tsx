@@ -13,12 +13,13 @@ const Search = ({
 }: SearchProps) => {
   const { t } = useTranslation();
   const [searchText, setSearchText] = useState("");
-
+  console.log(search, "a");
   const handleSearch = () => {
     if ((search && Object.keys(search).length > 0) || searchText !== "") {
       if (search?.search !== "" || searchText !== "") {
         if (search?.search !== searchText) {
           setSearchLoader(true);
+          // console.log({ ...search, search: searchText });
           setSearch((prev) => ({ ...prev, search: searchText }));
         }
       }

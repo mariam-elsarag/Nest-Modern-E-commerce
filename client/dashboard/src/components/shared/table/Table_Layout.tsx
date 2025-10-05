@@ -20,6 +20,7 @@ const Table_Layout = <T,>({
   tapList,
   onClick,
   title,
+  queryDefault,
 }: TableLayoutProps<T>): JSX.Element => {
   const { t } = useTranslation();
   const {
@@ -32,8 +33,7 @@ const Table_Layout = <T,>({
     page,
     pages,
     handlePagination,
-  } = usePaginatedData<T>({ endpoint: endpoint });
-
+  } = usePaginatedData<T>({ endpoint: endpoint, queryDefault: queryDefault });
   return (
     <main className={` ${hasTap ? "flex flex-col gap-6" : ""}`}>
       {hasTap && (

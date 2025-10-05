@@ -93,7 +93,11 @@ export class AuthService {
       }
       if (user.status === AccountStatus.Pending) {
         //will send otp
-        if (!user.otpExpiredAt || !this.isOtpExpire(user.otpExpiredAt)) {
+
+        if (
+          !user?.otpExpiredAt ||
+          (user.otpExpiredAt && this.isOtpExpire(user.otpExpiredAt))
+        ) {
           const otp = await this.generateOtp(3, user);
           await this.mailService.activateAccountEmail(
             user.email,
@@ -105,9 +109,12 @@ export class AuthService {
             3,
           );
         }
-        throw new BadRequestException(
-          'Your account is not active. Please verify your account first. An OTP has been sent to your email for verification.',
-        );
+        throw new BadRequestException({
+          message:
+            'Your account is not active. Please verify your account first. An OTP has been sent to your email for verification.',
+          details: { email: email },
+          error: 'activate_account',
+        });
       }
       const payload: JwtPayload = { id: user.id, role: user.role };
       const token = await this.generateJwtToken(payload);
@@ -134,7 +141,7 @@ export class AuthService {
       const otp = await this.generateOtp(3, user);
       let type = 'Activate Account';
       let title = 'activate your account';
-      let link = 'activate';
+      let link = 'activate-account';
       if (query.type === 'forget') {
         type = 'Forget password';
         title = 'forget your password';
@@ -153,6 +160,12 @@ export class AuthService {
     }
   }
 
+  /**
+   *Verify otp
+   * @param body
+   * @param query
+   * @returns message
+   */
   async verifyOtp(body: VerifyOtpDto, query: OtpQueryDto) {
     const { email, otp } = body;
     const user = await this.checkUserExist(email, false);
@@ -162,13 +175,14 @@ export class AuthService {
         throw new BadRequestException('No OTP was generated for this user');
       }
 
-      // check expire
-      if (this.isOtpExpire(user.otpExpiredAt)) {
-        throw new BadRequestException('OTP expired');
-      }
       //check is it a valid otp
       if (!(await this.comparePassword(otp, user.otp))) {
         throw new BadRequestException('Invalid Otp');
+      }
+
+      // check expire
+      if (this.isOtpExpire(user.otpExpiredAt)) {
+        throw new BadRequestException('OTP expired');
       }
 
       if (query.type === 'forget') {
@@ -180,6 +194,35 @@ export class AuthService {
       user.otp = null;
       await this.userRepository.save(user);
       return { message: 'OTP verified successfully' };
+    }
+  }
+
+  async resetPassword(body: LoginDto) {
+    const { email, password } = body;
+    const user = await this.checkUserExist(email, false);
+    if (user) {
+      if (!user.isPasswordReset) {
+        throw new BadRequestException(
+          'Please verify the OTP before changing your password',
+        );
+      }
+
+      if (user.status === AccountStatus.Pending) {
+        throw new BadRequestException(
+          'Please activate your account before changing  password',
+        );
+      }
+      if (user.status === AccountStatus.Blocked) {
+        throw new BadRequestException(
+          'Your account has been blocked. Please contact support for more information.',
+        );
+      }
+      const hashedPassword = await this.hashPassword(password);
+      user.password = hashedPassword;
+      user.passwordChangedAt = new Date();
+      user.isPasswordReset = false;
+      await this.userRepository.save(user);
+      return { message: 'Password changed successfully' };
     }
   }
 

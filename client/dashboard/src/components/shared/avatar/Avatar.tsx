@@ -5,9 +5,7 @@ const Avatar = ({ avatar, fullName }: AvatarPropsType) => {
   const base = `w-[48px] h-[48px] rounded-full flex items-center justify-center text-center`;
   const nameArray = fullName?.trim()?.split(" ")?.filter(Boolean);
   const initials =
-    nameArray?.length > 0
-      ? nameArray[0][0].toUpperCase() + (nameArray[1]?.[0]?.toUpperCase() || "")
-      : "";
+    nameArray?.length > 0 ? nameArray[0][0].toUpperCase() || "" : "";
 
   return (
     <figure className={`${base}`}>

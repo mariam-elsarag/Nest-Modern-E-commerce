@@ -29,6 +29,9 @@ export class User {
   @Column({ type: 'varchar', nullable: true, default: null })
   avatar: string | null;
 
+  @Column({ type: 'varchar', length: 500, nullable: true, default: null })
+  address: string | null;
+
   @Column({
     type: 'enum',
     enum: AccountStatus,

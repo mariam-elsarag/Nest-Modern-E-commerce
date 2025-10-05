@@ -4,6 +4,6 @@ export type SearchProps = {
   placeholder: string;
   searchLoader: boolean;
   setSearchLoader: React.Dispatch<React.SetStateAction<boolean>>;
-  search: object;
+  search: object | null;
   setSearch: React.Dispatch<React.SetStateAction<any>>;
 };

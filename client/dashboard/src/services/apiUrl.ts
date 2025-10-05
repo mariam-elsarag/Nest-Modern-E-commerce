@@ -10,7 +10,7 @@ export const API = {
     latestOrders: "",
   },
   users: {
-    list: "",
+    list: "/api/admin/users",
     add_admin: "",
   },
   review: {

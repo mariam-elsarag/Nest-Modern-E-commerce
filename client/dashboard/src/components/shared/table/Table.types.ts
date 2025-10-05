@@ -22,4 +22,5 @@ export type TableLayoutProps<T> = Partial<TableProps<T>> & {
   hasPagination?: boolean;
   endpoint: string;
   title?: string;
+  queryDefault?: object | null;
 };

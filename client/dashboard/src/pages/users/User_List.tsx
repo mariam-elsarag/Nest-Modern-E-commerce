@@ -30,8 +30,8 @@ const User_List = () => {
       field: "user",
       body: (item) => (
         <div className="truncate flex items-center gap-6">
-          <Avatar avatar={item?.user?.avatar} fullName={item?.user?.fullName} />
-          <span>{item?.user?.fullName}</span>
+          <Avatar avatar={item?.avatar} fullName={item?.fullName} />
+          <span>{item?.fullName ?? "-"}</span>
         </div>
       ),
     },
@@ -79,6 +79,7 @@ const User_List = () => {
         hasTap={true}
         tapList={tapList}
         tapType="click"
+        queryDefault={{ role: filter }}
         onClick={(val) => {
           setFilter(val);
         }}
