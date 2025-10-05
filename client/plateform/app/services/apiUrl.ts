@@ -5,6 +5,7 @@ export const API = {
     register: "/api/auth/register",
     sendOtp: "/api/auth/send-otp",
     verifyOtp: "/api/auth/verify-otp",
+    resetPassword: "/api/auth/reset-password",
   },
   products: "/products",
   reviews: "/reviews",

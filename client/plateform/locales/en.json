@@ -181,5 +181,7 @@
   "user_not_found": "User not found",
   "no_otp_generated": "No OTP was generated for this user",
   "not_authorized": "You are not authorized to access this platform.",
-  "successfully_login": "You have successfully logged in."
+  "successfully_login": "You have successfully logged in.",
+  "successfully_reset_password": "Your password has been reset successfully.",
+  "successfully_change_password": "Your password has been changed successfully."
 }

@@ -7,14 +7,21 @@ import { passwordPattern } from "~/common/constant/validator";
 import { handleError } from "~/common/utils/handleError";
 import Form_Builder from "../form_builder/Form_Builder";
 import Button from "../button/Button";
+import { API } from "~/services/apiUrl";
+import axiosInstance from "~/services/axiosInstance";
+import { toast } from "react-toastify";
+import type { Route } from ".react-router/types/app/+types/root";
 
 type PasswordFormProps = {
   isRest?: boolean;
+  loaderData: Route.ComponentProps;
 };
-const Password_Form = ({ isRest = true }: PasswordFormProps) => {
+
+const Password_Form = ({ isRest = true, loaderData }: PasswordFormProps) => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { email } = loaderData;
   // ___________ useform _________
   const {
     control,
@@ -24,6 +31,7 @@ const Password_Form = ({ isRest = true }: PasswordFormProps) => {
     handleSubmit,
   } = useForm({
     defaultValues: {
+      email: email,
       password: null,
       confirmPassword: null,
     },
@@ -83,7 +91,21 @@ const Password_Form = ({ isRest = true }: PasswordFormProps) => {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-      navigate(`/`);
+      const endppoint = isRest ? API.auth.resetPassword : "";
+      const response = await axiosInstance.patch(endppoint, data);
+      if (response.status === 200) {
+        let url = "/";
+        let message = "";
+        if (isRest) {
+          url = "/login";
+          message = "successfully_reset_password";
+        } else {
+          url = "/";
+          message = "successfully_change_password";
+        }
+        toast.success(t(message));
+        navigate(url);
+      }
     } catch (err) {
       handleError(err, t, setError);
     } finally {

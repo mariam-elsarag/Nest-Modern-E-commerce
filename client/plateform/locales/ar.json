@@ -178,5 +178,7 @@
   "user_not_found": "المستخدم غير موجود",
   "no_otp_generated": "لم يتم إنشاء رمز تحقق (OTP) لهذا المستخدم",
   "not_authorized": "أنت غير مصرح لك بالوصول إلى هذه المنصة.",
-  "successfully_login": "تم تسجيل الدخول بنجاح."
+  "successfully_login": "تم تسجيل الدخول بنجاح.",
+  "successfully_reset_password": "تم إعادة تعيين كلمة المرور بنجاح.",
+  "successfully_change_password": "تم تغيير كلمة المرور بنجاح."
 }
