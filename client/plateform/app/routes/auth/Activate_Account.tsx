@@ -15,11 +15,8 @@ import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 
 export function meta({}: Route.MetaArgs) {
-  const location = useLocation();
-  const isActivate = location.pathname.includes("activate-account");
-  const title = isActivate ? "Activate account" : "Verify account";
   return [
-    { title: title },
+    { title: "Activate account" },
     { name: "description", content: "Welcome to Ecommerce!" },
   ];
 }

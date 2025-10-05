@@ -50,9 +50,7 @@ export const handleError = <T extends FieldValues>(
         message: "email_exists",
       });
       break;
-    case "Your account is not active. Please verify your account first. An OTP has been sent to your email for verification.":
-      toast.error(t("account_not_active"));
-      break;
+
     case "The email or password you entered is incorrect.":
       toast.error(t("invalid_credentials"));
       setError("email", {

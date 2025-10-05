@@ -176,5 +176,7 @@
   "resend": "إعادة الإرسال",
   "successfully_send_otp": "تم إرسال رمز التحقق (OTP) بنجاح.",
   "user_not_found": "المستخدم غير موجود",
-  "no_otp_generated": "لم يتم إنشاء رمز تحقق (OTP) لهذا المستخدم"
+  "no_otp_generated": "لم يتم إنشاء رمز تحقق (OTP) لهذا المستخدم",
+  "not_authorized": "أنت غير مصرح لك بالوصول إلى هذه المنصة.",
+  "successfully_login": "تم تسجيل الدخول بنجاح."
 }

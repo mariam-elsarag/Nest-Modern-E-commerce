@@ -179,5 +179,7 @@
   "resend_after": "Resend after",
   "successfully_send_otp": "OTP has been sent successfully.",
   "user_not_found": "User not found",
-  "no_otp_generated": "No OTP was generated for this user"
+  "no_otp_generated": "No OTP was generated for this user",
+  "not_authorized": "You are not authorized to access this platform.",
+  "successfully_login": "You have successfully logged in."
 }

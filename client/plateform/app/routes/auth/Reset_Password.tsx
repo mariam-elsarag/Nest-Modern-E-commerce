@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router";
-import { passwordPattern } from "~/common/constant/validator";
-import { handleError } from "~/common/utils/handleError";
-import Button from "~/components/shared/button/Button";
-import Form_Builder from "~/components/shared/form_builder/Form_Builder";
-import type { FormListItemType } from "~/components/shared/form_builder/Form_Builder-types";
+
 import Page_Header from "~/components/shared/header/page_header/Page_Header";
 import type { breadCrumbListType } from "~/components/shared/header/page_header/Page_Header.types";
 import Password_Form from "~/components/shared/password_form/Password_Form";
 
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "Reset password " },
+    { name: "description", content: "Welcome to Ecommerce!" },
+  ];
+}
 const Reset_Password = () => {
   const { t } = useTranslation();
 

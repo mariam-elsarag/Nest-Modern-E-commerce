@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import Page_Header from "~/components/shared/header/page_header/Page_Header";
 import type { breadCrumbListType } from "~/components/shared/header/page_header/Page_Header.types";
 import Google_Btn from "./components/Google_Btn";
@@ -10,14 +10,21 @@ import { emailRegex, passwordPattern } from "~/common/constant/validator";
 import { handleError } from "~/common/utils/handleError";
 import Form_Builder from "~/components/shared/form_builder/Form_Builder";
 import Button from "~/components/shared/button/Button";
+import axiosInstance from "~/services/axiosInstance";
+import { API } from "~/services/apiUrl";
+import { toast } from "react-toastify";
+import { useAuth } from "~/context/Auth_Context";
 
 const Login = () => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { login } = useAuth();
   // ___________ useform _________
   const {
     control,
     setError,
+    reset,
     formState: { errors, isValid },
     handleSubmit,
   } = useForm({
@@ -75,8 +82,24 @@ const Login = () => {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
+      const response = await axiosInstance.post(API.auth.login, data);
+      if (response?.status === 200) {
+        if (response.data.role === "admin") {
+          toast.error(t("not_authorized"));
+        } else {
+          toast.success(t("successfully_login"));
+          login(response?.data);
+          navigate("/");
+          reset();
+        }
+      }
     } catch (err) {
-      handleError(err, t);
+      if (err?.response?.data?.error?.includes("activate_account")) {
+        toast.info(t("account_not_active"));
+        navigate(`/${err?.response?.data?.details?.email}/activate-account`);
+      } else {
+        handleError(err, t, setError);
+      }
     } finally {
       setLoading(false);
     }
