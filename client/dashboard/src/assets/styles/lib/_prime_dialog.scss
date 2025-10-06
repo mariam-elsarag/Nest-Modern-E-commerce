@@ -1,0 +1,31 @@
+.p-dialog {
+  border-radius: 12px;
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  -ms-border-radius: 12px;
+  -o-border-radius: 12px;
+}
+.p-dialog-header {
+  padding: 0px !important;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+
+  &-icons {
+    display: none;
+  }
+}
+.p-dialog-content {
+  border-radius: 12px;
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  -ms-border-radius: 12px;
+  -o-border-radius: 12px;
+}
+.p-dialog-content {
+  border-radius: 12px;
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  -ms-border-radius: 12px;
+  -o-border-radius: 12px;
+  padding: 40px 24px 24px;
+}

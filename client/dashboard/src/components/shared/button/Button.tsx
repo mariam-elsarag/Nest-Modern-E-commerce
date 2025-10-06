@@ -38,7 +38,7 @@ const Button = ({
   const sizes = {
     xxs: "!h-6 !w-6",
     xs: "!h-[30px] !w-[30px]",
-    sm: "h-[38px] px-4 py-3 px-4",
+    sm: "h-[35px] px-4 py-3 px-4",
     md: "!w-10 !h-10",
     lg: "main_h py-3 px-5 md:px-6",
   };

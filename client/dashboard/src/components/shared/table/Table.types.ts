@@ -1,5 +1,6 @@
 import type React from "react";
 import type { TapList, TapProps } from "../tab/Tab.types";
+import type { ReactNode } from "react";
 
 export type TableColumn<T> = {
   header: string;
@@ -23,4 +24,5 @@ export type TableLayoutProps<T> = Partial<TableProps<T>> & {
   endpoint: string;
   title?: string;
   queryDefault?: object | null;
+  children?: ReactNode;
 };

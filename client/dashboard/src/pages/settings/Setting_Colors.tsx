@@ -7,6 +7,8 @@ import Button from "../../components/shared/button/Button";
 import View_Colors from "../../components/shared/form_builder/View_Colors";
 import Page_Wraper from "../../components/layout/page_wraper/Page_Wraper";
 import Page_Title from "../../components/layout/header/page_title/Page_Title";
+import Confirmation_Modal from "../../components/shared/modal/Confirmation_Modal";
+import { handleError } from "../../common/utils/handleError";
 const fakeColors = [
   { id: 1, name: "Red", hex: "#FF0000" },
   { id: 2, name: "Blue", hex: "#0000FF" },
@@ -28,7 +30,10 @@ const Setting_Colors = () => {
   const { t } = useTranslation();
 
   const [loading, setLoading] = useState(false);
+  const [deleteLoader, setDeleteLoading] = useState(false);
   const [selected, setSelected] = useState([]);
+
+  const [confirmDeletePopup, setConfirmDeletePopup] = useState(false);
 
   // ___________ useform _________
   const {
@@ -80,40 +85,62 @@ const Setting_Colors = () => {
       },
     },
   ];
+
+  const handleDeleteColors = async () => {
+    try {
+      setDeleteLoading(true);
+    } catch (err) {
+      handleError(err, t);
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
   return (
-    <Page_Wraper containerClassName="layer shadow_sm min-h-[75vh] py-6 ">
-      <Page_Title title="colors" />
-      <form className="grid gap-6 max-w-[600px] px-4">
-        <form className="grid gap-10">
-          <fieldset className="grid   gap-6">
-            <Form_Builder
-              formList={colorList}
-              control={control}
-              errors={errors}
-            />
-          </fieldset>
-          <Button text="add_color" hasFullWidth type="submit" />
-        </form>
-        <div className="layer p-4 grid gap-6 ">
-          <div className="flex flex-wrap items-center gap-3">
-            {fakeColors?.map((item) => (
-              <View_Colors
-                hasClose={true}
-                color={item?.hex}
-                key={item?.hex}
-                text={item?.name}
-                id={item?.id}
-                selected={selected}
-                setSelected={setSelected}
+    <>
+      <Page_Wraper containerClassName="layer shadow_sm min-h-[75vh] py-6 ">
+        <Page_Title title="colors" />
+        <form className="grid gap-6 max-w-[600px] px-4">
+          <form className="grid gap-10">
+            <fieldset className="grid   gap-6">
+              <Form_Builder
+                formList={colorList}
+                control={control}
+                errors={errors}
               />
-            ))}
+            </fieldset>
+            <Button text="add_color" hasFullWidth type="submit" />
+          </form>
+          <div className="layer p-4 grid gap-6 ">
+            <div className="flex flex-wrap items-center gap-3">
+              {fakeColors?.map((item) => (
+                <View_Colors
+                  hasClose={true}
+                  color={item?.hex}
+                  key={item?.hex}
+                  text={item?.name}
+                  id={item?.id}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+              ))}
+            </div>
+            {selected?.length > 0 && (
+              <Button
+                text="delete_colors"
+                variant="error"
+                handleClick={() => setConfirmDeletePopup(true)}
+              />
+            )}
           </div>
-          {selected?.length > 0 && (
-            <Button text="delete_colors" variant="error" />
-          )}
-        </div>
-      </form>
-    </Page_Wraper>
+        </form>
+      </Page_Wraper>
+      <Confirmation_Modal
+        open={confirmDeletePopup}
+        onClose={() => setConfirmDeletePopup(false)}
+        description="confirm_delete_message"
+        mainBtnCta={handleDeleteColors}
+      />
+    </>
   );
 };
 

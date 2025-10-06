@@ -167,5 +167,7 @@
   "unblocked": "Unblocked",
   "delete_colors": "Delete colors",
   "successfully_delete_colors": "Colors deleted successfully",
-  "confirm_delete_message": "Are you sure you want to delete these colors?"
+  "confirm_delete_message": "Are you sure you want to delete these colors?",
+  "delete": "Delete",
+  "cancel": "Cancel"
 }

@@ -27,7 +27,7 @@ const View_Colors = ({
         hasClose ? "border rounded-full border-neutral-black-100 px-2 py-1" : ""
       } ${selected?.includes(id) ? "bg-neutral-white-100/70" : ""} `}
     >
-      <div className="flex items-center gap-2 w-5 h-5 rounded-full">
+      <div className="flex border border-neutral-black-200 items-center gap-2 w-5 h-5 rounded-full">
         <div
           style={{ background: color }}
           className="w-full h-full rounded-full"

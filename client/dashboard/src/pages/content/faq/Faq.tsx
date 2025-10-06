@@ -6,6 +6,7 @@ import Read_More from "../../../components/shared/read_more/Read_More";
 import { API } from "../../../services/apiUrl";
 import Table_Layout from "../../../components/shared/table/Table_Layout";
 import type { FaqType } from "../../../common/types/Type";
+import Button from "../../../components/shared/button/Button";
 
 const columns = [
   {
@@ -40,7 +41,9 @@ const Faq = () => {
         emptyText="no_faq_yet"
         endpoint={API.website.faq}
         title="faq"
-      />
+      >
+        <Button text="add_faq" to="/website/faq/create" />
+      </Table_Layout>
     </>
   );
 };

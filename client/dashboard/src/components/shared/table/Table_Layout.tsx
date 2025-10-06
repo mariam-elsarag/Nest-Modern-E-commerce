@@ -21,6 +21,7 @@ const Table_Layout = <T,>({
   onClick,
   title,
   queryDefault,
+  children,
 }: TableLayoutProps<T>): JSX.Element => {
   const { t } = useTranslation();
   const {
@@ -65,6 +66,7 @@ const Table_Layout = <T,>({
               setSearch={setQuery}
             />
           )}
+          {children}
         </header>
         <Table<T>
           loading={loading}
