@@ -28,7 +28,7 @@ function useGetData<T>(endpoint: string) {
     }
   }, [endpoint]);
 
-  return { data, loading, error, fetchData };
+  return { data, setData, loading, error, fetchData };
 }
 
 export default useGetData;

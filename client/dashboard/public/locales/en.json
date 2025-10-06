@@ -169,5 +169,7 @@
   "successfully_delete_colors": "Colors deleted successfully",
   "confirm_delete_message": "Are you sure you want to delete these colors?",
   "delete": "Delete",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "color_name_ar": "Color Name (Ar)",
+  "successfully_create_color": "Color created successfully"
 }

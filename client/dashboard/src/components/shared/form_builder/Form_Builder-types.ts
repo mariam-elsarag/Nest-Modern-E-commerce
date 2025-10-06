@@ -58,6 +58,7 @@ export type FormListItemType = {
   isEdit?: boolean;
   fillColor?: string;
   title?: string;
+  inputContainerClassName?: string;
   limit?: number;
   setListDeleteImages?: (list: string[] | number[]) => void;
   showForgetPassword?: boolean;

@@ -167,5 +167,7 @@
   "unblocked": "إلغاء الحظر",
   "delete_colors": "حذف الألوان",
   "successfully_delete_colors": "تم حذف الألوان بنجاح",
-  "confirm_delete_message": "هل أنت متأكد أنك تريد حذف هذه الألوان؟"
+  "confirm_delete_message": "هل أنت متأكد أنك تريد حذف هذه الألوان؟",
+  "color_name_ar": "اسم اللون (عربي)",
+  "successfully_create_color": "تم إنشاء اللون بنجاح"
 }

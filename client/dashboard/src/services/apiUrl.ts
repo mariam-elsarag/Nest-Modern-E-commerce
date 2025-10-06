@@ -34,4 +34,7 @@ export const API = {
     privacy: "",
     faq: "",
   },
+  settting: {
+    color: "/api/color",
+  },
 };

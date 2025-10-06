@@ -36,7 +36,11 @@ const Form_Builder = ({
     switch (item.formType) {
       case "input":
         return (
-          <div className={isInvalid ? "flex flex-col gap-2" : ""}>
+          <div
+            className={`${isInvalid ? "flex flex-col gap-2" : ""} ${
+              item?.inputContainerClassName ?? ""
+            }`}
+          >
             <input
               id={item?.id}
               inputMode={item?.inputMode ?? "text"}
