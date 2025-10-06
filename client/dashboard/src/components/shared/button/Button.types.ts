@@ -13,7 +13,8 @@ export type ButtonProps = {
     | "secondary"
     | "outline_dark"
     | "tertiery"
-    | "tertiery_error";
+    | "tertiery_error"
+    | "error";
   type?: "submit" | "button";
   loading?: boolean;
   hasFullWidth?: boolean;

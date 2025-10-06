@@ -28,7 +28,7 @@
   "dashboard": "Dashboard",
   "products": "Products",
   "orders": "Orders",
-  "": "Customers",
+  "customers": "Customers",
   "reviews": "Reviews",
   "settings": "Settings",
   "logout": "Logout",
@@ -164,5 +164,8 @@
   "blocked": "Blocked",
   "successfully_invite_admin": "Invitation email has been sent successfully with an OTP for account setup.",
   "successfully_update_user_data": "User data updated successfully",
-  "unblocked": "Unblocked"
+  "unblocked": "Unblocked",
+  "delete_colors": "Delete colors",
+  "successfully_delete_colors": "Colors deleted successfully",
+  "confirm_delete_message": "Are you sure you want to delete these colors?"
 }

@@ -49,7 +49,12 @@ const Users_Management = lazy(() => import("./pages/users/Manage_User"));
 const Contact = lazy(() => import("./pages/contact/Contact"));
 
 // setting
+const Setting_layout = lazy(() => import("./pages/settings/Setting_Layout"));
 const Setting = lazy(() => import("./pages/settings/Setting"));
+const Setting_Colors = lazy(() => import("./pages/settings/Setting_Colors"));
+const Setting_Categories = lazy(
+  () => import("./pages/settings/Setting_Categories")
+);
 
 // content
 const Content_Layout = lazy(() => import("./pages/content/Content_Layout"));
@@ -81,7 +86,18 @@ const router = createBrowserRouter([
           { path: "orders", element: <Order /> },
           { path: "contact", element: <Contact /> },
           { path: "notification", element: <Notifications /> },
-          { path: "settings", element: <Setting /> },
+          {
+            path: "settings",
+            element: <Setting_layout />,
+            children: [
+              { path: "main", element: <Setting /> },
+              {
+                path: "colors",
+                element: <Setting_Colors />,
+              },
+              { path: "categories", element: <Setting_Categories /> },
+            ],
+          },
           {
             path: "website",
             element: <Content_Layout />,

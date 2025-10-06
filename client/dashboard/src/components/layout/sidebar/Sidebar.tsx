@@ -64,7 +64,7 @@ const sidebarList: SidebarListType[] = [
   },
   {
     icon: GearIcon,
-    path: "settings",
+    path: "settings/main",
     title: "settings",
   },
 ] as const;
@@ -124,6 +124,8 @@ const Sidebar = ({ isOpen, setToggleSidebar }: SidebarPropsType) => {
                   `rounded-lg h-[40px] flex items-center gap-2.5 ${
                     (item.title === "website" &&
                       location.pathname.startsWith("/website")) ||
+                    (item.title === "settings" &&
+                      location.pathname.startsWith("/settings")) ||
                     isActive
                       ? "text-neutral-black-900 bg-neutral-white-100"
                       : "text-neutral-black-500"
@@ -137,6 +139,8 @@ const Sidebar = ({ isOpen, setToggleSidebar }: SidebarPropsType) => {
                         fill={
                           (item.title === "website" &&
                             location.pathname.startsWith("/website")) ||
+                          (item?.title === "settings" &&
+                            location.pathname.startsWith("/settings")) ||
                           isActive
                             ? "var(--color-neutral-black-900)"
                             : "var(--color-neutral-black-500)"

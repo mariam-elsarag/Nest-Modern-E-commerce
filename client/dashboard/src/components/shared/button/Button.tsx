@@ -56,6 +56,9 @@ const Button = ({
     tertiery_error: `bg-white text-semantic-red-900 ${
       hasHover ? "hover:bg-semantic-red-100" : ""
     }`,
+    error: `bg-semantic-red-900 text-white ${
+      hasHover ? "hover:bg-semantic-red-900/90" : ""
+    }`,
     outline_dark:
       "bg-white border border-neutral-black-900 text-neutral-black-900 ",
   };

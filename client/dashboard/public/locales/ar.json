@@ -164,5 +164,8 @@
   "blocked": "محظور",
   "successfully_invite_admin": "تم إرسال دعوة المشرف بنجاح مع رمز التحقق عبر البريد الإلكتروني.",
   "successfully_update_user_data": "تم تحديث بيانات المستخدم بنجاح",
-  "unblocked": "إلغاء الحظر"
+  "unblocked": "إلغاء الحظر",
+  "delete_colors": "حذف الألوان",
+  "successfully_delete_colors": "تم حذف الألوان بنجاح",
+  "confirm_delete_message": "هل أنت متأكد أنك تريد حذف هذه الألوان؟"
 }

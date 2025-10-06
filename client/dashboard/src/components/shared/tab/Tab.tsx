@@ -128,7 +128,6 @@ const List_Item = ({
             <NavLink
               key={index}
               to={item?.link}
-              end={item.link === "/website"}
               className={({ isActive }) =>
                 `${
                   isActive

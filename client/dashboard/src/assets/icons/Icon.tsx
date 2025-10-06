@@ -115,6 +115,51 @@ export const EditIcon = ({
     </svg>
   );
 };
+export const CheckBoxIcon = ({
+  width = "24",
+  height = "24",
+  fill = "var(--color-neutral-black-200)",
+}: iconProps) => {
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M3 6C3 4.34315 4.34315 3 6 3H18C19.6569 3 21 4.34315 21 6V18C21 19.6569 19.6569 21 18 21H6C4.34315 21 3 19.6569 3 18V6Z"
+        stroke={fill}
+        stroke-width="1.5"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+};
+export const CheckedBoxIcon = ({
+  width = "24",
+  height = "24",
+  fill = "var(--color-neutral-black-900)",
+}: iconProps) => {
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M8 12.25L10.5 14.75L16 9.25M6 21H18C19.6569 21 21 19.6569 21 18V6C21 4.34315 19.6569 3 18 3H6C4.34315 3 3 4.34315 3 6V18C3 19.6569 4.34315 21 6 21Z"
+        stroke={fill}
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+};
 export const DashboardIcon = ({
   width = "24",
   height = "24",
