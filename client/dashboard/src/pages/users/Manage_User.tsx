@@ -157,6 +157,9 @@ const Manage_User = () => {
         navigate("/users");
       } else {
         toast.success(t("successfully_update_user_data"));
+        Object.entries(response.data).forEach(([key, value]) => {
+          setValue(key, value);
+        });
       }
     } catch (err) {
       handleError(err, t, setError);

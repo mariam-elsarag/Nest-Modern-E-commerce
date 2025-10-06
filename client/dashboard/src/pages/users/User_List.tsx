@@ -17,6 +17,10 @@ import {
   UserIcon,
 } from "../../assets/icons/Icon";
 import type { MenuListTypes } from "../../components/shared/menu/Menue.types";
+import { handleError } from "../../common/utils/handleError";
+import axiosInstance from "../../services/axiosInstance";
+import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const tapList = [
   {
@@ -35,36 +39,33 @@ const tapList = [
 const User_List = () => {
   const [filter, setFilter] = useState("user");
   const navigate = useNavigate();
-
+  const { t } = useTranslation();
+  const resetPassword = async (email) => {
+    try {
+      const response = await axiosInstance.post(
+        `${API.auth.sendOtp}?type=forget`,
+        { email }
+      );
+      if (response.status === 200) {
+        toast.success(t("successfully_send_otp"));
+      }
+    } catch (err) {
+      handleError(err, t);
+    }
+  };
   // ___________________ list _________________
-  const blockUser = {
-    icon: <NotAllowIcon width="20" height="20" />,
-    name: "blocked",
-    textClassName: "text-semantic-red-900",
-  };
-  const activeUser = {
-    icon: (
-      <CheckIcon
-        fill="var(--color-semantic-green-900)"
-        width="20"
-        height="20"
-      />
-    ),
-    name: "active",
-    textClassName: "text-semantic-green-900",
-  };
-  const list: MenuListTypes = [
+
+  const list: MenuListTypes[] = [
+    {
+      icon: <EyeIcon width="20" height="20" />,
+      name: "details",
+    },
     {
       icon: <EditIcon width="20" height="20" />,
       name: "update",
       action: (item) => {
-        console.log(item, "sk");
         navigate(`/users/${item?.id}/edit`);
       },
-    },
-    {
-      icon: <EyeIcon width="20" height="20" />,
-      name: "details",
     },
     {
       icon: (
@@ -75,6 +76,9 @@ const User_List = () => {
         />
       ),
       name: "reset_password",
+      action: (item) => {
+        resetPassword(item?.email);
+      },
     },
   ];
   const columns = [
@@ -115,12 +119,7 @@ const User_List = () => {
     {
       header: "action",
       field: "action",
-      body: (item) => (
-        <Menu<UserType>
-          list={[...list, item?.status === "active" ? blockUser : activeUser]}
-          data={item}
-        />
-      ),
+      body: (item) => <Menu<UserType> list={list} data={item} />,
     },
   ];
 

@@ -14,7 +14,7 @@ import { UserQueryDto } from './dto/query-user.dto';
 import { Request } from 'express';
 import { FullPaginationDto } from 'src/common/pagination/pagination.dto';
 
-import { AccountStatus } from 'src/common/utils/enum';
+import { AccountStatus, UserRole } from 'src/common/utils/enum';
 
 @Injectable()
 export class UsersService {
@@ -79,38 +79,53 @@ export class UsersService {
   async updateUserInfo(id: number, body: UpdateUserDto) {
     const user = await this.findOne(id);
 
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
+    let emailChanged = false;
 
     for (const [key, value] of Object.entries(body)) {
-      if (value && value !== user[key]) {
-        if (key === 'email') {
-          const isExist = await this.userRepository.findOne({
-            where: { email: value.toLowerCase() },
-          });
-          if (isExist && isExist.id !== id) {
-            throw new BadRequestException({
-              message: 'Email already exists',
-              error: { email: 'Email already exists' },
-            });
-          }
-        }
-
-        if (key === 'phone') {
-          const isExist = await this.userRepository.findOne({
-            where: { phone: value },
-          });
-          if (isExist && isExist.id !== id) {
-            throw new BadRequestException({
-              message: 'Phone number already exists',
-              error: { phone: 'Phone number already exists' },
-            });
-          }
-        }
-
-        user[key] = value;
+      if (
+        value === undefined ||
+        value === null ||
+        value === '' ||
+        value === user[key]
+      ) {
+        continue;
       }
+      if (key === 'email') {
+        const isExist = await this.userRepository.findOne({
+          where: { email: value.toLowerCase() },
+        });
+
+        if (isExist && isExist.id !== id) {
+          throw new BadRequestException({
+            message: 'Email already exists',
+            error: { email: 'Email already exists' },
+          });
+        }
+
+        emailChanged = true;
+      }
+      if (key === 'phone') {
+        const isExist = await this.userRepository.findOne({
+          where: { phone: value },
+        });
+
+        if (isExist && isExist.id !== id) {
+          throw new BadRequestException({
+            message: 'Phone number already exists',
+            error: { phone: 'Phone number already exists' },
+          });
+        }
+      }
+
+      user[key] = value;
+    }
+    if (
+      emailChanged &&
+      user.role === UserRole.User &&
+      user.status === AccountStatus.Active &&
+      body.status === undefined
+    ) {
+      user.status = AccountStatus.Pending;
     }
 
     await this.userRepository.save(user);

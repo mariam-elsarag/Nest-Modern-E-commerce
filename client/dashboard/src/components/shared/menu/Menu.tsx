@@ -23,10 +23,11 @@ const Menu = <T,>({ list, data }: MenuPropsTypes<T>) => {
           {list?.map((item, index) => (
             <div
               key={index}
-              onClick={() => {
+              onClick={(e) => {
                 if (item?.action) {
                   item?.action(data);
                 }
+                op.current?.hide(e);
               }}
               className="flex items-center gap-1 py-2 px-1 rounded-[4px] transition-all ease-in-out duration-300 hover:bg-neutral-white-100 cursor-pointer"
             >
