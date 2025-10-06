@@ -23,7 +23,7 @@ const Password = ({
   const { t } = useTranslation();
   return (
     <div
-      className={`flex flex-col ${item?.inlineError || item?.showForgetPassword ? "gap-4" : ""} `}
+      className={`flex flex-col  ${item?.inlineError || item?.showForgetPassword ? "gap-4" : ""} `}
     >
       <input
         id={item?.id}

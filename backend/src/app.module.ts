@@ -8,6 +8,8 @@ import { UsersModule } from './users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { User } from './users/entities/user.entity';
 import { MailModule } from './mail/mail.module';
+import { ColorsModule } from './colors/colors.module';
+import { Color } from './colors/entities/color.entity';
 
 @Module({
   imports: [
@@ -35,12 +37,13 @@ import { MailModule } from './mail/mail.module';
           port: config.get<number>('DB_PORT'),
           host: 'localhost',
           synchronize: process.env.NODE_ENV !== 'production' ? true : false,
-          entities: [User],
+          entities: [User, Color],
         };
       },
     }),
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     MailModule,
+    ColorsModule,
   ],
   controllers: [],
   providers: [],

@@ -1,0 +1,1 @@
+1- colors will create endpoint for filter to get colors that used in products
