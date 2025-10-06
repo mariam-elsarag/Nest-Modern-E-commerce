@@ -92,6 +92,29 @@ export const NotificationIcon = ({
     </svg>
   );
 };
+export const EditIcon = ({
+  width = "24",
+  height = "24",
+  fill = "var(--color-neutral-black-500)",
+}: iconProps) => {
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12.5 20.695H18.5M6.50736 19.695H5C4.44772 19.695 4 19.2473 4 18.695V17.1877C4 16.392 4.31607 15.6289 4.87868 15.0663L14.75 5.19502C15.7855 4.15948 17.4645 4.15948 18.5 5.19502C19.5355 6.23055 19.5355 7.90948 18.5 8.94502L8.62868 18.8163C8.06607 19.3789 7.30301 19.695 6.50736 19.695Z"
+        stroke={fill}
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+};
 export const DashboardIcon = ({
   width = "24",
   height = "24",
@@ -1013,6 +1036,59 @@ export const MoreIcon = ({
         strokeWidth="1.8"
         strokeLinecap="round"
         strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+export const NotAllowIcon = ({
+  width = "24",
+  height = "24",
+  fill = "var(--color-semantic-red-900)",
+}: iconProps) => {
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M5.77503 5.5C4.06486 7.13825 3 9.44477 3 12C3 16.9706 7.02944 21 12 21C14.5552 21 16.8618 19.9351 18.5 18.225M5.77503 5.5C7.39156 3.95145 9.58467 3 12 3C16.9706 3 21 7.02944 21 12C21 14.4153 20.0485 16.6084 18.5 18.225M5.77503 5.5L18.5 18.225"
+        stroke={fill}
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+};
+export const EyeIcon = ({
+  width = "24",
+  height = "24",
+  fill = "var(--color-neutral-black-500)",
+}: iconProps) => {
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z"
+        stroke={fill}
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M21 12C21 15 16.9706 19 12 19C7.02944 19 3 15 3 12C3 9 7.02944 5 12 5C16.9706 5 21 9 21 12Z"
+        stroke={fill}
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
       />
     </svg>
   );

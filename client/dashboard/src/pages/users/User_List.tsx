@@ -7,6 +7,16 @@ import Avatar from "../../components/shared/avatar/Avatar";
 import { userStatusBadge } from "../../common/lists/Badges_List";
 import Badge from "../../components/shared/badge/Badge";
 import { useNavigate } from "react-router-dom";
+import Menu from "../../components/shared/menu/Menu";
+import {
+  CheckIcon,
+  EditIcon,
+  EmailIcon,
+  EyeIcon,
+  NotAllowIcon,
+  UserIcon,
+} from "../../assets/icons/Icon";
+import type { MenuListTypes } from "../../components/shared/menu/Menue.types";
 
 const tapList = [
   {
@@ -19,6 +29,31 @@ const tapList = [
     name: "admin",
     value: "admin",
     fieldName: "role",
+  },
+];
+const blockUser = {
+  icon: <NotAllowIcon width="20" height="20" />,
+  name: "blocked",
+  textClassName: "text-semantic-red-900",
+};
+const activeUser = {
+  icon: (
+    <CheckIcon fill="var(--color-semantic-green-900)" width="20" height="20" />
+  ),
+  name: "active",
+  textClassName: "text-semantic-green-900",
+};
+const list: MenuListTypes = [
+  { icon: <EditIcon width="20" height="20" />, name: "update" },
+  {
+    icon: <EyeIcon width="20" height="20" />,
+    name: "details",
+  },
+  {
+    icon: (
+      <EmailIcon fill="var(--color-neutral-black-500)" width="20" height="20" />
+    ),
+    name: "reset_password",
   },
 ];
 const User_List = () => {
@@ -58,6 +93,15 @@ const User_List = () => {
         const { text, type } = userStatusBadge(item?.status);
         return <Badge text={text} type={type} />;
       },
+    },
+    {
+      header: "action",
+      field: "action",
+      body: (item) => (
+        <Menu
+          list={[...list, item?.status === "active" ? blockUser : activeUser]}
+        />
+      ),
     },
   ];
 

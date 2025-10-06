@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,8 +9,8 @@ import { plainToInstance } from 'class-transformer';
 import { UserQueryDto } from './dto/query-user.dto';
 import { Request } from 'express';
 import { FullPaginationDto } from 'src/common/pagination/pagination.dto';
-import { CreateUserDto } from './dto/create-user.dto';
-import { JwtPayload } from 'src/common/utils/types';
+
+import { AccountStatus } from 'src/common/utils/enum';
 
 @Injectable()
 export class UsersService {
@@ -27,11 +23,16 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    return plainToInstance(UserDto, user, {
-      excludeExtraneousValues: true,
-    });
+    return user;
   }
 
+  /**
+   * Get all users
+   * @param query (limit, page, search, role)
+   * @param req
+   * @param email
+   * @returns
+   */
   async findAll(query: UserQueryDto, req: Request, email: string) {
     const { role, search, page = '1', limit = '10' } = query ?? {};
     const currentPage = parseInt(page, 10);
@@ -56,6 +57,23 @@ export class UsersService {
       return plainToInstance(UserDto, item, { excludeExtraneousValues: true });
     });
     return new FullPaginationDto(currentPage, count, take, req, data);
+  }
+  async updateUserInfo(id: number, body: UpdateUserDto) {
+    const user = await this.findOne(id);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    Object.entries(body).forEach(([key, value]) => {
+      if (value) {
+        user[key] = value;
+      }
+    });
+    await this.userRepository.save(user);
+    return plainToInstance(UserDto, user, {
+      excludeExtraneousValues: true,
+    });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

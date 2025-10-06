@@ -67,9 +67,9 @@ const Button = ({
         radious[round]
       } ${sizes[size]} `}
       disabled={loading || disabled}
-      onClick={() => {
+      onClick={(e) => {
         if (to) navigate(to);
-        if (handleClick) handleClick();
+        if (handleClick) handleClick(e);
       }}
     >
       {iconDirection === "left" && (loading ? <Spinner /> : icon)}

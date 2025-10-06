@@ -1,3 +1,5 @@
+import type React from "react";
+
 export type ButtonProps = {
   to?: string;
   text?: string | null;
@@ -18,6 +20,6 @@ export type ButtonProps = {
   isCenterd?: boolean;
   hasHover?: boolean;
   disabled?: boolean;
-  handleClick?: () => void;
+  handleClick?: (e?: React.ChangeEvent) => void;
   className?: string;
 };

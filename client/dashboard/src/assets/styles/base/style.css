@@ -622,4 +622,8 @@ button.ql-active .ql-stroke {
 button:hover .ql-fill,
 button.ql-active .ql-fill {
   fill: var(--color-neutral-black-300) !important;
+}
+
+.menu_op {
+  min-width: 180px;
 }/*# sourceMappingURL=style.css.map */

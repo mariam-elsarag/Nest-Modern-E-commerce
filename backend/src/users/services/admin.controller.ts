@@ -2,6 +2,11 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
+  Patch,
   Post,
   Query,
   Req,
@@ -18,6 +23,8 @@ import { AcceptFormData } from 'src/common/decrators/accept-form-data.decorator'
 import { AuthService } from 'src/auth/auth.service';
 import { User } from '../entities/user.entity';
 import { JwtPayload } from 'src/common/utils/types';
+
+import { UpdateUserDto } from '../dto/update-user.dto';
 
 @Roles(UserRole.ADMIN)
 @UseGuards(AuthGuard)
@@ -42,5 +49,14 @@ export class AdminUsersController {
   @AcceptFormData()
   inviteAdmin(@Body() body: CreateUserDto) {
     return this.authServices.inviteAdmin(body);
+  }
+
+  @Patch(':id')
+  @AcceptFormData()
+  updateUserInfoByAdmin(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: UpdateUserDto,
+  ) {
+    return this.usersService.updateUserInfo(id, body);
   }
 }
