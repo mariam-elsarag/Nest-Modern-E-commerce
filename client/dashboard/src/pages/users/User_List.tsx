@@ -51,7 +51,7 @@ const User_List = () => {
       field: "address",
       body: (item) => item?.address ?? "-",
     },
-    filter === "user" && {
+    {
       header: "status",
       field: "status",
       body: (item) => {

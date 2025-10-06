@@ -11,7 +11,7 @@ import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { RegisterDto } from './dto/register-request.dto';
 import { LoginDto } from './dto/login-request.dto';
-import { AccountStatus } from 'src/common/utils/enum';
+import { AccountStatus, UserRole } from 'src/common/utils/enum';
 import { LoginResponseDto } from './dto/login.response.dto';
 import { JwtPayload } from 'src/common/utils/types';
 import { plainToInstance } from 'class-transformer';
@@ -19,6 +19,8 @@ import { MailService } from 'src/mail/mail.service';
 import { SendOtpDto } from './dto/send-otp.dto';
 import { OtpQueryDto } from './dto/otp-query.dto';
 import { VerifyOtpDto } from './dto/verify-otp.dto';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { UserDto } from 'src/users/dto/user.dto';
 
 @Injectable()
 export class AuthService {
@@ -47,7 +49,7 @@ export class AuthService {
       user.email,
       user.fullName,
       otp,
-      `${process.env.FRONT_SERVER}/${user?.email}/activate`,
+      `${process.env.FRONT_SERVER}/${user?.email}/activate-account`,
       'Activate Account',
       'activate your account',
       3,
@@ -103,7 +105,7 @@ export class AuthService {
             user.email,
             user.fullName,
             otp,
-            `${process.env.FRONT_SERVER}/${user?.email}/activate`,
+            `${process.env.FRONT_SERVER}/${user?.email}/activate-account`,
             'Activate Account',
             'activate your account',
             3,
@@ -116,7 +118,11 @@ export class AuthService {
           error: 'activate_account',
         });
       }
-      const payload: JwtPayload = { id: user.id, role: user.role };
+      const payload: JwtPayload = {
+        id: user.id,
+        role: user.role,
+        email: user.email,
+      };
       const token = await this.generateJwtToken(payload);
       return plainToInstance(
         LoginResponseDto,
@@ -143,9 +149,9 @@ export class AuthService {
       let title = 'activate your account';
       let link = 'activate-account';
       if (query.type === 'forget') {
-        type = 'Forget password';
-        title = 'forget your password';
-        link = 'otp';
+        type = 'Verify account';
+        title = 'verify account';
+        link = 'verify-account';
       }
       await this.mailService.activateAccountEmail(
         user.email,
@@ -197,6 +203,11 @@ export class AuthService {
     }
   }
 
+  /**
+   * Reset password
+   * @param body
+   * @returns
+   */
   async resetPassword(body: LoginDto) {
     const { email, password } = body;
     const user = await this.checkUserExist(email, false);
@@ -224,6 +235,31 @@ export class AuthService {
       await this.userRepository.save(user);
       return { message: 'Password changed successfully' };
     }
+  }
+
+  async inviteAdmin(body: CreateUserDto) {
+    const { email, ...rest } = body;
+    await this.checkUserExist(email, true);
+    console.log(email, 'd');
+    const user = await this.userRepository.save({
+      ...body,
+      status: AccountStatus.Active,
+      role: UserRole.ADMIN,
+    });
+    const otp = await this.generateOtp(3, user);
+    await this.mailService.activateAccountEmail(
+      user.email,
+      user.fullName,
+      otp,
+      `${process.env.ADMIN_SERVER}/${user?.email}/verify-account`,
+      'Verify',
+      'verify your email and set your password',
+      3,
+    );
+    return {
+      message: 'Admin invitation sent successfully with OTP.',
+      ...body,
+    };
   }
 
   /**

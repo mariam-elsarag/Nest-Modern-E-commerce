@@ -58,7 +58,7 @@ const Forget_Password = () => {
       if (response.status === 200) {
         toast.success(t("successfully_send_otp"));
       }
-      navigate(`/${data?.email}/forget-password`);
+      navigate(`/${data?.email}/verify-account`);
     } catch (err) {
       handleError(err, t);
     } finally {

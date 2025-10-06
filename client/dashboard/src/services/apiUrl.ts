@@ -11,7 +11,7 @@ export const API = {
   },
   users: {
     list: "/api/admin/users",
-    add_admin: "",
+    add_admin: "/api/admin/users",
   },
   review: {
     list: "",

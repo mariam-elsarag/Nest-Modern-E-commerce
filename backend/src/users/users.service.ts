@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -9,6 +13,8 @@ import { plainToInstance } from 'class-transformer';
 import { UserQueryDto } from './dto/query-user.dto';
 import { Request } from 'express';
 import { FullPaginationDto } from 'src/common/pagination/pagination.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { JwtPayload } from 'src/common/utils/types';
 
 @Injectable()
 export class UsersService {
@@ -25,12 +31,14 @@ export class UsersService {
       excludeExtraneousValues: true,
     });
   }
-  async findAll(query: UserQueryDto, req: Request) {
+
+  async findAll(query: UserQueryDto, req: Request, email: string) {
     const { role, search, page = '1', limit = '10' } = query ?? {};
     const currentPage = parseInt(page, 10);
     const take = parseInt(limit, 10);
     const skip = (currentPage - 1) * take;
     const qb = this.userRepository.createQueryBuilder('user');
+    qb.andWhere('user.email != :email', { email });
     if (role) {
       qb.andWhere('user.role = :role', { role });
     }

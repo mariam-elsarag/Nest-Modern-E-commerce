@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Page_Wraper from "../../components/layout/page_wraper/Page_Wraper";
 import type { BreadCrumbListType } from "../../components/layout/header/page_header/Page_Header.types";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Page_Title from "../../components/layout/header/page_title/Page_Title";
 import { useForm } from "react-hook-form";
 import type { FormListItemType } from "../../components/shared/form_builder/Form_Builder-types";
@@ -10,18 +10,23 @@ import { emailRegex, phonePattern } from "../../common/constant/validator";
 import { handleError } from "../../common/utils/handleError";
 import Form_Builder from "../../components/shared/form_builder/Form_Builder";
 import Button from "../../components/shared/button/Button";
+import axiosInstance from "../../services/axiosInstance";
+import { API } from "../../services/apiUrl";
+import { toast } from "react-toastify";
 
 const Manage_User = () => {
   const { t } = useTranslation();
 
   const isEdit = location.pathname.includes("/edit");
   const pageTitle = isEdit ? "update_admin" : "add_admin";
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
   // ___________ useform _________
   const {
     control,
     setError,
+    reset,
     formState: { errors, isValid },
     handleSubmit,
   } = useForm({
@@ -106,6 +111,13 @@ const Manage_User = () => {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
+      const method = isEdit ? "patch" : "post";
+      const response = await axiosInstance[method](API.users.add_admin, data);
+      if (response.status === 201) {
+        toast.success(t("successfully_invite_admin"));
+        reset();
+        navigate("/users");
+      }
     } catch (err) {
       handleError(err, t, setError);
     } finally {

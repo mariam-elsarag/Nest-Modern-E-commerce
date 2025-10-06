@@ -10,7 +10,14 @@ export const handleError = <T extends FieldValues>(
   const details = err?.error?.email || err?.error?.password || err?.message;
 
   console.log(err, "error");
-
+  if (details?.includes("duplicate key value violates unique constraint")) {
+    toast.error(t("phone_exists"));
+    setError("phone", {
+      type: "manual",
+      message: "phone_exists",
+    });
+    return;
+  }
   const showToast = () => {
     toast.error(details || "Something went wrong. Please try again.");
   };

@@ -161,5 +161,6 @@
   "acctivate_account": "تفعيل الحساب",
   "successfully_reset_password": "تم إعادة تعيين كلمة المرور بنجاح.",
   "active": "نشط",
-  "blocked": "محظور"
+  "blocked": "محظور",
+  "successfully_invite_admin": "تم إرسال دعوة المشرف بنجاح مع رمز التحقق عبر البريد الإلكتروني."
 }
