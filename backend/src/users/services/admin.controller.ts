@@ -59,4 +59,9 @@ export class AdminUsersController {
   ) {
     return this.usersService.updateUserInfo(id, body);
   }
+
+  @Get(':id')
+  getUserDetails(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.userDetails(id);
+  }
 }

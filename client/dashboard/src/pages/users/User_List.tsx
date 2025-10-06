@@ -31,34 +31,52 @@ const tapList = [
     fieldName: "role",
   },
 ];
-const blockUser = {
-  icon: <NotAllowIcon width="20" height="20" />,
-  name: "blocked",
-  textClassName: "text-semantic-red-900",
-};
-const activeUser = {
-  icon: (
-    <CheckIcon fill="var(--color-semantic-green-900)" width="20" height="20" />
-  ),
-  name: "active",
-  textClassName: "text-semantic-green-900",
-};
-const list: MenuListTypes = [
-  { icon: <EditIcon width="20" height="20" />, name: "update" },
-  {
-    icon: <EyeIcon width="20" height="20" />,
-    name: "details",
-  },
-  {
-    icon: (
-      <EmailIcon fill="var(--color-neutral-black-500)" width="20" height="20" />
-    ),
-    name: "reset_password",
-  },
-];
+
 const User_List = () => {
   const [filter, setFilter] = useState("user");
   const navigate = useNavigate();
+
+  // ___________________ list _________________
+  const blockUser = {
+    icon: <NotAllowIcon width="20" height="20" />,
+    name: "blocked",
+    textClassName: "text-semantic-red-900",
+  };
+  const activeUser = {
+    icon: (
+      <CheckIcon
+        fill="var(--color-semantic-green-900)"
+        width="20"
+        height="20"
+      />
+    ),
+    name: "active",
+    textClassName: "text-semantic-green-900",
+  };
+  const list: MenuListTypes = [
+    {
+      icon: <EditIcon width="20" height="20" />,
+      name: "update",
+      action: (item) => {
+        console.log(item, "sk");
+        navigate(`/users/${item?.id}/edit`);
+      },
+    },
+    {
+      icon: <EyeIcon width="20" height="20" />,
+      name: "details",
+    },
+    {
+      icon: (
+        <EmailIcon
+          fill="var(--color-neutral-black-500)"
+          width="20"
+          height="20"
+        />
+      ),
+      name: "reset_password",
+    },
+  ];
   const columns = [
     {
       header: "name",
@@ -98,8 +116,9 @@ const User_List = () => {
       header: "action",
       field: "action",
       body: (item) => (
-        <Menu
+        <Menu<UserType>
           list={[...list, item?.status === "active" ? blockUser : activeUser]}
+          data={item}
         />
       ),
     },

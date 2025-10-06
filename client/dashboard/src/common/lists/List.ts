@@ -21,3 +21,12 @@ export const sizeList = [
   { name: "xL", value: "xl" },
   { name: "xXL", value: "xxl" },
 ];
+
+export const userRole = [
+  { name: "user", value: "user" },
+  { name: "admin", value: "admin" },
+];
+export const accountStatusList = [
+  { name: "active", value: "active" },
+  { name: "blocked", value: "blocked" },
+];

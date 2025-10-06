@@ -5,7 +5,7 @@ import { OverlayPanel } from "primereact/overlaypanel";
 import type { MenuPropsTypes } from "./Menue.types";
 import { useTranslation } from "react-i18next";
 
-const Menu = ({ list }: MenuPropsTypes) => {
+const Menu = <T,>({ list, data }: MenuPropsTypes<T>) => {
   const op = useRef(null);
   const { t } = useTranslation();
   return (
@@ -23,6 +23,11 @@ const Menu = ({ list }: MenuPropsTypes) => {
           {list?.map((item, index) => (
             <div
               key={index}
+              onClick={() => {
+                if (item?.action) {
+                  item?.action(data);
+                }
+              }}
               className="flex items-center gap-1 py-2 px-1 rounded-[4px] transition-all ease-in-out duration-300 hover:bg-neutral-white-100 cursor-pointer"
             >
               {item?.icon && <span>{item?.icon}</span>}

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Page_Wraper from "../../components/layout/page_wraper/Page_Wraper";
 import type { BreadCrumbListType } from "../../components/layout/header/page_header/Page_Header.types";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Page_Title from "../../components/layout/header/page_title/Page_Title";
 import { useForm } from "react-hook-form";
 import type { FormListItemType } from "../../components/shared/form_builder/Form_Builder-types";
@@ -13,21 +13,25 @@ import Button from "../../components/shared/button/Button";
 import axiosInstance from "../../services/axiosInstance";
 import { API } from "../../services/apiUrl";
 import { toast } from "react-toastify";
+import { accountStatusList, userRole } from "../../common/lists/List";
 
 const Manage_User = () => {
   const { t } = useTranslation();
 
-  const isEdit = location.pathname.includes("/edit");
+  const { id } = useParams();
+  const isEdit = location.pathname.includes("/edit") && id;
   const pageTitle = isEdit ? "update_admin" : "add_admin";
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
+  const [loadingData, setLoadingData] = useState(false);
   // ___________ useform _________
   const {
     control,
     setError,
     reset,
-    formState: { errors, isValid },
+    setValue,
+    formState: { errors, isValid, dirtyFields },
     handleSubmit,
   } = useForm({
     defaultValues: {
@@ -105,18 +109,54 @@ const Manage_User = () => {
         },
       },
     },
-  ];
+    isEdit && {
+      id: "4",
+      formType: "dropdown",
+      label: "role",
+      fieldName: "role",
+      placeholder: "role",
+      optionList: userRole?.map((item) => ({
+        name: item?.name,
+        value: item?.value,
+      })),
+    },
+    isEdit && {
+      id: "5",
+      formType: "dropdown",
+      label: "status",
+      fieldName: "status",
+      placeholder: "status",
+      optionList: accountStatusList?.map((item) => ({
+        name: item?.name,
+        value: item?.value,
+      })),
+    },
+  ]?.filter(Boolean) as FormListItemType[];
 
   // _________________function __________-
   const onSubmit = async (data) => {
     try {
       setLoading(true);
       const method = isEdit ? "patch" : "post";
-      const response = await axiosInstance[method](API.users.add_admin, data);
+      const endpoint = isEdit ? `${API.users.list}/${id}` : API.users.list;
+      let sendData;
+      if (isEdit) {
+        sendData = Object.keys(dirtyFields).reduce((acc, key) => {
+          if (key) {
+            acc[key] = data[key];
+          }
+          return acc;
+        }, {});
+      } else {
+        sendData = { ...data };
+      }
+      const response = await axiosInstance[method](endpoint, sendData);
       if (response.status === 201) {
         toast.success(t("successfully_invite_admin"));
         reset();
         navigate("/users");
+      } else {
+        toast.success(t("successfully_update_user_data"));
       }
     } catch (err) {
       handleError(err, t, setError);
@@ -124,6 +164,27 @@ const Manage_User = () => {
       setLoading(false);
     }
   };
+  const getDetails = async () => {
+    try {
+      setLoadingData(true);
+      const response = await axiosInstance.get(`${API.users.list}/${id}`);
+      if (response.status === 200) {
+        Object.entries(response.data).forEach(([key, value]) => {
+          setValue(key, value);
+        });
+      }
+    } catch (err) {
+      handleError(err, t, setError);
+    } finally {
+      setLoadingData(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isEdit) {
+      getDetails();
+    }
+  }, [isEdit]);
   return (
     <Page_Wraper
       list={breadcrumbsList}
@@ -135,7 +196,12 @@ const Manage_User = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <fieldset className="grid grid-cols-2 gap-6">
-          <Form_Builder formList={formList} control={control} errors={errors} />
+          <Form_Builder
+            formList={formList}
+            control={control}
+            errors={errors}
+            loading={loadingData || loading}
+          />
         </fieldset>
         <Button
           loading={loading}

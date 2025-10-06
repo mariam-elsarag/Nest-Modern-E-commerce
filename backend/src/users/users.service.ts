@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -23,7 +27,14 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    return user;
+    return plainToInstance(UserDto, user, {
+      excludeExtraneousValues: true,
+    });
+  }
+
+  async userDetails(id: number) {
+    const user = await this.findOne(id);
+    return { ...user };
   }
 
   /**
@@ -58,6 +69,13 @@ export class UsersService {
     });
     return new FullPaginationDto(currentPage, count, take, req, data);
   }
+
+  /**
+   * Update user data by admin
+   * @param id
+   * @param body
+   * @returns
+   */
   async updateUserInfo(id: number, body: UpdateUserDto) {
     const user = await this.findOne(id);
 
@@ -65,12 +83,38 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
 
-    Object.entries(body).forEach(([key, value]) => {
-      if (value) {
+    for (const [key, value] of Object.entries(body)) {
+      if (value && value !== user[key]) {
+        if (key === 'email') {
+          const isExist = await this.userRepository.findOne({
+            where: { email: value.toLowerCase() },
+          });
+          if (isExist && isExist.id !== id) {
+            throw new BadRequestException({
+              message: 'Email already exists',
+              error: { email: 'Email already exists' },
+            });
+          }
+        }
+
+        if (key === 'phone') {
+          const isExist = await this.userRepository.findOne({
+            where: { phone: value },
+          });
+          if (isExist && isExist.id !== id) {
+            throw new BadRequestException({
+              message: 'Phone number already exists',
+              error: { phone: 'Phone number already exists' },
+            });
+          }
+        }
+
         user[key] = value;
       }
-    });
+    }
+
     await this.userRepository.save(user);
+
     return plainToInstance(UserDto, user, {
       excludeExtraneousValues: true,
     });

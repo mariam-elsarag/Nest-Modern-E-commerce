@@ -162,5 +162,6 @@
   "successfully_reset_password": "Your password has been reset successfully.",
   "active": "Active",
   "blocked": "Blocked",
-  "successfully_invite_admin": "Invitation email has been sent successfully with an OTP for account setup."
+  "successfully_invite_admin": "Invitation email has been sent successfully with an OTP for account setup.",
+  "successfully_update_user_data": "User data updated successfully"
 }

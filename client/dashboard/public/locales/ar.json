@@ -162,5 +162,6 @@
   "successfully_reset_password": "تم إعادة تعيين كلمة المرور بنجاح.",
   "active": "نشط",
   "blocked": "محظور",
-  "successfully_invite_admin": "تم إرسال دعوة المشرف بنجاح مع رمز التحقق عبر البريد الإلكتروني."
+  "successfully_invite_admin": "تم إرسال دعوة المشرف بنجاح مع رمز التحقق عبر البريد الإلكتروني.",
+  "successfully_update_user_data": "تم تحديث بيانات المستخدم بنجاح"
 }
