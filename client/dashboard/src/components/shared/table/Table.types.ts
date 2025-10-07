@@ -25,4 +25,5 @@ export type TableLayoutProps<T> = Partial<TableProps<T>> & {
   title?: string;
   queryDefault?: object | null;
   children?: ReactNode;
+  refetch?: string;
 };

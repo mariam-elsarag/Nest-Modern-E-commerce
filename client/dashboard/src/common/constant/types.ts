@@ -11,3 +11,10 @@ export interface UserType {
   address: null | string;
   createdAt: Date;
 }
+
+export interface CategoryType {
+  id: number;
+  title: string;
+  title_ar: string;
+  createdAt: Date;
+}

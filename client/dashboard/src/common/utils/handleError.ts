@@ -10,7 +10,30 @@ export const handleError = <T extends FieldValues>(
   const details = err?.error?.email || err?.error?.password || err?.message;
 
   console.log(err, "error");
-  if (details?.includes("duplicate key value violates unique constraint")) {
+  if (
+    details ===
+    'duplicate key value violates unique constraint "UQ_9f16dbbf263b0af0f03637fa7b5"'
+  ) {
+    toast.error(t("category_title_unique"));
+    setError("title", {
+      type: "manual",
+      message: "category_title_unique",
+    });
+
+    return;
+  } else if (
+    details ===
+    'duplicate key value violates unique constraint "UQ_2934320e576aeacd3bd4326a6e0"'
+  ) {
+    toast.error(t("category_title_ar_unique"));
+    setError("title_ar", {
+      type: "manual",
+      message: "category_title_ar_unique",
+    });
+    return;
+  } else if (
+    details?.includes("duplicate key value violates unique constraint")
+  ) {
     toast.error(t("phone_exists"));
     setError("phone", {
       type: "manual",

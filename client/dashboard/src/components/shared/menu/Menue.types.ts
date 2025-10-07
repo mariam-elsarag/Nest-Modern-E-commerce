@@ -1,7 +1,7 @@
 import type React from "react";
 
 export type MenuListTypes<T> = {
-  icon?: ChildNode;
+  icon?: React.ReactSVGElement;
   name: string;
   textClassName?: string;
   action?: (item?: T) => void;

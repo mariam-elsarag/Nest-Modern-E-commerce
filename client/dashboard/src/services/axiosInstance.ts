@@ -26,6 +26,7 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (res) => res,
   (error) => {
+    console.log(error, "sk");
     return Promise.reject(error);
   }
 );

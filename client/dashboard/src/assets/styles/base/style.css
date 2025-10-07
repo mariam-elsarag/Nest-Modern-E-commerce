@@ -131,7 +131,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 }
 
 .loader {
-  color: var(--color-primary-900);
+  color: var(--color-neutral-black-900);
   font-size: 7px;
   position: relative;
   text-indent: -9999em;

@@ -169,5 +169,16 @@
   "successfully_delete_colors": "تم حذف الألوان بنجاح",
   "confirm_delete_message": "هل أنت متأكد أنك تريد حذف هذه الألوان؟",
   "color_name_ar": "اسم اللون (عربي)",
-  "successfully_create_color": "تم إنشاء اللون بنجاح"
+  "successfully_create_color": "تم إنشاء اللون بنجاح",
+  "no_category_yet": "لا توجد فئات بعد",
+  "add_category": "إضافة فئة",
+  "update_category": "تحديث الفئة",
+  "category": "الفئة",
+  "confirm_delete_category": "هل أنت متأكد أنك تريد حذف هذه الفئة؟",
+  "successfully_add_category": "تمت إضافة الفئة بنجاح",
+  "successfully_update_category": "تم تحديث الفئة بنجاح",
+  "successfully_delete_category": "تم حذف الفئة بنجاح",
+  "title_title_ar_unique": "يجب أن يكون العنوان والعنوان العربي فريدين",
+  "category_title_unique": "يجب أن يكون عنوان الفئة فريدًا",
+  "category_title_ar_unique": "يجب أن يكون العنوان العربي للفئة فريدًا"
 }

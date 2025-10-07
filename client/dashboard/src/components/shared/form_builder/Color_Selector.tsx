@@ -32,7 +32,7 @@ const Color_Selector = ({
     return <h4 className="text-neutral-black-900 body">{option?.name}</h4>;
   };
   const itemTemplate = (option) => {
-    return <View_Colors color={option?.value} text={option?.name} />;
+    return <View_Colors color={option?.color} text={option?.name} />;
   };
   return (
     <>

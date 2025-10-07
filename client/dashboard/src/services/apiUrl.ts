@@ -1,5 +1,8 @@
 export const apiKey = import.meta.env.VITE_API_URL;
 export const API = {
+  list: {
+    category: "/api/category/list",
+  },
   auth: {
     login: "/api/auth/login",
     sendOtp: "/api/auth/send-otp",
@@ -36,5 +39,6 @@ export const API = {
   },
   settting: {
     color: "/api/color",
+    category: "/api/category",
   },
 };

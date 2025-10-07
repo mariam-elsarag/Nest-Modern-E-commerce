@@ -1,4 +1,4 @@
-import React, { type JSX } from "react";
+import React, { useEffect, type JSX } from "react";
 import type { TableLayoutProps } from "./Table.types";
 import { useTranslation } from "react-i18next";
 import Table from "./Table";
@@ -22,6 +22,7 @@ const Table_Layout = <T,>({
   title,
   queryDefault,
   children,
+  refetch,
 }: TableLayoutProps<T>): JSX.Element => {
   const { t } = useTranslation();
   const {
@@ -34,7 +35,13 @@ const Table_Layout = <T,>({
     page,
     pages,
     handlePagination,
+    setRefetchData,
   } = usePaginatedData<T>({ endpoint: endpoint, queryDefault: queryDefault });
+  useEffect(() => {
+    if (refetch) {
+      setRefetchData(Date.now());
+    }
+  }, [refetch]);
   return (
     <main className={` ${hasTap ? "flex flex-col gap-6" : ""}`}>
       {hasTap && (

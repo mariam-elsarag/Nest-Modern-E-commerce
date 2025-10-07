@@ -52,8 +52,14 @@ const Contact = lazy(() => import("./pages/contact/Contact"));
 const Setting_layout = lazy(() => import("./pages/settings/Setting_Layout"));
 const Setting = lazy(() => import("./pages/settings/Setting"));
 const Setting_Colors = lazy(() => import("./pages/settings/Setting_Colors"));
-const Setting_Categories = lazy(
-  () => import("./pages/settings/Setting_Categories")
+const Setting_Categories_layout = lazy(
+  () => import("./pages/settings/category/Category_Layout")
+);
+const Setting_Categories_list = lazy(
+  () => import("./pages/settings/category/Setting_Categories")
+);
+const Setting_Categories_Mangment = lazy(
+  () => import("./pages/settings/category/Category_Mangment")
 );
 
 // content
@@ -95,7 +101,18 @@ const router = createBrowserRouter([
                 path: "colors",
                 element: <Setting_Colors />,
               },
-              { path: "categories", element: <Setting_Categories /> },
+              {
+                path: "categories",
+                element: <Setting_Categories_layout />,
+                children: [
+                  { index: true, element: <Setting_Categories_list /> },
+                  { path: "create", element: <Setting_Categories_Mangment /> },
+                  {
+                    path: ":id/edit",
+                    element: <Setting_Categories_Mangment />,
+                  },
+                ],
+              },
             ],
           },
           {

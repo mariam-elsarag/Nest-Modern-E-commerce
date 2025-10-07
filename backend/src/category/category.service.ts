@@ -33,6 +33,10 @@ export class CategoryService {
     return new FullPaginationDto(currentPage, count, take, req, results);
   }
 
+  async findAllWithoutPagination() {
+    const categories = await this.categoryRepository.find();
+    return categories;
+  }
   async findOne(id: number) {
     const category = await this.categoryRepository.findOneBy({ id });
     if (!category) {

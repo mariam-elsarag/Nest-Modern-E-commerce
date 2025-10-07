@@ -171,5 +171,16 @@
   "delete": "Delete",
   "cancel": "Cancel",
   "color_name_ar": "Color Name (Ar)",
-  "successfully_create_color": "Color created successfully"
+  "successfully_create_color": "Color created successfully",
+  "no_category_yet": "No categories yet",
+  "add_category": "Add category",
+  "update_category": "Update category",
+  "category": "Category",
+  "confirm_delete_category": "Are you sure you want to delete this category?",
+  "successfully_add_category": "Category added successfully",
+  "successfully_update_category": "Category updated successfully",
+  "successfully_delete_category": "Category deleted successfully",
+  "title_title_ar_unique": "The title and Arabic title must be unique",
+  "category_title_unique": "The category title must be unique",
+  "category_title_ar_unique": "The Arabic category title must be unique"
 }

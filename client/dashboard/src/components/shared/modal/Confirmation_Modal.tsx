@@ -27,7 +27,7 @@ const Confirmation_Modal = ({
   };
   return (
     <Dialog
-      className="max-w-[300px] md:max-w-[95%] w-[90%] md:w-[400px] 2xl:w-[548px]"
+      className="max-w-[300px] md:max-w-[95%] w-[90%] md:w-[400px] "
       visible={open}
       onHide={onClose}
       draggable={false}

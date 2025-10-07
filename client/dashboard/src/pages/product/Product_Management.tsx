@@ -21,6 +21,8 @@ import type { FormListItemType } from "../../components/shared/form_builder/Form
 import { TrashIcon } from "../../assets/icons/Icon";
 import { formatPrice } from "../../common/utils/formatPrice";
 import Table from "../../components/shared/table/Table";
+import useGetData from "../../hooks/useGetData";
+import { API } from "../../services/apiUrl";
 
 export const fakeCategories: CategoryType[] = [
   { id: 1, title: "Clothing", title_ar: "ملابس" },
@@ -70,6 +72,9 @@ const Product_Management = () => {
 
   const [loading, setLoading] = useState(false);
   const [variantList, setVariantList] = useState<Variant>([]);
+  // ___________ hooks _________
+  const { data: categoryList } = useGetData(API.list.category);
+  const { data: colorList } = useGetData(API.settting.color);
   // ___________ useform _________
   const {
     control,
@@ -200,7 +205,7 @@ const Product_Management = () => {
       label: "category",
       fieldName: "category",
       placeholder: "category",
-      optionList: fakeCategories?.map((item) => ({
+      optionList: categoryList?.map((item) => ({
         name: currentLanguageCode === "en" ? item?.title : item?.title_ar,
         value: item?.id,
       })),
@@ -382,9 +387,10 @@ const Product_Management = () => {
       placeholder: "select_color",
       fieldName: `variants.colors`,
       label: "colors",
-      optionList: fakeColors?.map((item) => ({
-        name: item?.name,
-        value: item?.hex,
+      optionList: colorList?.map((item) => ({
+        name: currentLanguageCode === "en" ? item?.name : item?.name_ar,
+        color: item?.color,
+        value: item?.id,
       })),
     },
   ];
