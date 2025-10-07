@@ -10,6 +10,8 @@ import { User } from './users/entities/user.entity';
 import { MailModule } from './mail/mail.module';
 import { ColorsModule } from './colors/colors.module';
 import { Color } from './colors/entities/color.entity';
+import { CategoryModule } from './category/category.module';
+import { Category } from './category/entities/category.entity';
 
 @Module({
   imports: [
@@ -37,13 +39,14 @@ import { Color } from './colors/entities/color.entity';
           port: config.get<number>('DB_PORT'),
           host: 'localhost',
           synchronize: process.env.NODE_ENV !== 'production' ? true : false,
-          entities: [User, Color],
+          entities: [User, Color, Category],
         };
       },
     }),
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     MailModule,
     ColorsModule,
+    CategoryModule,
   ],
   controllers: [],
   providers: [],
