@@ -40,5 +40,6 @@ export const API = {
   settting: {
     color: "/api/color",
     category: "/api/category",
+    setting: "/api/admin/settings",
   },
 };

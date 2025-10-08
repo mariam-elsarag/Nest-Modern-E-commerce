@@ -180,5 +180,6 @@
   "successfully_delete_category": "تم حذف الفئة بنجاح",
   "title_title_ar_unique": "يجب أن يكون العنوان والعنوان العربي فريدين",
   "category_title_unique": "يجب أن يكون عنوان الفئة فريدًا",
-  "category_title_ar_unique": "يجب أن يكون العنوان العربي للفئة فريدًا"
+  "category_title_ar_unique": "يجب أن يكون العنوان العربي للفئة فريدًا",
+  "no_tax_description": "في حال تفعيل هذا الخيار، لن يتم فرض ضريبة على هذا المنتج."
 }

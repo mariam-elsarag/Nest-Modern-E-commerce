@@ -75,6 +75,7 @@ const Product_Management = () => {
   // ___________ hooks _________
   const { data: categoryList } = useGetData(API.list.category);
   const { data: colorList } = useGetData(API.settting.color);
+
   // ___________ useform _________
   const {
     control,
@@ -94,6 +95,7 @@ const Product_Management = () => {
       category: [],
       hasTax: false,
       status: null,
+      taxRate: null,
       variants: {
         colors: [],
         sizes: [],
@@ -104,7 +106,9 @@ const Product_Management = () => {
     },
     mode: "onChange",
   });
-  const hasRate = watch("hasTax");
+  const { data: settingData } = useGetData(API.settting.setting, setValue);
+  const hasRate = watch("hasTaxRate");
+  const hasTax = watch("hasTax");
   // for append
   const variants = watch("variants");
 
@@ -264,17 +268,25 @@ const Product_Management = () => {
       containerClassName: "!flex flex-col justify-end ",
       fieldName: "isFeatured",
     },
-  ];
-  const taxList: FormListItemType[] = [
     {
       id: "10",
       formType: "switch",
-      text: "tax_message",
+      text: "no_tax_description",
       containerClassName: "!flex flex-col justify-end ",
       fieldName: "hasTax",
     },
+  ];
+
+  const taxList: FormListItemType[] = [
     {
       id: "11",
+      formType: "switch",
+      text: "tax_message",
+      containerClassName: "!flex flex-col justify-end ",
+      fieldName: "hasTaxRate",
+    },
+    {
+      id: "12",
       formType: "input",
       type: "text",
       name: "tax_rate",
@@ -282,6 +294,7 @@ const Product_Management = () => {
       placeholder: "tax_rate",
       fieldName: "taxRate",
       disabled: !hasRate,
+
       validator: {
         validate: (value) => {
           if (hasRate) {
@@ -291,11 +304,31 @@ const Product_Management = () => {
           return true;
         },
       },
+      onKeyDown: (e) => {
+        const allowedKeys = [
+          "Backspace",
+          "Tab",
+          "ArrowLeft",
+          "ArrowRight",
+          "Delete",
+          "Home",
+          "End",
+          ".",
+        ];
+
+        if (!/^[0-9]$/.test(e.key) && !allowedKeys.includes(e.key)) {
+          e.preventDefault();
+        }
+
+        if (e.key === "." && e.currentTarget.value.includes(".")) {
+          e.preventDefault();
+        }
+      },
     },
-  ];
+  ]?.filter(Boolean);
   const optionList: FormListItemType[] = [
     {
-      id: "12",
+      id: "13",
       formType: "input",
       inputMode: "decimal",
       type: "text",
@@ -336,7 +369,7 @@ const Product_Management = () => {
       inlineError: true,
     },
     {
-      id: "13",
+      id: "14",
       formType: "input",
       inputMode: "numeric",
       type: "number",
@@ -357,7 +390,7 @@ const Product_Management = () => {
       inlineError: true,
     },
     {
-      id: "14",
+      id: "15",
       formType: "input",
       inputMode: "text",
       type: "text",
@@ -374,7 +407,7 @@ const Product_Management = () => {
       inlineError: true,
     },
     {
-      id: "15",
+      id: "16",
       formType: "multiselect",
       label: "sizes",
       fieldName: "variants.sizes",
@@ -382,7 +415,7 @@ const Product_Management = () => {
       optionList: sizeList,
     },
     {
-      id: "16",
+      id: "17",
       formType: "color",
       placeholder: "select_color",
       fieldName: `variants.colors`,
@@ -501,16 +534,18 @@ const Product_Management = () => {
           </fieldset>
         </section>
         {/* tax rate */}
-        <section className="grid gap-2 border-t border-dashed border-neutral-black-100 pt-6 ">
-          <h3 className="text-neutral-black-900 h5">{t("tax")}</h3>
-          <div className="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-3 md:gap-6">
-            <Form_Builder
-              formList={taxList}
-              control={control}
-              errors={errors}
-            />
-          </div>
-        </section>
+        {hasTax && (
+          <section className="grid gap-2 border-t border-dashed border-neutral-black-100 pt-6 ">
+            <h3 className="text-neutral-black-900 h5">{t("tax")}</h3>
+            <div className="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-3 md:gap-6">
+              <Form_Builder
+                formList={taxList}
+                control={control}
+                errors={errors}
+              />
+            </div>
+          </section>
+        )}
         {/* variants */}
         <section className="grid gap-6">
           <fieldset className="border-t border-dashed border-neutral-black-100 pt-6">

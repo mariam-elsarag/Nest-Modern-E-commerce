@@ -182,5 +182,6 @@
   "successfully_delete_category": "Category deleted successfully",
   "title_title_ar_unique": "The title and Arabic title must be unique",
   "category_title_unique": "The category title must be unique",
-  "category_title_ar_unique": "The Arabic category title must be unique"
+  "category_title_ar_unique": "The Arabic category title must be unique",
+  "no_tax_description": "If enabled, this product will be exempt from tax."
 }
