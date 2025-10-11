@@ -19,6 +19,7 @@ import { Product } from './products/entities/product.entity';
 import { Variant } from './products/entities/product-variant.entity';
 import { SizesModule } from './sizes/sizes.module';
 import { Size } from './sizes/entities/size.entity';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -57,6 +58,7 @@ import { Size } from './sizes/entities/size.entity';
     SettingsModule,
     ProductsModule,
     SizesModule,
+    CloudinaryModule,
   ],
   controllers: [],
   providers: [],

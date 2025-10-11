@@ -1,4 +1,4 @@
-import { Body, Controller, Patch, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Patch, UseGuards } from '@nestjs/common';
 import { SettingsService } from '../settings.service';
 import { Roles } from 'src/auth/decorators/current-user.decorator';
 import { UserRole } from 'src/common/utils/enum';
@@ -16,5 +16,10 @@ export class SettingsAdminController {
   @AcceptFormData()
   updateOrCreateSetting(@Body() body: CreateOrUpdateDto) {
     return this.settingsService.updateOrCreateSetting(body);
+  }
+
+  @Get()
+  getSetting() {
+    return this.settingsService.findOne();
   }
 }

@@ -38,9 +38,6 @@ export class Product {
   @Column({ type: 'boolean', default: false })
   isFeatured: boolean;
 
-  @Column({ type: 'boolean', default: false })
-  hasTax: boolean;
-
   @Column({ type: 'int', default: 0 })
   taxRate: number;
 

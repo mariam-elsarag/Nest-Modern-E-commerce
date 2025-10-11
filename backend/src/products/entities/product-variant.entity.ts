@@ -14,7 +14,7 @@ export class Variant {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'decimal' })
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
   price: number;
 
   @Column({ type: 'int' })

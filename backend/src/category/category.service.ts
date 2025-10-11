@@ -3,10 +3,11 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from './entities/category.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { PaginationQueryDto } from 'src/common/pagination/pagination-query.dto';
 import { Request } from 'express';
 import { FullPaginationDto } from 'src/common/pagination/pagination.dto';
+import { FindCategoryDto } from './dto/find-category.dto';
 
 @Injectable()
 export class CategoryService {
@@ -59,5 +60,24 @@ export class CategoryService {
   async remove(id: number) {
     await this.findOne(id);
     await this.categoryRepository.delete(id);
+  }
+
+  async checkCategoryExists(body: FindCategoryDto) {
+    const { categories } = body;
+
+    const allCategories = await this.categoryRepository.find({
+      where: { id: In(categories) },
+    });
+
+    const foundIds = allCategories.map((category) => category.id);
+    const missingIds = categories.filter((id) => !foundIds.includes(id));
+
+    if (missingIds.length > 0) {
+      throw new NotFoundException(
+        `Categories not found for IDs: ${missingIds.join(', ')}`,
+      );
+    }
+
+    return categories;
   }
 }

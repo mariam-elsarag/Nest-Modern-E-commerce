@@ -19,4 +19,13 @@ export class SettingsService {
       monthlyOrderGoal: setting?.monthlyOrderGoal ?? 0,
     };
   }
+
+  async findOne() {
+    const setting = await this.settingRepository.findOneBy({ id: 1 });
+    return {
+      id: setting?.id ?? 1,
+      taxRate: setting?.taxRate ?? 0,
+      monthlyOrderGoal: setting?.monthlyOrderGoal ?? 0,
+    };
+  }
 }

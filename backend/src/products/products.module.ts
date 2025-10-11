@@ -1,9 +1,25 @@
 import { Module } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { ProductsController } from './products.controller';
+import { ProductsAdminController } from './providers/products-admin.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from 'src/users/entities/user.entity';
+import { AuthModule } from 'src/auth/auth.module';
+import { Product } from './entities/product.entity';
+import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
+import { ColorsModule } from 'src/colors/colors.module';
+import { SizesModule } from 'src/sizes/sizes.module';
+import { CategoryModule } from 'src/category/category.module';
 
 @Module({
-  controllers: [ProductsController],
+  imports: [
+    TypeOrmModule.forFeature([User, Product]),
+    AuthModule,
+    CloudinaryModule,
+    ColorsModule,
+    SizesModule,
+    CategoryModule,
+  ],
+  controllers: [ProductsAdminController],
   providers: [ProductsService],
 })
 export class ProductsModule {}

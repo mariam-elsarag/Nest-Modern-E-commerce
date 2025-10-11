@@ -1,9 +1,14 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateColorDto } from './dto/create-color.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Color } from './entities/color.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { DeleteColorDto } from './dto/delete-color.dto';
+import { FindColorDto } from './dto/find-color-dto';
 
 @Injectable()
 export class ColorsService {
@@ -27,5 +32,24 @@ export class ColorsService {
       throw new BadRequestException('No IDs provided');
     }
     await this.colorRepository.delete(ids);
+  }
+
+  async checkColorExists(body: FindColorDto) {
+    const { color } = body;
+
+    const colors = await this.colorRepository.find({
+      where: { id: In(color) },
+    });
+
+    const foundIds = colors.map((color) => color.id);
+    const missingIds = color.filter((id) => !foundIds.includes(id));
+
+    if (missingIds.length > 0) {
+      throw new NotFoundException(
+        `Colors not found for IDs: ${missingIds.join(', ')}`,
+      );
+    }
+
+    return colors;
   }
 }

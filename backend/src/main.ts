@@ -9,31 +9,47 @@ async function bootstrap() {
   // to return error the way i want
   app.useGlobalFilters(new GlobalExceptionsFilter());
   // for validator
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
       forbidUnknownValues: true,
       transform: true,
-
       exceptionFactory: (validationErrors = []) => {
-        // if you wanna show array of join messages
-        // const errors: Record<string, string[]> = {};
         const errors: Record<string, string> = {};
 
-        for (const error of validationErrors) {
-          if (error.constraints) {
-            // only show fist message
-            errors[error.property] = Object.values(error.constraints)[0];
+        const extractErrors = (errs: any[], parentPath = '') => {
+          for (const err of errs) {
+            const path = parentPath
+              ? `${parentPath}.${err.property}`
+              : err.property;
+
+            if (err.constraints) {
+              // ✅ Type-safe casting here
+              const messages = Object.values(err.constraints) as string[];
+              errors[path] = messages[0];
+            }
+
+            // ✅ Handle nested (variant.0.sku, etc.)
+            if (err.children && err.children.length > 0) {
+              extractErrors(err.children, path);
+            }
           }
-        }
+        };
+
+        extractErrors(validationErrors);
+
+        const firstMessage = Object.values(errors)[0] || 'Validation failed';
 
         return new BadRequestException({
-          message: 'Validation failed',
-          error: errors,
+          statusCode: 400,
+          message: firstMessage,
+          errors,
         });
       },
     }),
   );
+
   app.enableCors({
     origin: ['http://localhost:5173', 'http://localhost:5174'],
     credentials: true,
