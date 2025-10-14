@@ -36,6 +36,12 @@ export class SizesController {
     return this.sizesService.findAll();
   }
 
+  // get product size
+  @Get('product')
+  findProductSizes() {
+    return this.sizesService.findProductSizes();
+  }
+
   @Get(':id')
   @Roles(UserRole.ADMIN)
   @UseGuards(AuthGuard)

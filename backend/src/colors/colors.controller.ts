@@ -36,6 +36,11 @@ export class ColorsController {
   findAll() {
     return this.colorsService.findAll();
   }
+  // product colors (color that use in products)
+  @Get('product')
+  getProductsColor() {
+    return this.colorsService.findProductColors();
+  }
 
   @Delete()
   @Roles(UserRole.ADMIN)

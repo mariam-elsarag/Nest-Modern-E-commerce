@@ -1,18 +1,21 @@
+// src/seeds/category.seed.ts
 import 'reflect-metadata';
-import { Category } from '../category/entities/category.entity';
 import { DataSource } from 'typeorm';
+import { Category } from '../category/entities/category.entity';
+import { Product } from '../products/entities/product.entity';
+import { Color } from '../colors/entities/color.entity';
+import { Size } from '../sizes/entities/size.entity';
 
-// 🧠 adjust these to your DB credentials
 const AppDataSource = new DataSource({
   type: 'postgres',
   host: 'localhost',
   port: 5432,
-  username: '',
-  password: '',
-  database: '',
-  entities: [Category],
-  synchronize: true, // ❗ keep false in prod
-  // logging: false,
+  username: 'postgres',
+  password: '01150464958',
+  database: 'ecommerce',
+  entities: [Category, Product, Color, Size],
+  synchronize: true, // 👈 only for seeding/dev
+  logging: false,
 });
 
 const categories = [
@@ -49,18 +52,18 @@ async function seedCategories() {
     const categoryRepo = AppDataSource.getRepository(Category);
 
     for (const cat of categories) {
-      const existing = await categoryRepo.findOne({
+      const exists = await categoryRepo.findOne({
         where: [{ title: cat.title }, { title_ar: cat.title_ar }],
       });
 
-      if (existing) {
-        continue;
+      if (!exists) {
+        const newCat = categoryRepo.create(cat);
+        await categoryRepo.save(newCat);
+        console.log(`✅ Inserted: ${cat.title}`);
       }
-
-      const newCat = categoryRepo.create(cat);
-      await categoryRepo.save(newCat);
-      console.log(`✅ Inserted: ${cat.title}`);
     }
+
+    console.log('🎉 Seeding completed');
   } catch (err) {
     console.error('❌ Error while seeding categories:', err);
   } finally {

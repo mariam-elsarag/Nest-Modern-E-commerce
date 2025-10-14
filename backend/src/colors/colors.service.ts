@@ -25,7 +25,14 @@ export class ColorsService {
     const colors = await this.colorRepository.find();
     return colors;
   }
-
+  async findProductColors() {
+    const colors = await this.colorRepository
+      .createQueryBuilder('colors')
+      .innerJoin('colors.products', 'products')
+      .distinct(true)
+      .getMany();
+    return colors;
+  }
   async remove(body: DeleteColorDto) {
     const { ids } = body;
     if (!ids || ids.length === 0) {

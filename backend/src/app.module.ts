@@ -16,7 +16,6 @@ import { SettingsModule } from './settings/settings.module';
 import { Setting } from './settings/entities/settings.entity';
 import { ProductsModule } from './products/products.module';
 import { Product } from './products/entities/product.entity';
-import { Variant } from './products/entities/product-variant.entity';
 import { SizesModule } from './sizes/sizes.module';
 import { Size } from './sizes/entities/size.entity';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
@@ -47,7 +46,7 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
           port: config.get<number>('DB_PORT'),
           host: 'localhost',
           synchronize: process.env.NODE_ENV !== 'production' ? true : false,
-          entities: [User, Color, Category, Size, Setting, Product, Variant],
+          entities: [User, Color, Category, Size, Setting, Product],
         };
       },
     }),

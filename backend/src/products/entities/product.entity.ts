@@ -1,13 +1,16 @@
-import { Category } from 'src/category/entities/category.entity';
+import { Category } from '../../category/entities/category.entity';
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
-  OneToMany,
+  JoinTable,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Variant } from './product-variant.entity';
+import { Color } from '../../colors/entities/color.entity';
+import { Size } from '../../sizes/entities/size.entity';
 
 @Entity('products')
 export class Product {
@@ -29,6 +32,15 @@ export class Product {
   @Column({ type: 'varchar' })
   cover: string;
 
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+  price: number;
+
+  @Column({ type: 'int' })
+  quantity: number;
+
+  @Column({ type: 'varchar' })
+  sku: string;
+
   @Column({ type: 'simple-array', nullable: true })
   images: string[];
 
@@ -37,6 +49,12 @@ export class Product {
 
   @Column({ type: 'boolean', default: false })
   isFeatured: boolean;
+
+  @Column({ type: 'boolean', default: false })
+  hasTax: boolean;
+
+  @Column({ type: 'boolean', default: false })
+  defaultTax: boolean;
 
   @Column({ type: 'int', default: 0 })
   taxRate: number;
@@ -47,11 +65,30 @@ export class Product {
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
 
-  @OneToMany(() => Category, (category) => category.products, {
-    onDelete: 'SET NULL',
-  })
-  category: Category;
+  @DeleteDateColumn({ nullable: true })
+  deletedAt?: Date;
 
-  @OneToMany(() => Variant, (variant) => variant.product)
-  variants: Variant[];
+  @ManyToMany(() => Category, (category) => category.products, {
+    cascade: true,
+  })
+  @JoinTable({
+    name: 'product_categories',
+  })
+  categories: Category[];
+
+  @ManyToMany(() => Color, (color) => color.products, {
+    cascade: true,
+  })
+  @JoinTable({
+    name: 'product_colors',
+  })
+  colors: Color[];
+
+  @ManyToMany(() => Size, (size) => size.products, {
+    cascade: true,
+  })
+  @JoinTable({
+    name: 'product_sizes',
+  })
+  sizes: Size[];
 }

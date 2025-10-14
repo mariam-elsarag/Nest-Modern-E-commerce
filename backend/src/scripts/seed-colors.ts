@@ -1,15 +1,19 @@
 import 'reflect-metadata';
 import { Color } from '../colors/entities/color.entity';
 import { DataSource } from 'typeorm';
+import { Product } from '../products/entities/product.entity';
+import { Size } from '../sizes/entities/size.entity';
+import { Category } from '../category/entities/category.entity';
 
 const AppDataSource = new DataSource({
   type: 'postgres',
   host: 'localhost',
   port: 5432,
-  username: '',
+  username: 'postgres',
   password: '',
-  database: '',
-  entities: [Color],
+  database: 'ecommerce',
+
+  entities: [Category, Product, Color, Size],
   synchronize: true,
   logging: false,
 });

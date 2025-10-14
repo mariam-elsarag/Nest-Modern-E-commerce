@@ -38,6 +38,15 @@ export class CategoryService {
     const categories = await this.categoryRepository.find();
     return categories;
   }
+
+  async findProductCategory() {
+    const categories = await this.categoryRepository
+      .createQueryBuilder('category')
+      .innerJoin('category.products', 'products')
+      .distinct(true)
+      .getMany();
+    return categories;
+  }
   async findOne(id: number) {
     const category = await this.categoryRepository.findOneBy({ id });
     if (!category) {
@@ -78,6 +87,6 @@ export class CategoryService {
       );
     }
 
-    return categories;
+    return allCategories;
   }
 }

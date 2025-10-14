@@ -8,3 +8,8 @@ export enum AccountStatus {
   Active = 'active',
   Blocked = 'blocked',
 }
+export enum StockStatus {
+  InStock = 'inStock',
+  OutOfStock = 'outOfStock',
+  LittleAmount = 'littleAmount',
+}

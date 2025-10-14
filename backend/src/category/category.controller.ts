@@ -41,9 +41,15 @@ export class CategoryController {
   findAll(@Query() query: PaginationQueryDto, @Req() req: Request) {
     return this.categoryService.findAll(query, req);
   }
+
   @Get('list')
   findAllWithoutPagination() {
     return this.categoryService.findAllWithoutPagination();
+  }
+
+  @Get('product')
+  findProductCategories() {
+    return this.categoryService.findProductCategory();
   }
 
   @Get(':id')

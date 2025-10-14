@@ -1,11 +1,11 @@
-import { Variant } from 'src/products/entities/product-variant.entity';
+import { Product } from '../../products/entities/product.entity';
 import {
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
-  OneToMany,
+  ManyToOne,
+  ManyToMany,
 } from 'typeorm';
 
 @Entity('colors')
@@ -25,6 +25,6 @@ export class Color {
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
-  @OneToMany(() => Variant, (varinat) => varinat.color)
-  variants: Variant[];
+  @ManyToMany(() => Product, (product) => product.colors)
+  products: Product[];
 }
