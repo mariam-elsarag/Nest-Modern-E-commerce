@@ -6,11 +6,13 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Color } from '../../colors/entities/color.entity';
 import { Size } from '../../sizes/entities/size.entity';
+import { Favorite } from 'src/favorite/entities/favorite.entity';
 
 @Entity('products')
 export class Product {
@@ -91,4 +93,7 @@ export class Product {
     name: 'product_sizes',
   })
   sizes: Size[];
+
+  @OneToMany(() => Favorite, (favorite) => favorite.product)
+  favorites: Favorite[];
 }

@@ -1,9 +1,11 @@
 import { AccountStatus, UserRole } from 'src/common/utils/enum';
+import { Favorite } from 'src/favorite/entities/favorite.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   Index,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -56,4 +58,7 @@ export class User {
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
+
+  @OneToMany(() => Favorite, (favorite) => favorite.user)
+  favorites: Favorite[];
 }
