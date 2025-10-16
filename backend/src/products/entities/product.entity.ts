@@ -10,9 +10,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Color } from '../../colors/entities/color.entity';
-import { Size } from '../../sizes/entities/size.entity';
+
 import { Favorite } from 'src/favorite/entities/favorite.entity';
+import { Variant } from './variant.entity';
 
 @Entity('products')
 export class Product {
@@ -33,12 +33,6 @@ export class Product {
 
   @Column({ type: 'varchar' })
   cover: string;
-
-  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
-  price: number;
-
-  @Column({ type: 'int' })
-  quantity: number;
 
   @Column({ type: 'varchar' })
   sku: string;
@@ -78,22 +72,12 @@ export class Product {
   })
   categories: Category[];
 
-  @ManyToMany(() => Color, (color) => color.products, {
-    cascade: true,
-  })
-  @JoinTable({
-    name: 'product_colors',
-  })
-  colors: Color[];
-
-  @ManyToMany(() => Size, (size) => size.products, {
-    cascade: true,
-  })
-  @JoinTable({
-    name: 'product_sizes',
-  })
-  sizes: Size[];
-
   @OneToMany(() => Favorite, (favorite) => favorite.product)
   favorites: Favorite[];
+
+  @OneToMany(() => Variant, (variant) => variant.product, {
+    cascade: true,
+    eager: true,
+  })
+  variants: Variant[];
 }

@@ -2,6 +2,7 @@ import { Expose, Transform, Type } from 'class-transformer';
 import { CategoryResponseDto } from 'src/category/dto/response-category.dto';
 import { Category } from 'src/category/entities/category.entity';
 import { StockStatus } from 'src/common/utils/enum';
+import { Variant } from '../entities/variant.entity';
 
 export class ProductListResponseDto {
   @Expose()
@@ -20,25 +21,18 @@ export class ProductListResponseDto {
   isAvalible: boolean;
 
   @Expose()
-  @Transform(({ obj }) => {
-    const q = obj.quantity || 0;
-    if (q > 10) return StockStatus.InStock;
-    if (q > 0 && q <= 10) return StockStatus.LittleAmount;
-    return StockStatus.OutOfStock;
-  })
-  stock: StockStatus;
-
-  @Expose()
   @Type(() => CategoryResponseDto)
   categories: CategoryResponseDto[];
 
-  @Expose()
-  @Type(() => Number)
-  price: number;
+  @Type(() => Variant)
+  variants: Variant[];
 
   @Expose()
-  @Type(() => Number)
-  quantity: number;
+  @Transform(({ obj }) => {
+    if (!obj.variants || obj.variants.length === 0) return 0;
+    return Math.min(...obj.variants.map((v) => v.price));
+  })
+  price: number;
 
   @Expose()
   sku: string;

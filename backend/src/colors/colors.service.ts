@@ -8,7 +8,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Color } from './entities/color.entity';
 import { In, Repository } from 'typeorm';
 import { DeleteColorDto } from './dto/delete-color.dto';
-import { FindColorDto } from './dto/find-color-dto';
+import { plainToInstance } from 'class-transformer';
+import { ColorResponseDto } from './dto/response-color.dto';
 
 @Injectable()
 export class ColorsService {
@@ -16,6 +17,17 @@ export class ColorsService {
     @InjectRepository(Color)
     private readonly colorRepository: Repository<Color>,
   ) {}
+
+  async findOne(id: number) {
+    const color = await this.colorRepository.findOneBy({ id });
+    if (!color) {
+      throw new NotFoundException('Color not found');
+    }
+    return plainToInstance(ColorResponseDto, color, {
+      excludeExtraneousValues: true,
+    });
+  }
+
   async create(body: CreateColorDto) {
     const color = await this.colorRepository.save(body);
     return color;
@@ -39,24 +51,5 @@ export class ColorsService {
       throw new BadRequestException('No IDs provided');
     }
     await this.colorRepository.delete(ids);
-  }
-
-  async checkColorExists(body: FindColorDto) {
-    const { color } = body;
-
-    const colors = await this.colorRepository.find({
-      where: { id: In(color) },
-    });
-
-    const foundIds = colors.map((color) => color.id);
-    const missingIds = color.filter((id) => !foundIds.includes(id));
-
-    if (missingIds.length > 0) {
-      throw new NotFoundException(
-        `Colors not found for IDs: ${missingIds.join(', ')}`,
-      );
-    }
-
-    return colors;
   }
 }

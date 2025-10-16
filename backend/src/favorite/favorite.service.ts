@@ -66,7 +66,7 @@ export class FavoriteService {
       await this.favoriteRepo.remove(existing);
       return { isFavorite: false };
     } else {
-      const favorite = this.favoriteRepo.create({ user, product });
+      const favorite = this.favoriteRepo.create({ user, id });
       await this.favoriteRepo.save(favorite);
       return { isFavorite: true };
     }

@@ -4,7 +4,6 @@ import { UpdateSizeDto } from './dto/update-size.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Size } from './entities/size.entity';
 import { In, Repository } from 'typeorm';
-import { FindSizeDto } from './dto/find-size.dto';
 
 @Injectable()
 export class SizesService {
@@ -54,22 +53,5 @@ export class SizesService {
   async remove(id: number) {
     await this.findOne(id);
     await this.sizeRepository.delete(id);
-  }
-
-  async checkSizeExist(body: FindSizeDto) {
-    const { size } = body;
-
-    const sizes = await this.sizeRepository.find({
-      where: { id: In(size) },
-    });
-    const foundIds = sizes.map((size) => size.id);
-    const missingIds = size.filter((id) => !foundIds.includes(id));
-    if (missingIds.length > 0) {
-      throw new NotFoundException(
-        `Sizes not found for IDs: ${missingIds.join(', ')}`,
-      );
-    }
-
-    return sizes;
   }
 }

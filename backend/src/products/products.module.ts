@@ -9,10 +9,11 @@ import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
 import { ColorsModule } from 'src/colors/colors.module';
 import { SizesModule } from 'src/sizes/sizes.module';
 import { CategoryModule } from 'src/category/category.module';
+import { Variant } from './entities/variant.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Product]),
+    TypeOrmModule.forFeature([User, Product, Variant]),
     AuthModule,
     CloudinaryModule,
     ColorsModule,

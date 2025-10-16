@@ -18,6 +18,7 @@ import {
   Matches,
 } from 'class-validator';
 import { Type } from 'class-transformer';
+import { CreateVariantDto } from './create-variant.dto';
 
 export function IsTaxRateAllowed(validationOptions?: ValidationOptions) {
   return function (object: any, propertyName: string) {
@@ -99,32 +100,11 @@ export class CreateProductDto {
   @ArrayNotEmpty({ message: 'At least one category is required' })
   categories: number[];
 
-  @Type(() => Number)
-  @IsNumber(
-    { maxDecimalPlaces: 2 },
-    {
-      message:
-        'price must be a valid decimal with up to 2 digits after the point',
-    },
-  )
-  @Min(0, { message: 'price cannot be negative' })
-  @IsNotEmpty()
-  price: number;
-
-  @IsNotEmpty()
-  @Type(() => Number)
-  @IsNumber({}, { message: 'quantity must be a valid number' })
-  quantity: number;
-
   @IsArray()
-  @ArrayNotEmpty({ message: 'At least one color is required' })
-  @Type(() => Number)
-  colors: number[];
-
-  @IsArray()
-  @Type(() => Number)
-  @IsOptional()
-  sizes: number[];
+  @ArrayMinSize(1, { message: 'At least one variant is required' })
+  @ValidateNested({ each: true })
+  @Type(() => CreateVariantDto)
+  variants: CreateVariantDto[];
 
   @IsString()
   @IsNotEmpty()

@@ -24,7 +24,4 @@ export class Color {
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
-
-  @ManyToMany(() => Product, (product) => product.colors)
-  products: Product[];
 }
