@@ -182,5 +182,11 @@
   "category_title_unique": "يجب أن يكون عنوان الفئة فريدًا",
   "category_title_ar_unique": "يجب أن يكون العنوان العربي للفئة فريدًا",
   "no_tax_description": "في حال تفعيل هذا الخيار، لن يتم فرض ضريبة على هذا المنتج.",
-  "successfully_update_settings": "تم تحديث الإعدادات بنجاح"
+  "successfully_update_settings": "تم تحديث الإعدادات بنجاح",
+  "confirm_delete_product": "هل أنت متأكد أنك تريد حذف هذا المنتج؟",
+  "delete_product": "حذف المنتج",
+  "success_delete_product": "تم حذف المنتج بنجاح",
+  "update_product": "تحديث المنتج",
+  "success_create_product": "تم إنشاء المنتج بنجاح",
+  "success_update_product": "تم تحديث المنتج بنجاح"
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useTransition } from "react";
 import Page_Wraper from "../../components/layout/page_wraper/Page_Wraper";
 import { useNavigate } from "react-router-dom";
 import Table_Layout from "../../components/shared/table/Table_Layout";
@@ -7,95 +7,50 @@ import { API } from "../../services/apiUrl";
 import { currentLanguageCode } from "../../common/utils/switchLang";
 import Product_Item from "../../components/shared/product/Product_Item";
 import { formatPrice } from "../../common/utils/formatPrice";
-import { productStatusBadge } from "../../common/lists/Badges_List";
+import { productAvaliblityBadge } from "../../common/lists/Badges_List";
 import Badge from "../../components/shared/badge/Badge";
-
-export const fakeProducts: ProductType[] = [
-  {
-    id: 1,
-    image: "https://via.placeholder.com/80",
-    title: "Blue T-Shirt",
-    title_ar: "تيشيرت أزرق",
-    sku: "TSH-BLU-M",
-    price: 250,
-    quantity: 15,
-    status: "inStock",
-    categories: [
-      { id: 1, title: "Clothing", title_ar: "ملابس" },
-      { id: 2, title: "Men", title_ar: "رجالي" },
-      { id: 3, title: "T-Shirts", title_ar: "تيشيرتات" },
-    ],
-  },
-  {
-    id: 2,
-    image: "https://via.placeholder.com/80",
-    title: "Wireless Mouse",
-    title_ar: "ماوس لاسلكي",
-    sku: "MOU-WRL-001",
-    price: 120,
-    quantity: 0,
-    status: "outOfStock",
-    categories: [
-      { id: 4, title: "Electronics", title_ar: "إلكترونيات" },
-      { id: 5, title: "Accessories", title_ar: "إكسسوارات" },
-    ],
-  },
-  {
-    id: 3,
-    image: "https://via.placeholder.com/80",
-    title: "Running Shoes",
-    title_ar: "حذاء رياضي",
-    sku: "SHO-RUN-42",
-    price: 600,
-    quantity: 3,
-    status: "lowStock",
-    categories: [
-      { id: 1, title: "Clothing", title_ar: "ملابس" },
-      { id: 6, title: "Shoes", title_ar: "أحذية" },
-      { id: 7, title: "Sports", title_ar: "رياضة" },
-      { id: 8, title: "Men", title_ar: "رجالي" },
-    ],
-  },
-  {
-    id: 4,
-    image: "https://via.placeholder.com/80",
-    title: "Leather Wallet",
-    title_ar: "محفظة جلد",
-    sku: "WAL-LEA-001",
-    price: 350,
-    quantity: 25,
-    status: "inStock",
-    categories: [
-      { id: 5, title: "Accessories", title_ar: "إكسسوارات" },
-      { id: 9, title: "Leather", title_ar: "جلد" },
-    ],
-  },
-  {
-    id: 5,
-    image: "https://via.placeholder.com/80",
-    title: "Gaming Keyboard",
-    title_ar: "كيبورد ألعاب",
-    sku: "KEY-GAM-002",
-    price: 750,
-    quantity: 7,
-    status: "inStock",
-    categories: [
-      { id: 4, title: "Electronics", title_ar: "إلكترونيات" },
-      { id: 10, title: "Gaming", title_ar: "ألعاب" },
-      { id: 11, title: "Keyboards", title_ar: "لوحات مفاتيح" },
-    ],
-  },
-];
+import type { MenuListTypes } from "../../components/shared/menu/Menue.types";
+import { EditIcon, TrashIcon } from "../../assets/icons/Icon";
+import Menu from "../../components/shared/menu/Menu";
+import Confirmation_Modal from "../../components/shared/modal/Confirmation_Modal";
+import { handleError } from "../../common/utils/handleError";
+import axiosInstance from "../../services/axiosInstance";
+import { toast } from "react-toastify";
 
 const Product_List = () => {
+  const { t } = useTransition();
   const navigate = useNavigate();
+  const [deleteLoader, setDeleteLoader] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [id, setId] = useState<number | null>();
+  const [refetch, setRefetch] = useState();
+  // ___________________ list _________________
+
+  const list: MenuListTypes[] = [
+    {
+      icon: <EditIcon width="20" height="20" />,
+      name: "update",
+      action: (item) => {
+        navigate(`/products/${item?.id}/edit`);
+      },
+    },
+    {
+      icon: <TrashIcon />,
+      name: "delete",
+      textClassName: "text-semantic-red-900",
+      action: (item) => {
+        setId(item?.id);
+        setDeleteModal(true);
+      },
+    },
+  ];
   const columns = [
     {
       header: "name",
       field: "name",
       body: (item) => (
         <Product_Item
-          avatar={item?.image}
+          avatar={item?.cover}
           title={currentLanguageCode === "en" ? item?.title : item?.title_ar}
         />
       ),
@@ -107,24 +62,20 @@ const Product_List = () => {
       body: (item) => (item?.price ? formatPrice(item?.price) : 0),
     },
     {
-      header: "quantity",
-      field: "quantity",
-      body: (item) => (item?.quantity > 0 ? `x ${item?.quantity}` : "-"),
-    },
-    {
-      header: "stock",
-      field: "stock",
+      header: "avaliblity",
+      field: "isAvalible",
       body: (item) => {
-        const { text, type } = productStatusBadge(item?.status);
+        const { text, type } = productAvaliblityBadge(item?.isAvalible);
         return <Badge text={text} type={type} />;
       },
     },
+
     {
       header: "categories",
       field: "categories",
       body: (item) => (
         <div>
-          {item?.categores?.length > 3 ? (
+          {item?.categories?.length > 3 ? (
             <div>
               {item?.categores
                 ?.slice(0, 3)
@@ -132,10 +83,10 @@ const Product_List = () => {
                   currentLanguageCode === "en" ? title : title_ar
                 )
                 ?.join(", ")}
-              <span> +{item?.categores?.length - 3}</span>
+              <span> +{item?.categories?.length - 3}</span>
             </div>
           ) : (
-            item?.categores
+            item?.categories
               ?.map(({ title, title_ar }) =>
                 currentLanguageCode === "en" ? title : title_ar
               )
@@ -144,24 +95,59 @@ const Product_List = () => {
         </div>
       ),
     },
+    {
+      header: "action",
+      field: "action",
+      body: (item) => <Menu<ProductType> list={list} data={item} />,
+    },
   ];
+
+  const deleteProduct = async () => {
+    try {
+      setDeleteLoader(true);
+      const respone = await axiosInstance.delete(`${API.product.main}${id}`);
+      if (respone.status === 204) {
+        toast.success(t("success_delete_product"));
+        setDeleteModal(false);
+        setId(null);
+        setRefetch(Date.now());
+      }
+    } catch (err) {
+      handleError(err, t);
+    } finally {
+      setDeleteLoader(false);
+    }
+  };
   return (
-    <Page_Wraper
-      label="products"
-      hasBtn={true}
-      btnName="add_product"
-      btnCta={() => {
-        navigate("/products/create");
-      }}
-    >
-      <Table_Layout<ProductType>
-        hasPagination={true}
-        columns={columns}
-        emptyText="no_product_yet"
-        endpoint={API.product.main}
-        search_placeholder="search_product"
+    <>
+      <Page_Wraper
+        label="products"
+        hasBtn={true}
+        btnName="add_product"
+        btnCta={() => {
+          navigate("/products/create");
+        }}
+      >
+        <Table_Layout<ProductType>
+          hasPagination={true}
+          columns={columns}
+          emptyText="no_product_yet"
+          endpoint={API.product.main}
+          search_placeholder="search_product"
+        />
+      </Page_Wraper>
+
+      <Confirmation_Modal
+        open={deleteModal}
+        onClose={() => {
+          setDeleteModal(false);
+        }}
+        title="confirm_delete_product"
+        mainBtnText="delete_product"
+        mainBtnCta={deleteProduct}
+        loading={deleteLoader}
       />
-    </Page_Wraper>
+    </>
   );
 };
 

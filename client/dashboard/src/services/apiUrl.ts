@@ -2,6 +2,7 @@ export const apiKey = import.meta.env.VITE_API_URL;
 export const API = {
   list: {
     category: "/api/category/list",
+    size: "/api/size",
   },
   auth: {
     login: "/api/auth/login",
@@ -23,7 +24,7 @@ export const API = {
     list: "",
   },
   product: {
-    main: "",
+    main: "/api/admin/product",
   },
   contact: {
     main: "",

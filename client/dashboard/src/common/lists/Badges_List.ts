@@ -24,13 +24,10 @@ export const userStatusBadge = (data) => {
   }
 };
 
-export const productStatusBadge = (data) => {
-  switch (data) {
-    case "inStock":
-      return { text: "inStock", type: "success" };
-    case "outOfStock":
-      return { text: "outOfStock", type: "error" };
-    default:
-      return { text: "lowStock", type: "warning" };
+export const productAvaliblityBadge = (data) => {
+  if (data) {
+    return { text: "avalible", type: "success" };
+  } else {
+    return { text: "unavalible", type: "error" };
   }
 };

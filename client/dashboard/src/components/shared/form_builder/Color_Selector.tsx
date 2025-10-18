@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 
 import { MultiSelect } from "primereact/multiselect";
 import View_Colors from "./View_Colors";
+import { Dropdown } from "primereact/dropdown";
+import { InfoIcon } from "../../../assets/icons/Icon";
 
 type ColorSelectorPops = {
   error?: any;
@@ -36,7 +38,7 @@ const Color_Selector = ({
   };
   return (
     <>
-      <MultiSelect
+      <Dropdown
         options={item?.optionList}
         optionLabel="name"
         optionValue="value"
@@ -46,14 +48,30 @@ const Color_Selector = ({
         onChange={handleChange}
         disabled={disabled}
         placeholder={t(item?.placeholder || "")}
-        className={`flex-1 w-full !p-0 form_dropdown ${
-          error ? "input_error" : ""
-        } `}
+        className={`flex-1 w-full !p-0  ${error ? "invalid" : ""} `}
         inputId={item?.id}
         filter={item?.hasFilter || false}
+        invalid={error}
         panelClassName="horizontal-icon-dropdown"
-        maxSelectedLabels={2}
       />
+      {item?.inlineError && error && (
+        <p className="flex items-center gap-1">
+          <span>
+            <InfoIcon
+              width="20"
+              height="20"
+              fill={item?.errorFill ?? "var(--color-semantic-red-900)"}
+            />
+          </span>
+          <span
+            className={`text-semantic-red-900 text-xs ${
+              item?.errorClassName ?? ""
+            }`}
+          >
+            {t(error)}
+          </span>
+        </p>
+      )}
     </>
   );
 };

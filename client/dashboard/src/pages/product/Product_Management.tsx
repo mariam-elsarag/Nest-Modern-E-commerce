@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import type { BreadCrumbListType } from "../../components/breadCrumb/Bread_Crumb.types";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { handleError } from "../../common/utils/handleError";
 import Page_Wraper from "../../components/layout/page_wraper/Page_Wraper";
 import Page_Title from "../../components/layout/header/page_title/Page_Title";
@@ -23,38 +23,8 @@ import { formatPrice } from "../../common/utils/formatPrice";
 import Table from "../../components/shared/table/Table";
 import useGetData from "../../hooks/useGetData";
 import { API } from "../../services/apiUrl";
-
-export const fakeCategories: CategoryType[] = [
-  { id: 1, title: "Clothing", title_ar: "ملابس" },
-  { id: 2, title: "Electronics", title_ar: "إلكترونيات" },
-  { id: 3, title: "Accessories", title_ar: "إكسسوارات" },
-  { id: 4, title: "Shoes", title_ar: "أحذية" },
-  { id: 5, title: "Sports", title_ar: "رياضة" },
-  { id: 6, title: "Gaming", title_ar: "ألعاب" },
-  { id: 7, title: "Keyboards", title_ar: "لوحات مفاتيح" },
-  { id: 8, title: "T-Shirts", title_ar: "تيشيرتات" },
-  { id: 9, title: "Leather", title_ar: "جلد" },
-  { id: 10, title: "Men", title_ar: "رجالي" },
-  { id: 11, title: "Women", title_ar: "نسائي" },
-];
-
-const fakeColors = [
-  { name: "Red", hex: "#FF0000" },
-  { name: "Blue", hex: "#0000FF" },
-  { name: "Green", hex: "#008000" },
-  { name: "Black", hex: "#000000" },
-  { name: "White", hex: "#FFFFFF" },
-  { name: "Gray", hex: "#808080" },
-  { name: "Yellow", hex: "#FFFF00" },
-  { name: "Orange", hex: "#FFA500" },
-  { name: "Purple", hex: "#800080" },
-  { name: "Pink", hex: "#FFC0CB" },
-  { name: "Brown", hex: "#A52A2A" },
-  { name: "Cyan", hex: "#00FFFF" },
-  { name: "Magenta", hex: "#FF00FF" },
-  { name: "Navy", hex: "#000080" },
-  { name: "Teal", hex: "#008080" },
-];
+import axiosInstance from "../../services/axiosInstance";
+import View_Colors from "../../components/shared/form_builder/View_Colors";
 
 type Variant = {
   index?: number;
@@ -67,14 +37,17 @@ type Variant = {
 };
 const Product_Management = () => {
   const { t } = useTranslation();
+  const { id } = useParams();
   const isEdit = location.pathname.includes("/edit");
   const pageTitle = isEdit ? "update_product" : "add_product";
 
   const [loading, setLoading] = useState(false);
+  const [loadingData, setLoadingData] = useState(false);
   const [variantList, setVariantList] = useState<Variant>([]);
   // ___________ hooks _________
   const { data: categoryList } = useGetData(API.list.category);
   const { data: colorList } = useGetData(API.settting.color);
+  const { data: sizeList } = useGetData(API.list.size);
 
   // ___________ useform _________
   const {
@@ -92,22 +65,25 @@ const Product_Management = () => {
       title_ar: "",
       description: "",
       description_ar: "",
-      category: [],
+      categories: [],
       hasTax: false,
       status: null,
       taxRate: null,
+      sku: "",
+      cover: null,
+      isFeatured: false,
+      isAvalible: true,
+      images: [],
       variants: {
-        colors: [],
-        sizes: [],
+        color: null,
+        size: null,
         quantity: null,
         price: null,
-        sku: "",
       },
     },
     mode: "onChange",
   });
-  const { data: settingData } = useGetData(API.settting.setting, setValue);
-  const hasRate = watch("hasTaxRate");
+  const defaultTax = watch("defaultTax");
   const hasTax = watch("hasTax");
   // for append
   const variants = watch("variants");
@@ -115,7 +91,7 @@ const Product_Management = () => {
   const handleAddAnother = () => {
     let hasEmptyField = false;
 
-    ["price", "quantity", "sku"].forEach((field) => {
+    ["price", "quantity", "color"].forEach((field) => {
       if (!variants?.[field]) {
         hasEmptyField = true;
         setError(`variants.${field}`, {
@@ -131,20 +107,18 @@ const Product_Management = () => {
         ...prev,
         {
           id: variantList?.length + 1,
-          colors: variants?.colors || [],
-          sizes: variants?.sizes || [],
+          color: variants?.color || null,
+          size: variants?.size || null,
           price: variants?.price || "",
           quantity: variants?.quantity || "",
-          sku: variants?.sku || "",
         },
       ]);
 
       setValue("variants", {
-        colors: [],
-        sizes: [],
+        color: null,
+        size: null,
         price: "",
         quantity: "",
-        sku: "",
       });
       clearErrors("variants");
     }
@@ -199,7 +173,7 @@ const Product_Management = () => {
       id: "3",
       formType: "dropdown",
       label: "status",
-      fieldName: "status",
+      fieldName: "isAvalible",
       placeholder: "status",
       optionList: avalibleList,
     },
@@ -207,7 +181,7 @@ const Product_Management = () => {
       id: "4",
       formType: "multiselect",
       label: "category",
-      fieldName: "category",
+      fieldName: "categories",
       placeholder: "category",
       optionList: categoryList?.map((item) => ({
         name: currentLanguageCode === "en" ? item?.title : item?.title_ar,
@@ -225,6 +199,7 @@ const Product_Management = () => {
       variant: "upload",
       label: "cover_image",
       isMultiple: false,
+      isEdit: isEdit,
       placeholder: "choose_cover_image",
       validator: {
         required: "required_field",
@@ -260,7 +235,23 @@ const Product_Management = () => {
         required: "required_field",
       },
     },
-
+    {
+      id: "15",
+      formType: "input",
+      inputMode: "text",
+      type: "text",
+      name: "sku",
+      label: "sku",
+      placeholder: "sku",
+      fieldName: `sku`,
+      validator: {
+        pattern: {
+          value: skuPattern,
+          message: "sku_pattern",
+        },
+      },
+      inlineError: true,
+    },
     {
       id: "9",
       formType: "switch",
@@ -283,9 +274,9 @@ const Product_Management = () => {
       formType: "switch",
       text: "tax_message",
       containerClassName: "!flex flex-col justify-end ",
-      fieldName: "hasTaxRate",
+      fieldName: "defaultTax",
     },
-    {
+    !defaultTax && {
       id: "12",
       formType: "input",
       type: "text",
@@ -293,11 +284,10 @@ const Product_Management = () => {
       label: "tax_rate",
       placeholder: "tax_rate",
       fieldName: "taxRate",
-      disabled: !hasRate,
 
       validator: {
         validate: (value) => {
-          if (hasRate) {
+          if (!defaultTax) {
             if (!value) return "required_field";
             return taxRatePattern.test(value) ? true : "invalid_tax_rate";
           }
@@ -389,47 +379,37 @@ const Product_Management = () => {
       },
       inlineError: true,
     },
-    {
-      id: "15",
-      formType: "input",
-      inputMode: "text",
-      type: "text",
-      name: "sku",
-      label: "sku",
-      placeholder: "sku",
-      fieldName: `variants.sku`,
-      validator: {
-        pattern: {
-          value: skuPattern,
-          message: "sku_pattern",
-        },
-      },
-      inlineError: true,
-    },
+
     {
       id: "16",
-      formType: "multiselect",
-      label: "sizes",
-      fieldName: "variants.sizes",
+      formType: "dropdown",
+      label: "size",
+      fieldName: "variants.size",
       placeholder: "size",
-      optionList: sizeList,
+      optionList: sizeList?.map((item) => ({
+        name: item?.label,
+        value: item,
+      })),
     },
     {
       id: "17",
       formType: "color",
       placeholder: "select_color",
-      fieldName: `variants.colors`,
-      label: "colors",
+      fieldName: `variants.color`,
+      label: "color",
       optionList: colorList?.map((item) => ({
         name: currentLanguageCode === "en" ? item?.name : item?.name_ar,
         color: item?.color,
-        value: item?.id,
+        value: item,
       })),
+      validator: {
+        required: "required_field",
+      },
+      inlineError: true,
     },
   ];
 
   const columns = [
-    { header: "sku", field: "sku", body: (item) => item?.sku ?? "-" },
     {
       header: "quantity",
       field: "quantity",
@@ -441,24 +421,20 @@ const Product_Management = () => {
       body: (item) => (item?.price ? formatPrice(item?.price) : 0),
     },
     {
-      header: "colors",
-      field: "colors",
+      header: "color",
+      field: "color",
       body: (item) => (
         <>
-          {item?.colors?.length > 0 ? (
-            <div className="flex items-center gap-2 flex-wrap">
-              {item?.colors?.map((color) => (
-                <div
-                  key={color}
-                  className="w-4 h-4 border border-neutral-white-200 p-[1px] rounded-full"
-                >
-                  <div
-                    style={{ background: color }}
-                    className="w-full h-full rounded-full"
-                  />
-                </div>
-              ))}
-            </div>
+          {item?.color ? (
+            <View_Colors
+              color={item?.color?.color}
+              text={
+                currentLanguageCode === "en"
+                  ? item?.color?.name
+                  : item?.color.name_ar
+              }
+              id={item?.id}
+            />
           ) : (
             "-"
           )}
@@ -466,11 +442,9 @@ const Product_Management = () => {
       ),
     },
     {
-      header: "sizes",
-      field: "sizes",
-      body: (item) => (
-        <> {item.sizes?.length > 0 ? item.sizes.join(", ") : "-"}</>
-      ),
+      header: "size",
+      field: "size",
+      body: (item) => <> {item.size?.label ?? "-"}</>,
     },
 
     {
@@ -509,7 +483,35 @@ const Product_Management = () => {
       setLoading(false);
     }
   };
+  const getDetails = async () => {
+    try {
+      setLoadingData(true);
+      const response = await axiosInstance.get(`${API.product.main}/${id}`);
+      Object.entries(response.data).map(([key, value]) => {
+        if (key === "categories") {
+          setValue(
+            key,
+            value?.map(({ id }) => id)
+          );
+        } else if (key === "variants") {
+          setVariantList(value);
+        } else {
+          setValue(key, value);
+        }
+      });
+    } catch (err) {
+      console.log(err.response);
+      handleError(err, t, setError);
+    } finally {
+      setLoadingData(false);
+    }
+  };
 
+  useEffect(() => {
+    if (isEdit) {
+      getDetails();
+    }
+  }, [isEdit]);
   return (
     <Page_Wraper
       list={breadcrumbsList}

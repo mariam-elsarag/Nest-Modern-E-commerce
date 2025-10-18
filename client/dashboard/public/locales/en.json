@@ -184,5 +184,11 @@
   "category_title_unique": "The category title must be unique",
   "category_title_ar_unique": "The Arabic category title must be unique",
   "no_tax_description": "If enabled, this product will be exempt from tax.",
-  "successfully_update_settings": "Settings updated successfully"
+  "successfully_update_settings": "Settings updated successfully",
+  "confirm_delete_product": "Are you sure you want to delete this product?",
+  "delete_product": "Delete Product",
+  "success_delete_product": "Product has been deleted successfully",
+  "update_product": "Update Product",
+  "success_create_product": "Product has been created successfully",
+  "success_update_product": "Product has been updated successfully"
 }

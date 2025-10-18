@@ -16,5 +16,16 @@ export interface CategoryType {
   id: number;
   title: string;
   title_ar: string;
-  createdAt: Date;
+  createdAt?: Date;
+}
+
+export interface ProductType {
+  id: number;
+  title: string;
+  title_ar: string;
+  isAvalible?: boolean;
+  sku: string;
+  price: number;
+  updatedAt: Date;
+  categories: CategoryType[];
 }
