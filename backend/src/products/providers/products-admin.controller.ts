@@ -28,7 +28,7 @@ import { QueryProductDto } from '../dto/query-product.dto';
 
 @Roles(UserRole.ADMIN)
 @UseGuards(AuthGuard)
-@Controller('api/admin/product')
+@Controller('api/v1/admin/product')
 export class ProductsAdminController {
   constructor(private readonly productsService: ProductsService) {}
 

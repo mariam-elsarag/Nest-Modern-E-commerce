@@ -10,6 +10,7 @@ import { ColorsModule } from 'src/colors/colors.module';
 import { SizesModule } from 'src/sizes/sizes.module';
 import { CategoryModule } from 'src/category/category.module';
 import { Variant } from './entities/variant.entity';
+import { ProductController } from './providers/products.controller';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { Variant } from './entities/variant.entity';
     SizesModule,
     CategoryModule,
   ],
-  controllers: [ProductsAdminController],
+  controllers: [ProductsAdminController, ProductController],
   providers: [ProductsService],
   exports: [ProductsService],
 })

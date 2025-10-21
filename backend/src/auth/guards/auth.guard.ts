@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';
 import {
   CURETNT_USER_KEY,
   IS_TOKEN_REQUIRED_KEY,
+  TOKEN,
 } from 'src/common/utils/const';
 import { AccountStatus, UserRole } from 'src/common/utils/enum';
 import { JwtReturnTypePayload } from 'src/common/utils/types';
@@ -88,6 +89,7 @@ export class AuthGuard implements CanActivate {
         }
 
         req[CURETNT_USER_KEY] = user;
+        req[TOKEN] = token;
         return true;
       } catch (error) {
         console.error('AuthGuard error:', error);

@@ -7,7 +7,7 @@ export const API = {
     verifyOtp: "/api/auth/verify-otp",
     resetPassword: "/api/auth/reset-password",
   },
-  products: "/products",
+  products: "/api/v1/product",
   reviews: "/reviews",
   categories: "/categories",
   colors: "/colors",

@@ -154,6 +154,18 @@ export class ProductsService {
       excludeExtraneousValues: true,
     });
   }
+  async findAvalibleOne(id: number) {
+    const product = await this.productRepository.findOne({
+      where: { id, isAvalible: true },
+      relations: ['variants'],
+    });
+
+    if (!product) {
+      throw new NotFoundException('Product not found or unavailable');
+    }
+
+    return product;
+  }
 
   async update(
     id: number,
@@ -224,7 +236,6 @@ export class ProductsService {
           'Each product must have at least one variant.',
         );
       }
-
       const incomingVariantIds = variants.filter((v) => v.id).map((v) => v.id);
 
       const variantsToRemove = product.variants?.filter(
@@ -276,5 +287,44 @@ export class ProductsService {
     await this.findOne(id);
     await this.productRepository.softDelete(id);
     return `Product has been deleted successfully`;
+  }
+
+  async getAvalibleProducts() {
+    const product = await this.productRepository
+      .createQueryBuilder('product')
+      .leftJoinAndSelect('product.variants', 'variants')
+      .where('product.isAvailable = :available', { available: true })
+      .andWhere('variants.quantity > 0')
+      .getOne();
+
+    if (!product) {
+      throw new NotFoundException('Product not found or unavailable');
+    }
+
+    return plainToInstance(ProductResponseDto, product, {
+      excludeExtraneousValues: true,
+    });
+  }
+  async checkVariant(product: Product, variantId: number, quantity: number) {
+    const productVariant = product.variants.find(({ id }) => id == variantId);
+
+    const variant = await this.variantRepository.findOne({
+      where: { id: variantId },
+    });
+    if (!productVariant || !variant) {
+      throw new BadRequestException('Variant not found for this product');
+    }
+
+    if (variant.quantity <= 0) {
+      throw new BadRequestException('This variant is out of stock');
+    }
+
+    if (variant.quantity < quantity) {
+      throw new BadRequestException(
+        `Insufficient stock: only ${variant.quantity} available`,
+      );
+    }
+
+    return variant;
   }
 }

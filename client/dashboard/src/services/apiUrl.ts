@@ -24,7 +24,7 @@ export const API = {
     list: "",
   },
   product: {
-    main: "/api/admin/product",
+    main: "/api/v1/admin/product",
   },
   contact: {
     main: "",

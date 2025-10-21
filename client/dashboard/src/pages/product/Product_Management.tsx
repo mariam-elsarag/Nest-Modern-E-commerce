@@ -108,7 +108,6 @@ const Product_Management = () => {
       setVariantList((prev) => [
         ...prev,
         {
-          id: variantList?.length + 1,
           color: variants?.color || null,
           size: variants?.size || null,
           price: variants?.price || "",
@@ -406,7 +405,7 @@ const Product_Management = () => {
         color: item?.color,
         value: item,
       })),
-
+      hasFilter: true,
       inlineError: true,
     },
   ];
@@ -501,6 +500,9 @@ const Product_Management = () => {
         formData.append(key, value);
       });
       variantList.map((item, index) => {
+        if (item?.id) {
+          formData.append(`variants[${index}][id]`, item?.id);
+        }
         formData.append(`variants[${index}][price]`, item?.price);
         formData.append(`variants[${index}][quantity]`, item?.quantity);
         formData.append(`variants[${index}][color]`, item?.color?.id);
@@ -577,6 +579,7 @@ const Product_Management = () => {
               formList={formList}
               control={control}
               errors={errors}
+              loading={loading || loadingData}
             />
           </fieldset>
         </section>
@@ -588,6 +591,7 @@ const Product_Management = () => {
               <Form_Builder
                 formList={taxList}
                 control={control}
+                loading={loading || loadingData}
                 errors={errors}
               />
             </div>

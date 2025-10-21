@@ -19,24 +19,23 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 export async function clientLoader() {
-  const response = await axiosInstance.get<Product[]>(API.products);
-
-  return { data: response.data };
+  // const response = await axiosInstance.get<Product[]>(API.products);
+  // return { data: response.data };
 }
 export default function Home({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation();
 
-  const { data } = loaderData;
-  const bestSelling = data.filter(
-    (product) => product.isBestSelling && product
-  );
+  // const { data } = loaderData;
+  // const bestSelling = data.filter(
+  //   (product) => product.isBestSelling && product
+  // );
   return (
     <section className="section_gap">
       <Hero />
-      <Features />
+      {/* <Features />
       <Best_Selling products={bestSelling} />
       <Category />
-      <Product_List data={data} />
+      <Product_List data={data} /> */}
     </section>
   );
 }

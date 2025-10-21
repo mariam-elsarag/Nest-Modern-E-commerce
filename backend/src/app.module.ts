@@ -22,6 +22,9 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { FavoriteModule } from './favorite/favorite.module';
 import { Favorite } from './favorite/entities/favorite.entity';
 import { Variant } from './products/entities/variant.entity';
+import { CartModule } from './cart/cart.module';
+import { CartSession } from './cart/entities/cart-session.entity';
+import { CartItem } from './cart/entities/cart-items.entity';
 
 @Module({
   imports: [
@@ -58,6 +61,8 @@ import { Variant } from './products/entities/variant.entity';
             Product,
             Variant,
             Favorite,
+            CartSession,
+            CartItem,
           ],
         };
       },
@@ -71,6 +76,7 @@ import { Variant } from './products/entities/variant.entity';
     SizesModule,
     CloudinaryModule,
     FavoriteModule,
+    CartModule,
   ],
   controllers: [],
   providers: [],
