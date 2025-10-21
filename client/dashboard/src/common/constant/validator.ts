@@ -6,5 +6,5 @@ export const passwordPattern =
 export const phonePattern = /^01[0125][0-9]{8}$/;
 
 export const numberPattern = /^\d{1,10}(\.\d{0,2})?$/;
-export const skuPattern = /^[A-Za-z]{3}-[A-Za-z]{3}-\d{3}$/;
+export const skuPattern = /^[A-Za-z0-9-]+$/;
 export const taxRatePattern = /^(100(\.00?)?|[0-9]?\d(\.\d{1,2})?)$/;

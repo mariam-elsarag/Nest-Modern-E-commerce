@@ -7,7 +7,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
-import { DeepPartial, Repository } from 'typeorm';
+import { DeepPartial, In, Repository } from 'typeorm';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { ColorsService } from 'src/colors/colors.service';
 import { SizesService } from 'src/sizes/sizes.service';
@@ -218,58 +218,52 @@ export class ProductsService {
       images: finalImages,
       categories: categoryEntity,
     });
-    if (variants?.length) {
-      const resolvedVariants = await Promise.all(
-        variants.map(async (v) => {
-          const existingVariant = product.variants?.find(
-            (pv) => pv.id === v.id,
-          );
+    if (variants) {
+      if (!variants?.length && product.variants?.length === 0) {
+        throw new BadRequestException(
+          'Each product must have at least one variant.',
+        );
+      }
 
-          const [size, color] = await Promise.all([
-            v.size
-              ? this.sizeService.findOne(v.size)
-              : existingVariant?.size
-                ? { id: existingVariant.size.id }
-                : null,
-            v.color
-              ? this.colorServices.findOne(v.color)
-              : existingVariant?.color
-                ? { id: existingVariant.color.id }
-                : null,
-          ]);
+      const incomingVariantIds = variants.filter((v) => v.id).map((v) => v.id);
 
-          if (!existingVariant) {
+      const variantsToRemove = product.variants?.filter(
+        (pv) => !incomingVariantIds.includes(pv.id),
+      );
+
+      if (variantsToRemove?.length) {
+        const ids = variantsToRemove.map((v) => v.id);
+        await this.variantRepository.delete({ id: In(ids) });
+      }
+
+      const newVariants = await Promise.all(
+        variants
+          .filter((v) => !v.id)
+          .map(async (v) => {
+            const [size, color] = await Promise.all([
+              v.size ? this.sizeService.findOne(v.size) : null,
+              v.color ? this.colorServices.findOne(v.color) : null,
+            ]);
+
             if (v.price == null || v.quantity == null || !color) {
               throw new BadRequestException(
                 `Each new variant must include price, quantity, and color.`,
               );
             }
-          }
 
-          if (existingVariant) {
-            existingVariant.price = v.price ?? existingVariant.price;
-            existingVariant.quantity = v.quantity ?? existingVariant.quantity;
-            existingVariant.size = size
-              ? (size as any)
-              : (existingVariant.size as any);
-            existingVariant.color = color
-              ? (color as any)
-              : (existingVariant.color as any);
-
-            return existingVariant;
-          }
-
-          return this.variantRepository.create({
-            price: v.price,
-            quantity: v.quantity,
-            product,
-            size: size ? { id: size.id } : undefined,
-            color: color ? { id: color.id } : undefined,
-          });
-        }),
+            return this.variantRepository.create({
+              price: v.price,
+              quantity: v.quantity,
+              product,
+              size: size ? { id: size.id } : undefined,
+              color: color ? { id: color.id } : undefined,
+            });
+          }),
       );
 
-      await this.variantRepository.save(resolvedVariants);
+      if (newVariants.length) {
+        await this.variantRepository.save(newVariants);
+      }
     }
 
     const savedProduct = await this.findOne(product.id);

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import type { BreadCrumbListType } from "../../components/breadCrumb/Bread_Crumb.types";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { handleError } from "../../common/utils/handleError";
 import Page_Wraper from "../../components/layout/page_wraper/Page_Wraper";
 import Page_Title from "../../components/layout/header/page_title/Page_Title";
@@ -25,6 +25,7 @@ import useGetData from "../../hooks/useGetData";
 import { API } from "../../services/apiUrl";
 import axiosInstance from "../../services/axiosInstance";
 import View_Colors from "../../components/shared/form_builder/View_Colors";
+import { toast } from "react-toastify";
 
 type Variant = {
   index?: number;
@@ -38,7 +39,8 @@ type Variant = {
 const Product_Management = () => {
   const { t } = useTranslation();
   const { id } = useParams();
-  const isEdit = location.pathname.includes("/edit");
+  const navigate = useNavigate();
+  const isEdit = location.pathname.includes("/edit") || id;
   const pageTitle = isEdit ? "update_product" : "add_product";
 
   const [loading, setLoading] = useState(false);
@@ -68,7 +70,7 @@ const Product_Management = () => {
       categories: [],
       hasTax: false,
       status: null,
-      taxRate: null,
+      taxRate: 0,
       sku: "",
       cover: null,
       isFeatured: false,
@@ -245,6 +247,8 @@ const Product_Management = () => {
       placeholder: "sku",
       fieldName: `sku`,
       validator: {
+        required: "required_field",
+
         pattern: {
           value: skuPattern,
           message: "sku_pattern",
@@ -402,9 +406,7 @@ const Product_Management = () => {
         color: item?.color,
         value: item,
       })),
-      validator: {
-        required: "required_field",
-      },
+
       inlineError: true,
     },
   ];
@@ -467,7 +469,7 @@ const Product_Management = () => {
 
   const onSubmit = async (data) => {
     if (variantList?.length === 0) {
-      ["price", "quantity", "sku"].forEach((field) => {
+      ["price", "quantity", "color"].forEach((field) => {
         setError(`variants.${field}`, {
           type: "manual",
           message: t("required_field"),
@@ -477,6 +479,49 @@ const Product_Management = () => {
     }
     try {
       setLoading(true);
+      console.log(data?.isFeatured);
+      const endpoint = isEdit ? `${API.product.main}/${id}` : API.product.main;
+      const method = isEdit ? "patch" : "post";
+      const formData = new FormData();
+      Object.entries(data).map(([key, value]) => {
+        if (key === "variants") {
+          return;
+        }
+        if (key === "taxRate" && data.defaultTax) {
+          return;
+        }
+        if (key === "images" && value?.length === 0) {
+          formData.append(key, "[]");
+        }
+        if (key === "categories") {
+          value?.map((cat, i) => {
+            formData.append(`categories[${i}]`, cat);
+          });
+        }
+        formData.append(key, value);
+      });
+      variantList.map((item, index) => {
+        formData.append(`variants[${index}][price]`, item?.price);
+        formData.append(`variants[${index}][quantity]`, item?.quantity);
+        formData.append(`variants[${index}][color]`, item?.color?.id);
+        if (item?.size) {
+          formData.append(`variants[${index}][size]`, item?.size?.id);
+        }
+      });
+
+      // for (const [key, value] of formData.entries()) {
+      //   console.log(key, value);
+      // }
+
+      const response = await axiosInstance?.[method](endpoint, formData);
+      const message = isEdit
+        ? "success_update_product"
+        : "success_create_product";
+      if (response.status === 200 || response.status === 201) {
+        toast.success(t(message));
+
+        navigate("/products");
+      }
     } catch (err) {
       handleError(err, t, setError);
     } finally {
@@ -511,7 +556,7 @@ const Product_Management = () => {
     if (isEdit) {
       getDetails();
     }
-  }, [isEdit]);
+  }, []);
   return (
     <Page_Wraper
       list={breadcrumbsList}

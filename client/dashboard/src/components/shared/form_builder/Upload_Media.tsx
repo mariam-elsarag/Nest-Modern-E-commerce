@@ -194,10 +194,10 @@ const Upload_Media: React.FC<UploadMediaProps> = ({
   };
 
   useEffect(() => {
-    if (value && item?.isEdit) {
+    if (item?.isEdit && value && value !== media) {
       setMedia(value);
     }
-  }, [value, item?.isEdit]);
+  }, [value, item?.isEdit, media]);
 
   if (variant === "file") {
     return (
@@ -290,7 +290,6 @@ const Upload_Media: React.FC<UploadMediaProps> = ({
   );
 };
 const Image_Item = ({ item, handleRemove, isMultiple }) => {
-  console.log(item, "");
   return (
     <figure className="relative w-14 h-14  rounded-[4px] bg-neutral-white-100 flex items-center justify-center">
       <Button

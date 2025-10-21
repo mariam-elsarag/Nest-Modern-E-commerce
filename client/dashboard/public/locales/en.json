@@ -95,7 +95,7 @@
   "must_be_max_10_digits_and_optional_2_decimals": "Must be a maximum of 10 digits and up to 2 decimal places",
   "min_price_error": "Min price is {{number}}$",
   "title_ar": "Title (ar)",
-  "sku_pattern": "SKU format: ABC-XYZ-123 (use 3 letters, dash, 3 letters, dash, 3 numbers)",
+  "sku_pattern": "SKU can contain only letters, numbers, and dashes (no spaces or special characters)",
   "max_quantity_error": "Max quantity is {{number}}",
   "min_quantity_error": "Min quantity is {{number}}",
   "show_as_featured": "Mark this product to be shown in the featured section",

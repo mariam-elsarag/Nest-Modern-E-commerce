@@ -17,7 +17,7 @@ import {
   ValidationArguments,
   Matches,
 } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { CreateVariantDto } from './create-variant.dto';
 
 export function IsTaxRateAllowed(validationOptions?: ValidationOptions) {
@@ -46,6 +46,13 @@ export function IsTaxRateAllowed(validationOptions?: ValidationOptions) {
     });
   };
 }
+
+export const TransformBoolean = () =>
+  Transform(({ value }) => {
+    if (value === 'true' || value === true) return true;
+    if (value === 'false' || value === false) return false;
+    return undefined;
+  });
 export class CreateProductDto {
   @MaxLength(155)
   @IsString()
@@ -67,24 +74,24 @@ export class CreateProductDto {
   @IsNotEmpty()
   description_ar: string;
 
-  @Type(() => Boolean)
   @IsBoolean()
   @IsOptional()
+  @TransformBoolean()
   isAvalible?: boolean;
 
-  @Type(() => Boolean)
   @IsOptional()
   @IsBoolean()
-  isFeatured?: boolean;
+  @TransformBoolean()
+  isFeatured: boolean;
 
-  @Type(() => Boolean)
   @IsBoolean()
   @IsOptional()
+  @TransformBoolean()
   hasTax?: boolean;
 
-  @Type(() => Boolean)
   @IsBoolean()
   @IsOptional()
+  @TransformBoolean()
   defaultTax?: boolean;
 
   @IsOptional()

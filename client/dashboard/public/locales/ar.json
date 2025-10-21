@@ -95,7 +95,7 @@
   "must_be_max_10_digits_and_optional_2_decimals": "يجب ألا يتجاوز 10 أرقام وبحد أقصى رقمين عشريين",
   "min_price_error": "الحد الأدنى للسعر هو {{number}}$",
   "title_ar": "العنوان (عربي)",
-  "sku_pattern": "صيغة SKU: ABC-XYZ-123 (3 أحرف، شَرطة، 3 أحرف، شَرطة، 3 أرقام)",
+  "sku_pattern": "يمكن أن يحتوي رمز المنتج فقط على أحرف وأرقام وشرطات (بدون مسافات أو رموز خاصة)",
   "max_quantity_error": "الحد الأقصى للكمية هو {{number}}",
   "min_quantity_error": "الحد الأدنى للكمية هو {{number}}",
   "show_as_featured": "علّم هذا المنتج ليظهر في قسم المميزة",

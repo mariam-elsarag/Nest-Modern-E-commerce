@@ -1,4 +1,4 @@
-import React, { useState, useTransition } from "react";
+import React, { useState } from "react";
 import Page_Wraper from "../../components/layout/page_wraper/Page_Wraper";
 import { useNavigate } from "react-router-dom";
 import Table_Layout from "../../components/shared/table/Table_Layout";
@@ -16,9 +16,10 @@ import Confirmation_Modal from "../../components/shared/modal/Confirmation_Modal
 import { handleError } from "../../common/utils/handleError";
 import axiosInstance from "../../services/axiosInstance";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const Product_List = () => {
-  const { t } = useTransition();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [deleteLoader, setDeleteLoader] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -105,12 +106,12 @@ const Product_List = () => {
   const deleteProduct = async () => {
     try {
       setDeleteLoader(true);
-      const respone = await axiosInstance.delete(`${API.product.main}${id}`);
+      const respone = await axiosInstance.delete(`${API.product.main}/${id}`);
       if (respone.status === 204) {
         toast.success(t("success_delete_product"));
         setDeleteModal(false);
         setId(null);
-        setRefetch(Date.now());
+        setRefetch(new Date());
       }
     } catch (err) {
       handleError(err, t);
@@ -134,6 +135,7 @@ const Product_List = () => {
           emptyText="no_product_yet"
           endpoint={API.product.main}
           search_placeholder="search_product"
+          refetch={refetch}
         />
       </Page_Wraper>
 

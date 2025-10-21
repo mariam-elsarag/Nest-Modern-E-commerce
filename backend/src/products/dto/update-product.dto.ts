@@ -8,7 +8,6 @@ export class UpdateProductDto extends PartialType(
   OmitType(CreateProductDto, ['variants'] as const),
 ) {
   @IsOptional()
-  @IsArray()
   images?: string[];
 
   @IsOptional()
