@@ -15,6 +15,9 @@ export type ContextType = {
   title?: string;
   email?: string;
   otp?: string;
+  userMessage?: string;
+  adminReply?: string;
+  subject?: string;
   url?: string;
   expire?: number;
 };

@@ -13,3 +13,12 @@ export enum StockStatus {
   OutOfStock = 'outOfStock',
   LittleAmount = 'littleAmount',
 }
+
+// ticket-status.enum.ts
+export enum TicketStatus {
+  Open = 'open',
+  InProgress = 'inProgress',
+  Replied = 'replied',
+  Solved = 'solved',
+  Closed = 'closed',
+}

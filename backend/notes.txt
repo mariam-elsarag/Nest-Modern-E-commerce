@@ -1,1 +1,6 @@
 1- colors will create endpoint for filter to get colors that used in products
+
+- will work on
+1- home products
+
+2- order

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Email</title>
+  <title>Support Ticket Reply</title>
   <style>
     body {
       margin: 0;
@@ -36,7 +36,6 @@
       margin: 0 auto;
     }
 
-    /* Fallback text logo */
     .logo-fallback {
       display: inline-block;
       font-size: 20px;
@@ -55,32 +54,22 @@
       color: #5c5f6a;
     }
 
-    .otp {
-      display: inline-block;
-      border: 1px solid #e6e7e8 !important;
-      padding: 10px 20px;
-      font-size: 18px;
-      font-weight: 500;
-      letter-spacing: 4px;
-      border-radius: 8px;
+    .message-box {
+      border-left: 3px solid #202533;
+      background-color: #f9f9f9;
+      padding: 12px 16px;
       margin: 16px 0;
+      border-radius: 6px;
+      color: #333845;
+    }
+
+    .reply-box {
+      border-left: 3px solid #4078ff;
+      background-color: #f0f1ff;
+      padding: 12px 16px;
+      margin: 16px 0;
+      border-radius: 6px;
       color: #0e1422;
-    }
-
-    .button {
-      display: inline-block;
-      padding: 12px 20px;
-      margin-top: 20px;
-      background-color: #202533;
-      color: #ffffff;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 15px;
-    }
-
-    .button:hover {
-      background-color: #333845;
     }
 
     .footer {
@@ -96,7 +85,6 @@
 <body>
   <div class="container">
     <div class="header">
-      <!-- Logo (if fails, fallback will still show) -->
       <img src="https://res.cloudinary.com/dqcdxspmu/image/upload/v1761176863/logo_jjfkxp.png" alt="Ecommerce Logo"
         onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';" />
       <span class="logo-fallback" style="display:none;">Ecommerce</span>
@@ -104,23 +92,30 @@
 
     <div class="content">
       <p>Hi <%= fullName %>,</p>
-      <p>
-        Use the following one-time password (OTP) to <%= title %>:
-      </p>
-      <div class="otp">
-        <%= otp %>
+      <p>We’ve reviewed your support request regarding:</p>
+      <p><strong>
+          <%= subject %>
+        </strong></p>
+
+      <div class="message-box">
+        <strong>Your message:</strong>
+        <p>
+          <%= userMessage %>
+        </p>
       </div>
-      <p>
-        This OTP will expire in <%= expire %>.
+
+      <div class="reply-box">
+        <strong>Our reply:</strong>
+        <p>
+          <%= adminReply %>
+        </p>
+      </div>
+
+      <p>If you need further assistance, you can simply reply to this email and our support team will get back to you.
       </p>
-      <p>
-        You can also click the button below. It will redirect you to our website where you can complete the verification
-        process.
-      </p>
-      <a href="<%= url %>" class="button">
-        <%= type %>
-      </a>
-      <p>If you didn’t request this, please ignore this email.</p>
+      <p>Alternatively, you can send a new message through the contact form on our website.</p>
+
+      <p style="margin-top: 24px;">Best regards,<br /><strong>The Ecommerce Support Team</strong></p>
     </div>
 
     <div class="footer">

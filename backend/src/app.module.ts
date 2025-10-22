@@ -25,6 +25,8 @@ import { Variant } from './products/entities/variant.entity';
 import { CartModule } from './cart/cart.module';
 import { CartSession } from './cart/entities/cart-session.entity';
 import { CartItem } from './cart/entities/cart-items.entity';
+import { SupportModule } from './support/support.module';
+import { Support } from './support/entities/support.entity';
 
 @Module({
   imports: [
@@ -63,6 +65,7 @@ import { CartItem } from './cart/entities/cart-items.entity';
             Favorite,
             CartSession,
             CartItem,
+            Support,
           ],
         };
       },
@@ -77,6 +80,7 @@ import { CartItem } from './cart/entities/cart-items.entity';
     CloudinaryModule,
     FavoriteModule,
     CartModule,
+    SupportModule,
   ],
   controllers: [],
   providers: [],

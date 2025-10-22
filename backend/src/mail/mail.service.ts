@@ -26,6 +26,20 @@ export class MailService {
     });
   }
 
+  async supportTicket(
+    fullName: string,
+    email: string,
+    userMessage: string,
+    adminReply: string,
+    subject: string,
+  ) {
+    await this.send(email, subject, 'support', {
+      fullName,
+      userMessage,
+      adminReply,
+      subject,
+    });
+  }
   private async send(
     email: string,
     subject: string,
