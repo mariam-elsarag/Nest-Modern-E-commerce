@@ -9,6 +9,7 @@ import { Request } from 'express';
 import { plainToInstance } from 'class-transformer';
 import { FavoriteResponesDto } from './dto/response-favorite.dto';
 import { FullPaginationDto } from 'src/common/pagination/pagination.dto';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class FavoriteService {
@@ -32,7 +33,7 @@ export class FavoriteService {
 
     const qb = this.favoriteRepo
       .createQueryBuilder('favorite')
-      .innerJoinAndSelect('favorite.product', 'product');
+      .leftJoinAndSelect('favorite.product', 'product');
 
     if (search) {
       qb.andWhere(
@@ -55,7 +56,7 @@ export class FavoriteService {
     return new FullPaginationDto(currentPage, count, take, req, data);
   }
 
-  async update(id: number, user: JwtPayload) {
+  async update(id: number, user: User) {
     const { id: userId } = user;
     // check if proudct exist
     const product = await this.productService.findOne(id);
@@ -66,7 +67,10 @@ export class FavoriteService {
       await this.favoriteRepo.remove(existing);
       return { isFavorite: false };
     } else {
-      const favorite = this.favoriteRepo.create({ user, id });
+      const favorite = this.favoriteRepo.create({
+        user: user,
+        product: product,
+      });
       await this.favoriteRepo.save(favorite);
       return { isFavorite: true };
     }

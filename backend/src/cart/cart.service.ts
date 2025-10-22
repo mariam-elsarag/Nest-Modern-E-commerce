@@ -16,7 +16,6 @@ import { plainToInstance } from 'class-transformer';
 import { CartResponseDto } from './dto/response-cart.dto';
 import { Request, Response } from 'express';
 import { QueryCartDto } from './dto/query-cart.dto';
-import { SettingsService } from 'src/settings/settings.service';
 import { ResponseCartDetailsDto } from './dto/response-cart_detials.dto';
 @Injectable()
 export class CartService {
@@ -25,7 +24,7 @@ export class CartService {
     private readonly cartSessionRepo: Repository<CartSession>,
     @InjectRepository(CartItem)
     private readonly cartItemRepo: Repository<CartItem>,
-    private readonly settingService: SettingsService,
+
     private readonly productService: ProductsService,
   ) {}
 
@@ -44,12 +43,8 @@ export class CartService {
       variant,
       quantity,
     );
-    const setting = await this.settingService.findOne();
-    const vatRate = product.hasTax
-      ? product?.defaultTax
-        ? setting.taxRate
-        : product.taxRate
-      : 0;
+
+    const vatRate = product.hasTax ? product?.taxRate : 0;
     const existingItem = await this.cartItemRepo.findOne({
       where: {
         session: { id: cartSession.id },

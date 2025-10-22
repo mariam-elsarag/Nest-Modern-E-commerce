@@ -12,6 +12,7 @@ import { CategoryModule } from 'src/category/category.module';
 import { Variant } from './entities/variant.entity';
 import { ProductController } from './providers/products.controller';
 import { CartItem } from 'src/cart/entities/cart-items.entity';
+import { SettingsModule } from 'src/settings/settings.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { CartItem } from 'src/cart/entities/cart-items.entity';
     ColorsModule,
     SizesModule,
     CategoryModule,
+    SettingsModule,
   ],
   controllers: [ProductsAdminController, ProductController],
   providers: [ProductsService],

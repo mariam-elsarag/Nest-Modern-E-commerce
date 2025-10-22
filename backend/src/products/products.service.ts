@@ -20,6 +20,7 @@ import { FullPaginationDto } from 'src/common/pagination/pagination.dto';
 import { ProductResponseDto } from './dto/response-product.dto';
 import { Variant } from './entities/variant.entity';
 import { CartItem } from 'src/cart/entities/cart-items.entity';
+import { SettingsService } from 'src/settings/settings.service';
 
 @Injectable()
 export class ProductsService {
@@ -34,13 +35,15 @@ export class ProductsService {
     private readonly colorServices: ColorsService,
     private readonly sizeService: SizesService,
     private readonly categoryService: CategoryService,
+    private readonly settingService: SettingsService,
   ) {}
 
   async create(
     createProductDto: CreateProductDto,
     files: Express.Multer.File[],
   ) {
-    const { variants, categories, ...rest } = createProductDto;
+    const { variants, categories, defaultTax, taxRate, ...rest } =
+      createProductDto;
 
     if (!files?.length) {
       throw new BadRequestException('No files uploaded');
@@ -81,9 +84,15 @@ export class ProductsService {
         ]);
       }),
     );
-
+    let tax = taxRate ?? 0;
+    if (defaultTax) {
+      const setting = await this.settingService.findOne();
+      tax = setting.taxRate ?? 0;
+    }
     const savedProduct = await this.productRepository.save({
       ...rest,
+      taxRate: tax,
+      defaultTax: defaultTax,
       categories: categoryEntity,
       cover: coverUpload,
       images: imagesUpload,
@@ -174,7 +183,8 @@ export class ProductsService {
     updateProductDto: UpdateProductDto,
     files: Express.Multer.File[],
   ) {
-    const { images, categories, variants, ...rest } = updateProductDto;
+    const { images, categories, variants, taxRate, defaultTax, ...rest } =
+      updateProductDto;
     const product = await this.findOne(id);
 
     const coverFile = files.find((f) => f.fieldname === 'cover');
@@ -224,10 +234,16 @@ export class ProductsService {
         categories,
       });
     }
-
+    let tax = taxRate ?? 0;
+    if (defaultTax) {
+      const setting = await this.settingService.findOne();
+      tax = setting.taxRate ?? 0;
+    }
     await this.productRepository.save({
       ...product,
       ...rest,
+      taxRate: tax,
+      defaultTax: defaultTax,
       cover: coverUrl,
       images: finalImages,
       categories: categoryEntity,

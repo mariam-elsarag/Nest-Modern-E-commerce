@@ -17,10 +17,11 @@ import { UserDto } from 'src/users/dto/user.dto';
 import { JwtPayload } from 'src/common/utils/types';
 import { PaginationQueryDto } from 'src/common/pagination/pagination-query.dto';
 import { Request } from 'express';
+import { User } from 'src/users/entities/user.entity';
 
 @Roles(UserRole.User)
 @UseGuards(AuthGuard)
-@Controller('api/favorite')
+@Controller('api/v1/favorite')
 export class FavoriteController {
   constructor(private readonly favoriteService: FavoriteService) {}
 
@@ -30,10 +31,7 @@ export class FavoriteController {
   }
 
   @Patch(':id')
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @currentUser() user: JwtPayload,
-  ) {
+  update(@Param('id', ParseIntPipe) id: number, @currentUser() user: User) {
     return this.favoriteService.update(id, user);
   }
 }
