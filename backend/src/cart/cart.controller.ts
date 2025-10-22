@@ -10,24 +10,31 @@ import {
   Put,
   Req,
   Res,
+  Query,
+  ParseIntPipe,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
 import { OptionalToken } from 'src/auth/decorators/optional-token.decorator';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
-import { currentUser } from 'src/auth/decorators/current-user.decorator';
+import { currentUser, Roles } from 'src/auth/decorators/current-user.decorator';
 import { JwtPayload } from 'src/common/utils/types';
 import { AcceptFormData } from 'src/common/decrators/accept-form-data.decorator';
 import { Response } from 'express';
+import { UserRole } from 'src/common/utils/enum';
+import { QueryCartDto } from './dto/query-cart.dto';
 
+@UseGuards(AuthGuard)
+@OptionalToken()
+@Roles(UserRole.User)
 @Controller('api/v1/cart')
 export class CartController {
   constructor(private readonly cartService: CartService) {}
 
   @Put()
-  @UseGuards(AuthGuard)
-  @OptionalToken()
   @AcceptFormData()
   createOrAddToCart(
     @Body() createCartDto: CreateCartDto,
@@ -38,22 +45,17 @@ export class CartController {
   }
 
   @Get()
-  findAll() {
-    return this.cartService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.cartService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCartDto: UpdateCartDto) {
-    return this.cartService.update(+id, updateCartDto);
+  findOne(@Query() query: QueryCartDto, @currentUser() user: JwtPayload) {
+    return this.cartService.cartDetails(query, user);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.cartService.remove(+id);
+  @HttpCode(HttpStatus.NO_CONTENT)
+  remove(
+    @Param('id', ParseIntPipe) id: number,
+    @Query() query: QueryCartDto,
+    @currentUser() user: JwtPayload,
+  ) {
+    return this.cartService.remove(id, query, user);
   }
 }

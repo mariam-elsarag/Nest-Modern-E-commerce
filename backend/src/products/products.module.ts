@@ -11,10 +11,11 @@ import { SizesModule } from 'src/sizes/sizes.module';
 import { CategoryModule } from 'src/category/category.module';
 import { Variant } from './entities/variant.entity';
 import { ProductController } from './providers/products.controller';
+import { CartItem } from 'src/cart/entities/cart-items.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Product, Variant]),
+    TypeOrmModule.forFeature([User, Product, Variant, CartItem]),
     AuthModule,
     CloudinaryModule,
     ColorsModule,

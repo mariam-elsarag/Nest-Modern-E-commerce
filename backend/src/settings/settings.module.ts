@@ -10,5 +10,6 @@ import { AuthModule } from 'src/auth/auth.module';
   imports: [TypeOrmModule.forFeature([Setting, User]), AuthModule],
   controllers: [SettingsAdminController],
   providers: [SettingsService],
+  exports: [SettingsService],
 })
 export class SettingsModule {}

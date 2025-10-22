@@ -4,6 +4,9 @@ import { SizeResponseDto } from 'src/sizes/dto/response-size.dto';
 
 export class CartResponseDto {
   @Expose()
+  id: number;
+
+  @Expose()
   @Transform(({ obj }) => obj.product?.cover || null)
   cover: string | null;
 
@@ -30,6 +33,9 @@ export class CartResponseDto {
   quantity: number;
 
   @Expose()
-  @Transform(({ obj }) => obj.variant?.price)
+  isValid: boolean;
+
+  @Expose()
+  @Transform(({ obj }) => +obj.priceWithVat.toFixed(2))
   price: number;
 }

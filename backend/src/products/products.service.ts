@@ -19,6 +19,7 @@ import { ProductListResponseDto } from './dto/response-product-list.dto';
 import { FullPaginationDto } from 'src/common/pagination/pagination.dto';
 import { ProductResponseDto } from './dto/response-product.dto';
 import { Variant } from './entities/variant.entity';
+import { CartItem } from 'src/cart/entities/cart-items.entity';
 
 @Injectable()
 export class ProductsService {
@@ -27,6 +28,8 @@ export class ProductsService {
     private readonly productRepository: Repository<Product>,
     @InjectRepository(Variant)
     private readonly variantRepository: Repository<Variant>,
+    @InjectRepository(CartItem)
+    private readonly cartItemReop: Repository<CartItem>,
     private readonly cloudinaryService: CloudinaryService,
     private readonly colorServices: ColorsService,
     private readonly sizeService: SizesService,
@@ -113,6 +116,7 @@ export class ProductsService {
 
     const qb = this.productRepository
       .createQueryBuilder('product')
+      .withDeleted()
       .leftJoinAndSelect('product.categories', 'category')
       .leftJoinAndSelect('product.variants', 'variant');
 
@@ -150,9 +154,7 @@ export class ProductsService {
     if (!product) {
       throw new NotFoundException('Product not found');
     }
-    return plainToInstance(ProductResponseDto, product, {
-      excludeExtraneousValues: true,
-    });
+    return product;
   }
   async findAvalibleOne(id: number) {
     const product = await this.productRepository.findOne({
@@ -245,6 +247,11 @@ export class ProductsService {
       if (variantsToRemove?.length) {
         const ids = variantsToRemove.map((v) => v.id);
         await this.variantRepository.delete({ id: In(ids) });
+        //make related cart items as invalid
+        await this.cartItemReop.update(
+          { variant: In(ids) },
+          { isValid: false },
+        );
       }
 
       const newVariants = await Promise.all(
@@ -284,9 +291,17 @@ export class ProductsService {
   }
 
   async remove(id: number) {
-    await this.findOne(id);
+    const product = await this.findOne(id);
     await this.productRepository.softDelete(id);
+    await this.cartItemReop.update({ product }, { isValid: false });
+
     return `Product has been deleted successfully`;
+  }
+
+  async restore(id: number) {
+    await this.productRepository.restore(id);
+
+    return { message: 'Product has been restored successfully' };
   }
 
   async getAvalibleProducts() {

@@ -11,6 +11,15 @@ export class CartItem {
   @Column({ type: 'int' })
   quantity: number;
 
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+  price: number;
+
+  @Column({ type: 'decimal', precision: 5, scale: 2, default: 0 })
+  vatRate: number;
+
+  @Column({ default: true })
+  isValid: boolean;
+
   @ManyToOne(() => CartSession, (session) => session.items)
   session: CartSession;
 
@@ -19,4 +28,13 @@ export class CartItem {
 
   @ManyToOne(() => Variant)
   variant: Variant;
+
+  // derived
+  get priceWithVat(): number {
+    return Number(this.price) * (1 + Number(this.vatRate) / 100);
+  }
+
+  get totalWithVat(): number {
+    return this.priceWithVat * this.quantity;
+  }
 }

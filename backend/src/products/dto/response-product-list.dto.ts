@@ -38,5 +38,9 @@ export class ProductListResponseDto {
   sku: string;
 
   @Expose()
+  @Transform(({ obj }) => (obj.deletedAt ? true : false))
+  isDeleted: boolean;
+
+  @Expose()
   updatedAt: Date;
 }

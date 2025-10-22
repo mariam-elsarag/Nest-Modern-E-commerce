@@ -66,4 +66,8 @@ export class ProductsAdminController {
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.productsService.remove(id);
   }
+  @Patch(':id/restore')
+  restore(@Param('id', ParseIntPipe) id: number) {
+    return this.productsService.restore(id);
+  }
 }
