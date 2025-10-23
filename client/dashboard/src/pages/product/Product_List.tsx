@@ -17,6 +17,7 @@ import { handleError } from "../../common/utils/handleError";
 import axiosInstance from "../../services/axiosInstance";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
+import Button from "../../components/shared/button/Button";
 
 const Product_List = () => {
   const { t } = useTranslation();
@@ -25,6 +26,8 @@ const Product_List = () => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [id, setId] = useState<number | null>();
   const [refetch, setRefetch] = useState();
+  const [value, setValue] = useState();
+
   // ___________________ list _________________
 
   const list: MenuListTypes[] = [
@@ -53,21 +56,38 @@ const Product_List = () => {
         <Product_Item
           avatar={item?.cover}
           title={currentLanguageCode === "en" ? item?.title : item?.title_ar}
+          isDeleted={item?.isDeleted}
         />
       ),
     },
-    { header: "sku", field: "sku" },
+    {
+      header: "sku",
+      field: "sku",
+      body: (item) => (
+        <span className={item?.isDeleted ? "deleted_row" : ""}>
+          {item?.sku ?? "-"}
+        </span>
+      ),
+    },
     {
       header: "price",
       field: "price",
-      body: (item) => (item?.price ? formatPrice(item?.price) : 0),
+      body: (item) => (
+        <span className={item?.isDeleted ? "deleted_row" : ""}>
+          {item?.price ? formatPrice(item?.price) : 0}
+        </span>
+      ),
     },
     {
       header: "avaliblity",
       field: "isAvalible",
       body: (item) => {
         const { text, type } = productAvaliblityBadge(item?.isAvalible);
-        return <Badge text={text} type={type} />;
+        return (
+          <div className={item?.isDeleted ? "deleted_row" : ""}>
+            <Badge text={text} type={type} />;
+          </div>
+        );
       },
     },
 
@@ -75,7 +95,7 @@ const Product_List = () => {
       header: "categories",
       field: "categories",
       body: (item) => (
-        <div>
+        <div className={item?.isDeleted ? "deleted_row" : ""}>
           {item?.categories?.length > 3 ? (
             <div>
               {item?.categores
@@ -99,7 +119,21 @@ const Product_List = () => {
     {
       header: "action",
       field: "action",
-      body: (item) => <Menu<ProductType> list={list} data={item} />,
+      body: (item) => (
+        <div>
+          {item?.isDeleted ? (
+            <Button
+              handleClick={() => restore(item?.id)}
+              variant="outline"
+              size="sm"
+              text="restore"
+              round="lg"
+            />
+          ) : (
+            <Menu<ProductType> list={list} data={item} />
+          )}
+        </div>
+      ),
     },
   ];
 
@@ -111,12 +145,32 @@ const Product_List = () => {
         toast.success(t("success_delete_product"));
         setDeleteModal(false);
         setId(null);
-        setRefetch(new Date());
+        value?.((prev) =>
+          prev.map((item) =>
+            item?.id === id ? { ...item, isDeleted: true } : item
+          )
+        );
       }
     } catch (err) {
       handleError(err, t);
     } finally {
       setDeleteLoader(false);
+    }
+  };
+  const restore = async (itemId) => {
+    try {
+      const response = await axiosInstance.patch(
+        `${API.contact.main}/${itemId}/restore`
+      );
+      if (response.status === 200) {
+        value?.((prev) =>
+          prev.map((item) =>
+            item?.id === itemId ? { ...item, isDeleted: false } : item
+          )
+        );
+      }
+    } catch (err) {
+      handleError(err, t);
     }
   };
   return (
@@ -136,6 +190,7 @@ const Product_List = () => {
           endpoint={API.product.main}
           search_placeholder="search_product"
           refetch={refetch}
+          setValue={setValue}
         />
       </Page_Wraper>
 

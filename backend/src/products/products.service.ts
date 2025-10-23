@@ -141,7 +141,8 @@ export class ProductsService {
     }
 
     const [results, count] = await qb
-      .orderBy('product.createdAt', 'DESC')
+      .orderBy('product.deletedAt', 'ASC', 'NULLS FIRST')
+      .addOrderBy('product.createdAt', 'DESC')
       .skip(skip)
       .take(take)
       .getManyAndCount();
