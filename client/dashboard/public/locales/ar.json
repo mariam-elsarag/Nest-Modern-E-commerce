@@ -210,5 +210,12 @@
   "subject": "الموضوع",
   "contact_details": "تفاصيل الاتصال",
   "restore": "استعادة",
-  "unread": "غير مقروء"
+  "unread": "غير مقروء",
+  "successfully_create_faq": "تم إنشاء الأسئلة الشائعة بنجاح",
+  "successfully_update_faq": "تم تحديث الأسئلة الشائعة بنجاح",
+  "confirm_delete_faq": "هل أنت متأكد أنك تريد حذف هذا السؤال الشائع؟",
+  "delete_faq": "حذف الأسئلة الشائعة",
+  "successfully_delete_faq": "تم حذف الأسئلة الشائعة بنجاح",
+  "successfully_update_terms": "تم تحديث الشروط والأحكام بنجاح",
+  "successfully_update_privacy": "تم تحديث سياسة الخصوصية بنجاح"
 }

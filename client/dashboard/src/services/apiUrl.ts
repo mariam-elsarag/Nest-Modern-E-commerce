@@ -34,9 +34,9 @@ export const API = {
     update: "",
   },
   website: {
-    terms: "",
-    privacy: "",
-    faq: "",
+    terms: "/api/v1/cms/terms/admin",
+    privacy: "/api/v1/cms/privacy/admin",
+    faq: "/api/v1/cms/faq/admin",
   },
   settting: {
     color: "/api/color",

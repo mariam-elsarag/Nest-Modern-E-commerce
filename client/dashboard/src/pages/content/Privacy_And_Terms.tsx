@@ -9,6 +9,8 @@ import Form_Builder from "../../components/shared/form_builder/Form_Builder";
 import Button from "../../components/shared/button/Button";
 import useGetData from "../../hooks/useGetData";
 import { API } from "../../services/apiUrl";
+import axiosInstance from "../../services/axiosInstance";
+import { toast } from "react-toastify";
 
 const Privacy_And_Terms = () => {
   const { t } = useTranslation();
@@ -16,10 +18,6 @@ const Privacy_And_Terms = () => {
   const isTerms = location.pathname.includes("/terms-and-conditions");
   const pageTitle = isTerms ? "terms_and_conditions" : "privacy_policy";
 
-  // ___________ hooks _________
-  const { data, loading: loadingData } = useGetData(
-    isTerms ? API.website.terms : API.website.privacy
-  );
   // ___________ useform _________
   const {
     control,
@@ -32,19 +30,23 @@ const Privacy_And_Terms = () => {
     handleSubmit,
   } = useForm({
     defaultValues: {
-      description: "",
-      description_ar: "",
+      content: "",
+      content_ar: "",
     },
     mode: "onChange",
   });
-
+  // ___________ hooks _________
+  const { data, loading: loadingData } = useGetData(
+    isTerms ? API.website.terms : API.website.privacy,
+    setValue
+  );
   // ______________ list _____________
   const formList: FormListItemType[] = [
     {
       id: "1",
       formType: "editor",
       label: "description",
-      fieldName: "description",
+      fieldName: "content",
       placeholder: "description",
       validator: {
         required: "required_field",
@@ -54,7 +56,7 @@ const Privacy_And_Terms = () => {
       id: "2",
       formType: "editor",
       label: "description_ar",
-      fieldName: "description_ar",
+      fieldName: "content_ar",
       placeholder: "description_ar",
       validator: {
         required: "required_field",
@@ -64,6 +66,14 @@ const Privacy_And_Terms = () => {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
+      const endpoint = isTerms ? API.website.terms : API.website.privacy;
+      const response = await axiosInstance.put(endpoint, data);
+      const message = isTerms
+        ? "successfully_update_terms"
+        : "successfully_update_privacy";
+      if (response.status === 200) {
+        toast.success(t(message));
+      }
     } catch (err) {
       handleError(err, t, setError);
     } finally {

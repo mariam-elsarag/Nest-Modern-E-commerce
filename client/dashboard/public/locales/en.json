@@ -212,5 +212,12 @@
   "latest_admin_reply": "Latest admin reply",
   "subject": "Subject",
   "restore": "Restore",
-  "unread": "Unread"
+  "unread": "Unread",
+  "successfully_create_faq": "FAQ created successfully",
+  "successfully_update_faq": "FAQ updated successfully",
+  "confirm_delete_faq": "Are you sure you want to delete this FAQ?",
+  "delete_faq": "Delete FAQ",
+  "successfully_delete_faq": "FAQ deleted successfully",
+  "successfully_update_terms": "Terms and Conditions updated successfully",
+  "successfully_update_privacy": "Privacy Policy updated successfully"
 }

@@ -43,3 +43,11 @@ export interface SupportType {
   solvedAt?: Date;
   repliedAt?: Date;
 }
+
+export interface FaqType {
+  id: number;
+  answer: string;
+  answer_ar: string;
+  question: string;
+  question_ar: string;
+}
