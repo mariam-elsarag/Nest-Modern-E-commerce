@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { JwtPayload } from 'src/common/utils/types';
 import { Favorite } from './entities/favorite.entity';
 import { Repository } from 'typeorm';
-import { ProductsService } from 'src/products/products.service';
+import { ProductsAdminService } from 'src/products/providers/products-admin.service';
 import { PaginationQueryDto } from 'src/common/pagination/pagination-query.dto';
 import { Request } from 'express';
 import { plainToInstance } from 'class-transformer';
@@ -16,7 +16,7 @@ export class FavoriteService {
   constructor(
     @InjectRepository(Favorite)
     private readonly favoriteRepo: Repository<Favorite>,
-    private readonly productService: ProductsService,
+    private readonly productAdminService: ProductsAdminService,
   ) {}
   async findOne(userId: number, productId: number) {
     const existing = await this.favoriteRepo.findOne({
@@ -59,7 +59,7 @@ export class FavoriteService {
   async update(id: number, user: User) {
     const { id: userId } = user;
     // check if proudct exist
-    const product = await this.productService.findOne(id);
+    const product = await this.productAdminService.findOne(id);
 
     const existing = await this.findOne(userId, product.id);
 

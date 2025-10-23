@@ -3,27 +3,27 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
+import { CreateProductDto } from '../dto/create-product.dto';
+import { UpdateProductDto } from '../dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Product } from './entities/product.entity';
+import { Product } from '../entities/product.entity';
 import { DeepPartial, In, Repository } from 'typeorm';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { ColorsService } from 'src/colors/colors.service';
 import { SizesService } from 'src/sizes/sizes.service';
 import { CategoryService } from 'src/category/category.service';
 import { Request } from 'express';
-import { QueryProductDto } from './dto/query-product.dto';
+import { QueryProductDto } from '../dto/query-product.dto';
 import { plainToInstance } from 'class-transformer';
-import { ProductListResponseDto } from './dto/response-product-list.dto';
+import { ProductListResponseDto } from '../dto/response-product-list.dto';
 import { FullPaginationDto } from 'src/common/pagination/pagination.dto';
-import { ProductResponseDto } from './dto/response-product.dto';
-import { Variant } from './entities/variant.entity';
+import { ProductResponseDto } from '../dto/response-product.dto';
+import { Variant } from '../entities/variant.entity';
 import { CartItem } from 'src/cart/entities/cart-items.entity';
 import { SettingsService } from 'src/settings/settings.service';
 
 @Injectable()
-export class ProductsService {
+export class ProductsAdminService {
   constructor(
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
@@ -321,22 +321,17 @@ export class ProductsService {
     return { message: 'Product has been restored successfully' };
   }
 
-  async getAvalibleProducts() {
-    const product = await this.productRepository
+  async getAvailableProducts() {
+    const products = await this.productRepository
       .createQueryBuilder('product')
       .leftJoinAndSelect('product.variants', 'variants')
       .where('product.isAvailable = :available', { available: true })
       .andWhere('variants.quantity > 0')
-      .getOne();
+      .getMany();
 
-    if (!product) {
-      throw new NotFoundException('Product not found or unavailable');
-    }
-
-    return plainToInstance(ProductResponseDto, product, {
-      excludeExtraneousValues: true,
-    });
+    return products;
   }
+
   async checkVariant(product: Product, variantId: number, quantity: number) {
     const productVariant = product.variants.find(({ id }) => id == variantId);
 

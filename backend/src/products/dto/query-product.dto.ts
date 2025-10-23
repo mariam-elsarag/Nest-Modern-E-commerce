@@ -9,3 +9,26 @@ export class QueryProductDto extends PaginationQueryDto {
   @IsOptional()
   category?: number;
 }
+
+export class HiglightProductsQueryDto {
+  @IsOptional()
+  type?: 'featured' | 'latest';
+
+  @IsOptional()
+  cartToken?: string;
+}
+
+export class PlateformProductListQueryDto extends PaginationQueryDto {
+  @Type(() => Number)
+  @IsNumber()
+  @IsOptional()
+  color?: number;
+
+  @Type(() => Number)
+  @IsNumber()
+  @IsOptional()
+  size?: number;
+
+  @IsOptional()
+  categories?: number[];
+}

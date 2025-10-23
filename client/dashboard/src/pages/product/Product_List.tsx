@@ -160,7 +160,7 @@ const Product_List = () => {
   const restore = async (itemId) => {
     try {
       const response = await axiosInstance.patch(
-        `${API.contact.main}/${itemId}/restore`
+        `${API.product.main}/${itemId}/restore`
       );
       if (response.status === 200) {
         value?.((prev) =>

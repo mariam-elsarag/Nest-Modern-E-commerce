@@ -15,7 +15,6 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
-import { ProductsService } from '../products.service';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
@@ -25,12 +24,13 @@ import { UserRole } from 'src/common/utils/enum';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { Request } from 'express';
 import { QueryProductDto } from '../dto/query-product.dto';
+import { ProductsAdminService } from '../providers/products-admin.service';
 
 @Roles(UserRole.ADMIN)
 @UseGuards(AuthGuard)
 @Controller('api/v1/admin/product')
 export class ProductsAdminController {
-  constructor(private readonly productsService: ProductsService) {}
+  constructor(private readonly productsAdminService: ProductsAdminService) {}
 
   @Post()
   @UseInterceptors(AnyFilesInterceptor({ storage: memoryStorage() }))
@@ -38,17 +38,17 @@ export class ProductsAdminController {
     @Body() createProductDto: CreateProductDto,
     @UploadedFiles() files: Express.Multer.File[],
   ) {
-    return this.productsService.create(createProductDto, files);
+    return this.productsAdminService.create(createProductDto, files);
   }
 
   @Get()
   findAll(@Query() query: QueryProductDto, @Req() req: Request) {
-    return this.productsService.findAll(query, req);
+    return this.productsAdminService.findAll(query, req);
   }
 
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.productsService.findOne(id);
+    return this.productsAdminService.findOne(id);
   }
 
   @Patch(':id')
@@ -58,16 +58,16 @@ export class ProductsAdminController {
     @Body() updateProductDto: UpdateProductDto,
     @UploadedFiles() files: Express.Multer.File[],
   ) {
-    return this.productsService.update(id, updateProductDto, files);
+    return this.productsAdminService.update(id, updateProductDto, files);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   remove(@Param('id', ParseIntPipe) id: number) {
-    return this.productsService.remove(id);
+    return this.productsAdminService.remove(id);
   }
   @Patch(':id/restore')
   restore(@Param('id', ParseIntPipe) id: number) {
-    return this.productsService.restore(id);
+    return this.productsAdminService.restore(id);
   }
 }
