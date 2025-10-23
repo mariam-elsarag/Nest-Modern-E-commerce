@@ -23,7 +23,7 @@ function useGetData<T>(
         });
       }
     } catch (err) {
-      handleError(err, t);
+      // handleError(err, t);
       setError(err.response.data);
     } finally {
       setLoading(false);

@@ -12,6 +12,28 @@ export const orderStatusBadge = (data) => {
       return { text: data, type: "default" };
   }
 };
+export const supportTicketStatusBadge = (data) => {
+  switch (data) {
+    case "inProgress":
+      return { text: "inProgress", type: "pending" };
+    case "solved":
+      return { text: "solved", type: "success" };
+    case "replied":
+      return { text: "replied", type: "primary" };
+    case "close":
+      return { text: "close", type: "error" };
+    default:
+      return { text: data, type: "default" };
+  }
+};
+export const readSupportTicketBadgeList = (data) => {
+  switch (data) {
+    case true:
+      return { text: "read", type: "success" };
+    default:
+      return { text: "unread", type: "default" };
+  }
+};
 
 export const userStatusBadge = (data) => {
   switch (data) {

@@ -97,7 +97,8 @@ export class SupportService {
     }
 
     const [results, count] = await qb
-      .orderBy('support.createdAt', 'DESC')
+      .orderBy('support.deletedAt', 'ASC', 'NULLS FIRST')
+      .addOrderBy('support.createdAt', 'DESC')
       .skip(skip)
       .take(take)
       .getManyAndCount();
@@ -147,5 +148,10 @@ export class SupportService {
     await this.findOne(id);
     await this.supportRepo.softDelete(id);
     return `Support has been deleted successfully`;
+  }
+  async restore(id: number) {
+    await this.supportRepo.restore(id);
+
+    return { message: `Successfully restore support ticket` };
   }
 }

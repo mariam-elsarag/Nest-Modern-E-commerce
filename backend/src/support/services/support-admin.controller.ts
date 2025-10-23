@@ -67,6 +67,10 @@ export class AdminSupportController {
   toggleRead(@Param('id', ParseIntPipe) id: number) {
     return this.supportService.toggleRead(id);
   }
+  @Patch(':id/restore')
+  restore(@Param('id', ParseIntPipe) id: number) {
+    return this.supportService.restore(id);
+  }
 
   // delete support
   @Delete(':id')

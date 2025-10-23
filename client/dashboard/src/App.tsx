@@ -46,7 +46,9 @@ const Users_List = lazy(() => import("./pages/users/User_List"));
 const Users_Management = lazy(() => import("./pages/users/Manage_User"));
 
 // contact
+const Contact_Layout = lazy(() => import("./pages/contact/Contact_Layout"));
 const Contact = lazy(() => import("./pages/contact/Contact"));
+const Contact_Details = lazy(() => import("./pages/contact/Contact_Details"));
 
 // setting
 const Setting_layout = lazy(() => import("./pages/settings/Setting_Layout"));
@@ -90,7 +92,14 @@ const router = createBrowserRouter([
           { index: true, element: <Statistics /> },
           { path: "reviews", element: <Reviews /> },
           { path: "orders", element: <Order /> },
-          { path: "contact", element: <Contact /> },
+          {
+            path: "contact",
+            element: <Contact_Layout />,
+            children: [
+              { index: true, element: <Contact /> },
+              { path: ":id", element: <Contact_Details /> },
+            ],
+          },
           { path: "notification", element: <Notifications /> },
           {
             path: "settings",

@@ -6,7 +6,7 @@ import Page_Header from "../components/layout/header/page_header/Page_Header";
 const App_Layout = () => {
   const [toggleSidebar, setToggleSidebar] = useState(false);
   return (
-    <div className="bg-white min-h-dvh">
+    <div className="bg-white min-h-dvh  ">
       <section className="  w-full  relative flex items-start">
         <Sidebar isOpen={toggleSidebar} setToggleSidebar={setToggleSidebar} />
         <div

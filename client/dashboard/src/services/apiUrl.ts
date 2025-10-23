@@ -27,7 +27,7 @@ export const API = {
     main: "/api/v1/admin/product",
   },
   contact: {
-    main: "",
+    main: "/api/v1/admin/support",
   },
   notification: {
     list: "",

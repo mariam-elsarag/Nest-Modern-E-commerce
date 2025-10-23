@@ -23,10 +23,12 @@ const Table_Layout = <T,>({
   queryDefault,
   children,
   refetch,
+  setValue,
 }: TableLayoutProps<T>): JSX.Element => {
   const { t } = useTranslation();
   const {
     data,
+    setData,
     loading,
     searchLoader,
     setSearchLoader,
@@ -42,6 +44,12 @@ const Table_Layout = <T,>({
       setRefetchData(Date.now());
     }
   }, [refetch]);
+  useEffect(() => {
+    if (setValue) {
+      setValue(() => setData);
+    }
+  }, [setValue, setData]);
+
   return (
     <main className={` ${hasTap ? "flex flex-col gap-6" : ""}`}>
       {hasTap && (

@@ -8,8 +8,7 @@ import Page_Wraper from "../../components/layout/page_wraper/Page_Wraper";
 import Page_Title from "../../components/layout/header/page_title/Page_Title";
 import Button from "../../components/shared/button/Button";
 import Form_Builder from "../../components/shared/form_builder/Form_Builder";
-import { avalibleList, sizeList } from "../../common/lists/List";
-import type { CategoryType } from "../../common/types/Type";
+import { avalibleList } from "../../common/lists/List";
 import { currentLanguageCode } from "../../common/utils/switchLang";
 import {
   numberPattern,

@@ -8,3 +8,11 @@ export enum AccountStatus {
   Active = "active",
   Blocked = "blocked",
 }
+
+export enum TicketStatus {
+  Open = "open",
+  InProgress = "inProgress",
+  Replied = "replied",
+  Solved = "solved",
+  Closed = "closed",
+}

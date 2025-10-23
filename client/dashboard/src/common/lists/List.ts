@@ -30,3 +30,13 @@ export const accountStatusList = [
   { name: "active", value: "active" },
   { name: "blocked", value: "blocked" },
 ];
+
+export const supportTicketList = [
+  { name: "open", value: "open" },
+  {
+    name: "inProgress",
+    value: "inProgress",
+  },
+  { name: "solved", value: "solved" },
+  { name: "closed", value: "closed" },
+];

@@ -33,3 +33,5 @@ backend:
     | "missedGoal") (order,review,hit goal for orders, contact,out of stock products)
 3- invoice ui
 4
+
+empty for pages has details

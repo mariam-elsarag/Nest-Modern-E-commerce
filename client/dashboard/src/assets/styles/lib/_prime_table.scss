@@ -33,9 +33,9 @@
         @extend .body;
         font-weight: 500;
         text-wrap: nowrap;
-        &:not(:last-of-type) {
-          border-bottom: 1px dashed var(--color-neutral-white-200) !important;
-        }
+      }
+      &:not(:last-of-type) {
+        border-bottom: 1px dashed var(--color-neutral-white-200) !important;
       }
 
       &.p-datatable-emptymessage:hover {
@@ -48,4 +48,8 @@
   .p-datatable-thead {
     display: none;
   }
+}
+
+.deleted_row {
+  color: var(--color-neutral-black-200);
 }

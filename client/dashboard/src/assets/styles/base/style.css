@@ -378,7 +378,7 @@ body:dir(rtl) .p-menuitem-separator {
   font-weight: 500;
   text-wrap: nowrap;
 }
-.p-datatable .p-datatable-tbody tr td:not(:last-of-type) {
+.p-datatable .p-datatable-tbody tr:not(:last-of-type) {
   border-bottom: 1px dashed var(--color-neutral-white-200) !important;
 }
 .p-datatable .p-datatable-tbody tr.p-datatable-emptymessage:hover {
@@ -387,6 +387,10 @@ body:dir(rtl) .p-menuitem-separator {
 
 .hide_header .p-datatable-thead {
   display: none;
+}
+
+.deleted_row {
+  color: var(--color-neutral-black-200);
 }
 
 .p-dropdown {
@@ -648,10 +652,6 @@ button.ql-active .ql-fill {
   fill: var(--color-neutral-black-300) !important;
 }
 
-.menu_op {
-  min-width: 180px;
-}
-
 .p-dialog {
   border-radius: 12px;
   -webkit-border-radius: 12px;
@@ -683,5 +683,5 @@ button.ql-active .ql-fill {
   -moz-border-radius: 12px;
   -ms-border-radius: 12px;
   -o-border-radius: 12px;
-  padding: 40px 24px 24px;
+  padding: 20px 24px 24px;
 }/*# sourceMappingURL=style.css.map */

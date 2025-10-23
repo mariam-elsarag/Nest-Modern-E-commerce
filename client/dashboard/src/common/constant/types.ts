@@ -1,4 +1,4 @@
-import type { AccountStatus, UserRole } from "./enum";
+import type { AccountStatus, TicketStatus, UserRole } from "./enum";
 
 export interface UserType {
   id: number;
@@ -28,4 +28,18 @@ export interface ProductType {
   price: number;
   updatedAt: Date;
   categories: CategoryType[];
+}
+
+export interface SupportType {
+  id: number;
+  fullName: string;
+  email: string;
+  subject: string;
+  message: string;
+  status: TicketStatus;
+  isDeleted?: boolean;
+  isRead?: boolean;
+  createdAt?: Date;
+  solvedAt?: Date;
+  repliedAt?: Date;
 }
