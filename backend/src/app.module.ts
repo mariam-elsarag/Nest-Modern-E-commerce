@@ -27,6 +27,10 @@ import { CartSession } from './cart/entities/cart-session.entity';
 import { CartItem } from './cart/entities/cart-items.entity';
 import { SupportModule } from './support/support.module';
 import { Support } from './support/entities/support.entity';
+import { WebsiteModule } from './website/website.module';
+import { Terms } from './website/entities/terms.entity';
+import { Privacy } from './website/entities/privacy.entity';
+import { Faq } from './website/entities/faq.entity';
 
 @Module({
   imports: [
@@ -66,6 +70,9 @@ import { Support } from './support/entities/support.entity';
             CartSession,
             CartItem,
             Support,
+            Terms,
+            Privacy,
+            Faq,
           ],
         };
       },
@@ -81,6 +88,7 @@ import { Support } from './support/entities/support.entity';
     FavoriteModule,
     CartModule,
     SupportModule,
+    WebsiteModule,
   ],
   controllers: [],
   providers: [],
