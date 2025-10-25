@@ -10,6 +10,7 @@ import { In, Repository } from 'typeorm';
 import { DeleteColorDto } from './dto/delete-color.dto';
 import { plainToInstance } from 'class-transformer';
 import { ColorResponseDto } from './dto/response-color.dto';
+import { Variant } from 'src/products/entities/variant.entity';
 
 @Injectable()
 export class ColorsService {
@@ -37,14 +38,7 @@ export class ColorsService {
     const colors = await this.colorRepository.find();
     return colors;
   }
-  async findProductColors() {
-    const colors = await this.colorRepository
-      .createQueryBuilder('colors')
-      .innerJoin('colors.products', 'products')
-      .distinct(true)
-      .getMany();
-    return colors;
-  }
+
   async remove(body: DeleteColorDto) {
     const { ids } = body;
     if (!ids || ids.length === 0) {

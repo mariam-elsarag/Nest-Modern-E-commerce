@@ -22,14 +22,14 @@ import { CartModule } from 'src/cart/cart.module';
     TypeOrmModule.forFeature([User, Product, Variant, CartItem, Favorite]),
     AuthModule,
     CloudinaryModule,
-    ColorsModule,
-    SizesModule,
     CategoryModule,
     SettingsModule,
+    forwardRef(() => SizesModule),
+    forwardRef(() => ColorsModule),
     forwardRef(() => CartModule),
   ],
   controllers: [ProductsAdminController, ProductController],
   providers: [ProductsAdminService, ProductsService],
-  exports: [ProductsAdminService],
+  exports: [ProductsAdminService, ProductsService],
 })
 export class ProductsModule {}

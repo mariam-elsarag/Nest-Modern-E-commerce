@@ -21,16 +21,6 @@ export class SizesService {
     return sizeArray;
   }
 
-  async findProductSizes() {
-    const sizes = await this.sizeRepository
-      .createQueryBuilder('sizes')
-      .innerJoin('sizes.products', 'products')
-      .distinct(true)
-      .getMany();
-
-    return sizes;
-  }
-
   async findOne(id: number) {
     const size = await this.sizeRepository.findOneBy({ id });
     if (!size) {

@@ -9,6 +9,9 @@ import { User } from 'src/users/entities/user.entity';
 import { CartService } from 'src/cart/cart.service';
 import { plainToInstance } from 'class-transformer';
 import { PlateformProductDto } from '../dto/plateform-product.dto';
+import { Variant } from '../entities/variant.entity';
+import { ColorResponseDto } from 'src/colors/dto/response-color.dto';
+import { SizeResponseDto } from 'src/sizes/dto/response-size.dto';
 
 @Injectable()
 export class ProductsService {
@@ -17,7 +20,8 @@ export class ProductsService {
     private readonly productRepository: Repository<Product>,
     @InjectRepository(Favorite)
     private readonly favoriteRepository: Repository<Favorite>,
-
+    @InjectRepository(Variant)
+    private readonly variantRepo: Repository<Variant>,
     private readonly cartService: CartService,
   ) {}
 
@@ -63,5 +67,40 @@ export class ProductsService {
     });
 
     return productsList;
+  }
+
+  /**
+   * Return only used color in products
+   * @returns colors
+   */
+  async productsColor() {
+    const colors = await this.variantRepo
+      .createQueryBuilder('variant')
+      .innerJoin('variant.color', 'color')
+      .select([
+        'DISTINCT color.id AS id',
+        'color.name AS name',
+        'color.name_ar AS name_ar',
+        'color.color AS color',
+      ])
+      .getRawMany();
+
+    return colors.map((c) =>
+      plainToInstance(ColorResponseDto, c, {
+        excludeExtraneousValues: true,
+      }),
+    );
+  }
+
+  async productUsedSizes() {
+    const sizes = await this.variantRepo
+      .createQueryBuilder('variant')
+      .innerJoinAndSelect('variant.size', 'size')
+      .select(['DISTINCT size.id AS id', 'size.label AS label'])
+      .getRawMany();
+
+    return sizes.map((s) =>
+      plainToInstance(SizeResponseDto, s, { excludeExtraneousValues: true }),
+    );
   }
 }

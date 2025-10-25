@@ -17,10 +17,14 @@ import { UserRole } from 'src/common/utils/enum';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { AcceptFormData } from 'src/common/decrators/accept-form-data.decorator';
 import { DeleteColorDto } from './dto/delete-color.dto';
+import { ProductsService } from 'src/products/providers/products.service';
 
 @Controller('api/color')
 export class ColorsController {
-  constructor(private readonly colorsService: ColorsService) {}
+  constructor(
+    private readonly colorsService: ColorsService,
+    private readonly productService: ProductsService,
+  ) {}
 
   @Post()
   @Roles(UserRole.ADMIN)
@@ -39,7 +43,7 @@ export class ColorsController {
   // product colors (color that use in products)
   @Get('product')
   getProductsColor() {
-    return this.colorsService.findProductColors();
+    return this.productService.productsColor();
   }
 
   @Delete()

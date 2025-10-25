@@ -18,10 +18,14 @@ import { Roles } from 'src/auth/decorators/current-user.decorator';
 import { UserRole } from 'src/common/utils/enum';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { AcceptFormData } from 'src/common/decrators/accept-form-data.decorator';
+import { ProductsService } from 'src/products/providers/products.service';
 
 @Controller('api/size')
 export class SizesController {
-  constructor(private readonly sizesService: SizesService) {}
+  constructor(
+    private readonly sizesService: SizesService,
+    private readonly productService: ProductsService,
+  ) {}
 
   @Post()
   @Roles(UserRole.ADMIN)
@@ -39,7 +43,7 @@ export class SizesController {
   // get product size
   @Get('product')
   findProductSizes() {
-    return this.sizesService.findProductSizes();
+    return this.productService.productUsedSizes();
   }
 
   @Get(':id')
