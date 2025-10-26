@@ -1,8 +1,7 @@
 import { Expose, Transform, Type } from 'class-transformer';
 import { CategoryResponseDto } from 'src/category/dto/response-category.dto';
-import { Category } from 'src/category/entities/category.entity';
-import { StockStatus } from 'src/common/utils/enum';
-import { Variant } from '../entities/variant.entity';
+
+import { Variant } from '../../entities/variant.entity';
 
 export class ProductListResponseDto {
   @Expose()

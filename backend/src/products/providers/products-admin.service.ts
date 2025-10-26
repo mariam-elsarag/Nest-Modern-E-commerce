@@ -3,8 +3,6 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateProductDto } from '../dto/create-product.dto';
-import { UpdateProductDto } from '../dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from '../entities/product.entity';
 import { DeepPartial, In, Repository } from 'typeorm';
@@ -15,12 +13,14 @@ import { CategoryService } from 'src/category/category.service';
 import { Request } from 'express';
 import { QueryProductDto } from '../dto/query-product.dto';
 import { plainToInstance } from 'class-transformer';
-import { ProductListResponseDto } from '../dto/response-product-list.dto';
 import { FullPaginationDto } from 'src/common/pagination/pagination.dto';
-import { ProductResponseDto } from '../dto/response-product.dto';
+import { ProductResponseDto } from '../dto/admin/response-product.dto';
 import { Variant } from '../entities/variant.entity';
 import { CartItem } from 'src/cart/entities/cart-items.entity';
 import { SettingsService } from 'src/settings/settings.service';
+import { CreateProductDto } from '../dto/admin/create-product.dto';
+import { UpdateProductDto } from '../dto/admin/update-product.dto';
+import { ProductListResponseDto } from '../dto/admin/response-product-list.dto';
 
 @Injectable()
 export class ProductsAdminService {

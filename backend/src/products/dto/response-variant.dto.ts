@@ -1,4 +1,5 @@
-import { Expose, Type } from 'class-transformer';
+import { OmitType } from '@nestjs/mapped-types';
+import { Expose, Transform, Type } from 'class-transformer';
 import { ColorResponseDto } from 'src/colors/dto/response-color.dto';
 import { SizeResponseDto } from 'src/sizes/dto/response-size.dto';
 

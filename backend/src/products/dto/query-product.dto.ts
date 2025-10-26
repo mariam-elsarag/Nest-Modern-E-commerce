@@ -1,8 +1,13 @@
 import { PaginationQueryDto } from 'src/common/pagination/pagination-query.dto';
-import { IsNumber, IsOptional } from 'class-validator';
+import { IsNumber, IsOptional, Min } from 'class-validator';
 
 import { Type } from 'class-transformer';
+import { IntersectionType } from '@nestjs/mapped-types';
 
+export class CartTokeQueryDto {
+  @IsOptional()
+  cartToken?: string;
+}
 export class QueryProductDto extends PaginationQueryDto {
   @Type(() => Number)
   @IsNumber()
@@ -10,15 +15,15 @@ export class QueryProductDto extends PaginationQueryDto {
   category?: number;
 }
 
-export class HiglightProductsQueryDto {
+export class HiglightProductsQueryDto extends CartTokeQueryDto {
   @IsOptional()
   type?: 'featured' | 'latest';
-
-  @IsOptional()
-  cartToken?: string;
 }
 
-export class PlateformProductListQueryDto extends PaginationQueryDto {
+export class FilterProductQueryDto extends IntersectionType(
+  PaginationQueryDto,
+  CartTokeQueryDto,
+) {
   @Type(() => Number)
   @IsNumber()
   @IsOptional()
@@ -30,5 +35,16 @@ export class PlateformProductListQueryDto extends PaginationQueryDto {
   size?: number;
 
   @IsOptional()
-  categories?: number[];
+  categories?: string;
+
+  @Min(0)
+  @IsNumber()
+  @Type(() => Number)
+  @IsOptional()
+  minPrice?: number;
+
+  @IsNumber()
+  @Type(() => Number)
+  @IsOptional()
+  maxPrice?: number;
 }

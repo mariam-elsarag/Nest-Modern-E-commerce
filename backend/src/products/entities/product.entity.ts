@@ -37,6 +37,12 @@ export class Product {
   @Column({ type: 'varchar' })
   sku: string;
 
+  @Column({ type: 'int', default: 0 })
+  reviewCount: number;
+
+  @Column({ type: 'float', default: 0 })
+  averageRating: number;
+
   @Column({ type: 'simple-array', nullable: true })
   images: string[];
 

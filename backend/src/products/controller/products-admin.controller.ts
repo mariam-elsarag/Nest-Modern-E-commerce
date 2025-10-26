@@ -15,8 +15,8 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
-import { CreateProductDto } from '../dto/create-product.dto';
-import { UpdateProductDto } from '../dto/update-product.dto';
+import { CreateProductDto } from '../dto/admin/create-product.dto';
+import { UpdateProductDto } from '../dto/admin/update-product.dto';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 import { Roles } from 'src/auth/decorators/current-user.decorator';
