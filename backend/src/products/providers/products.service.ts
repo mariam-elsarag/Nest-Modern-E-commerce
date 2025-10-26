@@ -135,18 +135,31 @@ export class ProductsService {
       ...product,
       isFavorite: isFavorite ? true : false,
     };
-    return productWithFavorite;
+    return plainToInstance(PlateformProductDetailsDto, productWithFavorite, {
+      excludeExtraneousValues: true,
+    });
   }
+  async similarProduct(id: number, user: User) {
+    const product = await this.productRepository.findOne({
+      where: { id },
+      relations: ['categories'],
+    });
 
-  /**
-   *Get product details
-   * @param id
-   * @param user
-   * @returns
-   */
-  async productDetails(id: number, user: User) {
-    const product = await this.findOne(id, user);
-    return plainToInstance(PlateformProductDetailsDto, product, {
+    if (!product) {
+      throw new NotFoundException('Product not found');
+    }
+    const productCategories = product.categories.map(({ id }) => id);
+    const productsWithCategory = await this.productRepository
+      .createQueryBuilder('product')
+      .leftJoinAndSelect('product.categories', 'category')
+      .leftJoinAndSelect('product.variants', 'variant')
+      .where('product.id != :id', { id })
+      .andWhere('category.id IN(:...productCategories)', { productCategories })
+      .andWhere('variant.quantity > 0')
+      .take(4)
+      .getMany();
+    const products = await this.addFlagsToProduct(productsWithCategory, user);
+    return plainToInstance(PlateformProductDto, products, {
       excludeExtraneousValues: true,
     });
   }

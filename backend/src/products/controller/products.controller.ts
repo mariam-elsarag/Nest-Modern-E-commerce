@@ -46,12 +46,14 @@ export class ProductController {
     @Param('id', ParseIntPipe) id: number,
     @currentUser() user: User,
   ) {
-    return this.productService.productDetails(id, user);
+    return this.productService.findOne(id, user);
   }
 
-  @Get(':id')
+  @Get(':id/similar')
   similarProducts(
     @Param('id', ParseIntPipe) id: number,
     @currentUser() user: User,
-  ) {}
+  ) {
+    return this.productService.similarProduct(id, user);
+  }
 }
