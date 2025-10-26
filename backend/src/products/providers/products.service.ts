@@ -135,10 +135,22 @@ export class ProductsService {
       ...product,
       isFavorite: isFavorite ? true : false,
     };
-    return plainToInstance(PlateformProductDetailsDto, productWithFavorite, {
+    return productWithFavorite;
+  }
+
+  /**
+   *Get product details
+   * @param id
+   * @param user
+   * @returns
+   */
+  async productDetails(id: number, user: User) {
+    const product = await this.findOne(id, user);
+    return plainToInstance(PlateformProductDetailsDto, product, {
       excludeExtraneousValues: true,
     });
   }
+
   /**
    * Return only used color in products
    * @returns colors
