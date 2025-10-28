@@ -22,3 +22,22 @@ export enum TicketStatus {
   Solved = 'solved',
   Closed = 'closed',
 }
+
+export enum PaymentStatus {
+  Pending = 'pending',
+  Success = 'success',
+  Failed = 'failed',
+}
+
+export enum PaymentMethod {
+  Cash = 'cash',
+  Gateway = 'gateway',
+}
+
+export enum OrderStatus {
+  Pending = 'pending',
+  Reserved = 'reserved',
+  Shipped = 'shipped',
+  Delivered = 'delivered',
+  Cancelled = 'cancelled',
+}

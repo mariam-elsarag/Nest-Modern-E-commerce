@@ -31,6 +31,7 @@ import { WebsiteModule } from './website/website.module';
 import { Terms } from './website/entities/terms.entity';
 import { Privacy } from './website/entities/privacy.entity';
 import { Faq } from './website/entities/faq.entity';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -89,6 +90,7 @@ import { Faq } from './website/entities/faq.entity';
     CartModule,
     SupportModule,
     WebsiteModule,
+    OrderModule,
   ],
   controllers: [],
   providers: [],

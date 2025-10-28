@@ -21,6 +21,8 @@ import { SettingsService } from 'src/settings/settings.service';
 import { CreateProductDto } from '../dto/admin/create-product.dto';
 import { UpdateProductDto } from '../dto/admin/update-product.dto';
 import { ProductListResponseDto } from '../dto/admin/response-product-list.dto';
+import { Favorite } from 'src/favorite/entities/favorite.entity';
+import { CartService } from 'src/cart/cart.service';
 
 @Injectable()
 export class ProductsAdminService {
@@ -38,6 +40,12 @@ export class ProductsAdminService {
     private readonly settingService: SettingsService,
   ) {}
 
+  /**
+   * create cart from admin
+   * @param createProductDto
+   * @param files
+   * @returns
+   */
   async create(
     createProductDto: CreateProductDto,
     files: Express.Multer.File[],
@@ -116,6 +124,12 @@ export class ProductsAdminService {
     });
   }
 
+  /**
+   * Get all product list
+   * @param query
+   * @param req
+   * @returns
+   */
   async findAll(query: QueryProductDto, req: Request) {
     const { search, category, limit = '10', page = '1' } = query;
 
@@ -156,6 +170,11 @@ export class ProductsAdminService {
     return new FullPaginationDto(currentPage, count, take, req, data);
   }
 
+  /**
+   *
+   * @param id
+   * @returns
+   */
   async findOne(id: number) {
     const product = await this.productRepository.findOne({
       where: { id },

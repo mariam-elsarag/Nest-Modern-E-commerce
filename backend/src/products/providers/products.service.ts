@@ -149,13 +149,15 @@ export class ProductsService {
       throw new NotFoundException('Product not found');
     }
     const productCategories = product.categories.map(({ id }) => id);
+
     const productsWithCategory = await this.productRepository
       .createQueryBuilder('product')
       .leftJoinAndSelect('product.categories', 'category')
       .leftJoinAndSelect('product.variants', 'variant')
-      .where('product.id != :id', { id })
-      .andWhere('category.id IN(:...productCategories)', { productCategories })
+      .where('category.id IN(:...productCategories)', { productCategories })
       .andWhere('variant.quantity > 0')
+      .andWhere('product.id != :id', { id })
+      .distinct(true)
       .take(4)
       .getMany();
     const products = await this.addFlagsToProduct(productsWithCategory, user);
