@@ -36,7 +36,6 @@ export enum PaymentMethod {
 
 export enum OrderStatus {
   Pending = 'pending',
-  Reserved = 'reserved',
   Shipped = 'shipped',
   Delivered = 'delivered',
   Cancelled = 'cancelled',

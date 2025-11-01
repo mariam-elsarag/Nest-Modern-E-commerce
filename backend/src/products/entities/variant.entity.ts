@@ -19,6 +19,9 @@ export class Variant {
   @Column({ type: 'int', default: 0 })
   quantity: number;
 
+  @Column({ type: 'int', default: 0 })
+  reserved: number;
+
   @ManyToOne(() => Color, { eager: true, nullable: true })
   color: Color;
 

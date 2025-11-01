@@ -32,6 +32,9 @@ import { Terms } from './website/entities/terms.entity';
 import { Privacy } from './website/entities/privacy.entity';
 import { Faq } from './website/entities/faq.entity';
 import { OrderModule } from './order/order.module';
+import { Order } from './order/entities/order.entity';
+import { OrderItem } from './order/entities/order-items.entity';
+import { AddressModule } from './address/address.module';
 
 @Module({
   imports: [
@@ -74,6 +77,8 @@ import { OrderModule } from './order/order.module';
             Terms,
             Privacy,
             Faq,
+            Order,
+            OrderItem,
           ],
         };
       },
@@ -91,6 +96,7 @@ import { OrderModule } from './order/order.module';
     SupportModule,
     WebsiteModule,
     OrderModule,
+    AddressModule,
   ],
   controllers: [],
   providers: [],

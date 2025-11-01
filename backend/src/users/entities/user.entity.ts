@@ -1,5 +1,6 @@
 import { AccountStatus, UserRole } from 'src/common/utils/enum';
 import { Favorite } from 'src/favorite/entities/favorite.entity';
+import { Order } from 'src/order/entities/order.entity';
 import {
   Column,
   CreateDateColumn,
@@ -61,4 +62,7 @@ export class User {
 
   @OneToMany(() => Favorite, (favorite) => favorite.user)
   favorites: Favorite[];
+
+  @OneToMany(() => Order, (item) => item.user, { cascade: true })
+  orders: Order[];
 }
