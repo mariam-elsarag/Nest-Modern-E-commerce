@@ -3,6 +3,9 @@ import { CartResponseDto } from './response-cart.dto';
 
 export class ResponseCartDetailsDto {
   @Expose()
+  id: number;
+
+  @Expose()
   @Type(() => CartResponseDto)
   items: CartResponseDto[];
 

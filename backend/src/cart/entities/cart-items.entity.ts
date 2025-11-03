@@ -20,13 +20,15 @@ export class CartItem {
   @Column({ default: true })
   isValid: boolean;
 
-  @ManyToOne(() => CartSession, (session) => session.items)
+  @ManyToOne(() => CartSession, (session) => session.items, {
+    onDelete: 'CASCADE',
+  })
   session: CartSession;
 
-  @ManyToOne(() => Product)
+  @ManyToOne(() => Product, { eager: true })
   product: Product;
 
-  @ManyToOne(() => Variant)
+  @ManyToOne(() => Variant, { eager: true })
   variant: Variant;
 
   // derived

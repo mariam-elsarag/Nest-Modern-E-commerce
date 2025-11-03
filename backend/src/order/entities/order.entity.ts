@@ -14,6 +14,7 @@ import {
 } from 'typeorm';
 import { OrderItem } from './order-items.entity';
 import { User } from 'src/users/entities/user.entity';
+import { Address } from 'src/address/entities/address.entity';
 
 @Entity('order')
 export class Order {
@@ -46,4 +47,7 @@ export class Order {
 
   @DeleteDateColumn({ nullable: true })
   deletedAt?: Date;
+
+  @ManyToOne(() => Address, { nullable: false })
+  address: Address;
 }

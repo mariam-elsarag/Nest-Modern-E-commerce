@@ -35,6 +35,8 @@ import { OrderModule } from './order/order.module';
 import { Order } from './order/entities/order.entity';
 import { OrderItem } from './order/entities/order-items.entity';
 import { AddressModule } from './address/address.module';
+import { Address } from './address/entities/address.entity';
+import { StripeModule } from './stripe/stripe.module';
 
 @Module({
   imports: [
@@ -79,6 +81,7 @@ import { AddressModule } from './address/address.module';
             Faq,
             Order,
             OrderItem,
+            Address,
           ],
         };
       },
@@ -97,6 +100,7 @@ import { AddressModule } from './address/address.module';
     WebsiteModule,
     OrderModule,
     AddressModule,
+    StripeModule,
   ],
   controllers: [],
   providers: [],

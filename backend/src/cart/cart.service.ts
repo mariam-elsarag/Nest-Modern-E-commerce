@@ -34,6 +34,7 @@ export class CartService {
   ) {
     const { cartToken, product: productId, variant, quantity } = createCartDto;
     const { id } = user;
+
     const cartSession = await this.findOrCreateSession(cartToken, id);
 
     const product = await this.productAdminService.findAvalibleOne(productId);
@@ -135,34 +136,36 @@ export class CartService {
   }
 
   async findSession(token?: string, user?: number) {
-    let cartSession: CartSession | null = null;
+    const where: any = {};
 
     if (user) {
-      cartSession = await this.cartSessionRepo.findOne({
-        where: { userId: user },
-        relations: ['items', 'items.product', 'items.variant'],
-        withDeleted: true,
-      });
+      where.userId = user;
     } else if (token) {
-      cartSession = await this.cartSessionRepo.findOne({
-        where: { cartToken: token },
-        relations: ['items', 'items.product', 'items.variant'],
+      where.cartToken = token;
+    }
+    if (user || token) {
+      const cartSession = await this.cartSessionRepo.findOne({
+        where,
+        relations: ['items', 'items.variant'],
         withDeleted: true,
       });
-    }
 
-    return cartSession;
+      return cartSession;
+    } else {
+      return null;
+    }
   }
   async findOrCreateSession(token?: string, user?: number) {
     let cartSession = await this.findSession(token, user);
-    if (!cartSession) {
+
+    if (!cartSession?.id) {
       const sessionToken = user ? null : uuidv4();
 
       cartSession = this.cartSessionRepo.create({
         userId: user ?? null,
         cartToken: sessionToken,
       });
-
+      console.log(cartSession, 'sk');
       cartSession = await this.cartSessionRepo.save(cartSession);
     }
 

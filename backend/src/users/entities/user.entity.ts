@@ -1,3 +1,4 @@
+import { Address } from 'src/address/entities/address.entity';
 import { AccountStatus, UserRole } from 'src/common/utils/enum';
 import { Favorite } from 'src/favorite/entities/favorite.entity';
 import { Order } from 'src/order/entities/order.entity';
@@ -7,6 +8,7 @@ import {
   Entity,
   Index,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -23,7 +25,7 @@ export class User {
   email: string;
 
   @Index()
-  @Column({ type: 'varchar', length: 13, unique: true })
+  @Column({ type: 'varchar', length: 13, unique: true, nullable: true })
   phone: string;
 
   @Column({ type: 'enum', enum: UserRole, default: UserRole.User })
@@ -31,9 +33,6 @@ export class User {
 
   @Column({ type: 'varchar', nullable: true, default: null })
   avatar: string | null;
-
-  @Column({ type: 'varchar', length: 500, nullable: true, default: null })
-  address: string | null;
 
   @Column({
     type: 'enum',
@@ -65,4 +64,10 @@ export class User {
 
   @OneToMany(() => Order, (item) => item.user, { cascade: true })
   orders: Order[];
+
+  @OneToOne(() => Address, (address) => address.user, {
+    cascade: true,
+    eager: true,
+  })
+  address: Address;
 }

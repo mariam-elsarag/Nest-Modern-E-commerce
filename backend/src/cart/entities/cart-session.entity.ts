@@ -12,6 +12,9 @@ export class CartSession {
   @Column({ type: 'varchar', nullable: true })
   cartToken?: string | null;
 
-  @OneToMany(() => CartItem, (item) => item.session, { cascade: true })
+  @OneToMany(() => CartItem, (item) => item.session, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   items: CartItem[];
 }

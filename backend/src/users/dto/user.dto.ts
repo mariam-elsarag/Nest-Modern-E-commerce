@@ -1,4 +1,5 @@
 import { Expose, Transform } from 'class-transformer';
+import { ResponseAddressDto } from 'src/address/dto/response-address.dto';
 import { AccountStatus, UserRole } from 'src/common/utils/enum';
 
 export class UserDto {
@@ -25,7 +26,8 @@ export class UserDto {
   avatar: string | null;
 
   @Expose()
-  address: string | null;
+  @Transform(() => ResponseAddressDto)
+  address: ResponseAddressDto;
 
   @Expose()
   createdAt: Date;

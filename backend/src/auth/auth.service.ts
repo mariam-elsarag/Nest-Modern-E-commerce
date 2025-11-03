@@ -21,11 +21,15 @@ import { OtpQueryDto } from './dto/otp-query.dto';
 import { VerifyOtpDto } from './dto/verify-otp.dto';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UserDto } from 'src/users/dto/user.dto';
+import { Address } from 'src/address/entities/address.entity';
+import { CreateAddressDto } from 'src/address/dto/create-address.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(Address)
+    private readonly addressRepository: Repository<Address>,
     private readonly jwtService: JwtService,
     private readonly mailService: MailService,
   ) {}
@@ -240,7 +244,6 @@ export class AuthService {
   async inviteAdmin(body: CreateUserDto) {
     const { email, ...rest } = body;
     await this.checkUserExist(email, true);
-    console.log(email, 'd');
     const user = await this.userRepository.save({
       ...body,
       status: AccountStatus.Active,
@@ -260,6 +263,33 @@ export class AuthService {
       message: 'Admin invitation sent successfully with OTP.',
       ...body,
     };
+  }
+
+  async createOrReturnUserFromOrder(
+    email: string,
+    fullName: string,
+    address: CreateAddressDto,
+  ) {
+    let user = await this.checkUserExist(email, false);
+
+    if (!user?.id) {
+      const newUser = await this.userRepository.create({
+        email,
+        fullName,
+        status: AccountStatus.Active,
+      });
+      user = await this.userRepository.save(newUser);
+      await this.addressRepository.save({
+        user,
+        street: address.street,
+        city: address.city,
+        state: address.state,
+        country: address.country,
+        zipCode: address.zipCode,
+      });
+    }
+
+    return user;
   }
 
   /**
