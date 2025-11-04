@@ -15,6 +15,7 @@ export const API = {
     colors: "/api/color/product",
     sizes: "/api/size/product",
   },
+  support: "/api/v1/support",
   products: "/api/v1/product",
   reviews: "/reviews",
   cart: "/cart",

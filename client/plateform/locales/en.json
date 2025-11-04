@@ -186,5 +186,6 @@
   "successfully_change_password": "Your password has been changed successfully.",
   "available": "Available",
   "unavailable": "Unavailable",
-  "no_products_yet": "No products yet"
+  "no_products_yet": "No products yet",
+  "successfully_send_support_ticket": "Your support request has been sent successfully. Our team will contact you soon via email."
 }

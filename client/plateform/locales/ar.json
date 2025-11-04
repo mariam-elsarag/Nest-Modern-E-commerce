@@ -183,5 +183,6 @@
   "successfully_change_password": "تم تغيير كلمة المرور بنجاح.",
   "available": "متاح",
   "unavailable": "غير متاح",
-  "no_products_yet": "لا توجد منتجات بعد"
+  "no_products_yet": "لا توجد منتجات بعد",
+  "successfully_send_support_ticket": "تم إرسال طلب الدعم الخاص بك بنجاح. سيتواصل معك فريقنا قريبًا عبر البريد الإلكتروني."
 }

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
+import { toast } from "react-toastify";
 import { emailRegex } from "~/common/constant/validator";
 import { handleError } from "~/common/utils/handleError";
 import Button from "~/components/shared/button/Button";
@@ -9,6 +10,8 @@ import Form_Builder from "~/components/shared/form_builder/Form_Builder";
 import type { FormListItemType } from "~/components/shared/form_builder/Form_Builder-types";
 import Page_Header from "~/components/shared/header/page_header/Page_Header";
 import type { breadCrumbListType } from "~/components/shared/header/page_header/Page_Header.types";
+import { API } from "~/services/apiUrl";
+import axiosInstance from "~/services/axiosInstance";
 
 const Contact = () => {
   const { t } = useTranslation();
@@ -22,9 +25,11 @@ const Contact = () => {
     handleSubmit,
   } = useForm({
     defaultValues: {
-      message: null,
-      email: null,
       fullName: null,
+      email: null,
+      subject: null,
+      message: null,
+      attachment: null,
     },
     mode: "onChange",
   });
@@ -67,11 +72,27 @@ const Contact = () => {
     },
     {
       id: "3",
+      formType: "input",
+      type: "text",
+      name: "subject",
+      label: "subject",
+      fieldName: "subject",
+      containerClassName: "lg:col-span-2",
+      validator: {
+        maxLength: {
+          value: 30,
+          message: t("max_length_error", { number: 100 }),
+        },
+      },
+    },
+    {
+      id: "4",
       formType: "textarea",
       fieldName: "message",
       type: "text",
       name: "message",
       label: "message",
+      containerClassName: "lg:col-span-2",
       validator: {
         required: "message_is_required",
         maxLength: {
@@ -88,6 +109,7 @@ const Contact = () => {
       variant: "file",
       validTypes: ["application/pdf"],
       isMultiple: false,
+      containerClassName: "lg:col-span-2",
     },
   ];
   const breadcrumbsList: breadCrumbListType[] = [
@@ -103,6 +125,15 @@ const Contact = () => {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
+      const formDate = new FormData();
+      Object.entries(data).forEach(([key, value]) => {
+        formDate.append(key, value);
+      });
+      const response = await axiosInstance.post(API.support, formDate);
+      if (response.status === 201) {
+        toast.success(t("successfully_send_support_ticket"));
+        reset();
+      }
     } catch (err) {
       handleError(err, t, setError);
     } finally {
@@ -119,9 +150,9 @@ const Contact = () => {
       />
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="mx-auto max-w-[350px] w-full flex flex-col gap-10"
+        className="mx-auto max-w-[450px] w-full flex flex-col gap-6"
       >
-        <fieldset className="flex flex-col gap-6">
+        <fieldset className="grid lg:grid-cols-2 gap-3">
           <Form_Builder formList={formList} control={control} errors={errors} />
         </fieldset>
         <Button

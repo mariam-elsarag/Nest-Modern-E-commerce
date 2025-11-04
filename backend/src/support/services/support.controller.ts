@@ -25,7 +25,6 @@ export class SupportController {
   @OptionalToken()
   @UseInterceptors(FileInterceptor('attachment', { storage: memoryStorage() }))
   @UseGuards(AuthGuard)
-  @Roles(UserRole.User)
   create(
     @Body() createSupportDto: CreateSupportDto,
     @currentUser() user: User,

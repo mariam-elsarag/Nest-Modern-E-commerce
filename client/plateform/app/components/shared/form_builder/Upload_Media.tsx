@@ -178,9 +178,7 @@ const Upload_Media: React.FC<UploadMediaProps> = ({
   };
 
   useEffect(() => {
-    if (value && item?.isEdit) {
-      setMedia(value);
-    }
+    setMedia(value);
   }, [value, item?.isEdit]);
 
   if (variant === "file") {
