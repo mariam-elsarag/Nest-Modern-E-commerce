@@ -48,6 +48,9 @@ export class Support {
   @Column({ type: 'timestamp', nullable: true })
   solvedAt?: Date;
 
+  @Column({ type: 'varchar', nullable: true })
+  attachment: string | null;
+
   @DeleteDateColumn()
   deletedAt?: Date;
 

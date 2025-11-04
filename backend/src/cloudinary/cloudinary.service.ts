@@ -96,14 +96,13 @@ export class CloudinaryService {
         'image/png',
         'image/webp',
         'image/jpg',
-        'image/gif',
         'image/svg+xml',
       ],
       file: ['application/pdf'],
     };
 
     const validExtensions = {
-      image: ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.svg'],
+      image: ['.jpg', '.jpeg', '.png', '.webp', , '.svg'],
       file: ['.pdf'],
     };
 

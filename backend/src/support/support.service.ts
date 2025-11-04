@@ -14,6 +14,7 @@ import { NotFoundError } from 'rxjs';
 import { TicketStatus } from 'src/common/utils/enum';
 import { MailService } from 'src/mail/mail.service';
 import { ReplyByAdminSupportDto } from './dto/reply-support-dto';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Injectable()
 export class SupportService {
@@ -21,9 +22,14 @@ export class SupportService {
     @InjectRepository(Support)
     private readonly supportRepo: Repository<Support>,
     private readonly mailService: MailService,
+    private readonly cloudinaryService: CloudinaryService,
   ) {}
   // create new support ticket from user
-  async create(createSupportDto: CreateSupportDto, user?: User) {
+  async create(
+    createSupportDto: CreateSupportDto,
+    user?: User,
+    file?: Express.Multer.File,
+  ) {
     const { fullName, email, subject, message } = createSupportDto;
     let name: string = fullName;
     let userEmail: string = email;
@@ -39,11 +45,21 @@ export class SupportService {
       name = fullName ?? user.fullName;
       userEmail = email ?? user.email;
     }
+    let attachment;
+    if (file?.fieldname === 'attachment') {
+      this.cloudinaryService.validateFileType(file, 'file');
+      attachment = await this.cloudinaryService.uploadImage(
+        file,
+        'support/attachment',
+      );
+    }
+
     const support = await this.supportRepo.create({
       fullName: name,
       email: userEmail,
       subject,
       message,
+      attachment,
     });
     await this.supportRepo.save(support);
     return {
@@ -51,6 +67,7 @@ export class SupportService {
       email: support.email,
       subject: support.subject ?? '',
       message: support.message,
+      attachment: support.attachment,
       createdAt: support.createdAt,
     };
   }

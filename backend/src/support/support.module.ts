@@ -7,9 +7,15 @@ import { User } from 'src/users/entities/user.entity';
 import { AuthModule } from 'src/auth/auth.module';
 import { AdminSupportController } from './services/support-admin.controller';
 import { MailModule } from 'src/mail/mail.module';
+import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Support, User]), AuthModule, MailModule],
+  imports: [
+    TypeOrmModule.forFeature([Support, User]),
+    AuthModule,
+    MailModule,
+    CloudinaryModule,
+  ],
   controllers: [SupportController, AdminSupportController],
   providers: [SupportService],
 })
