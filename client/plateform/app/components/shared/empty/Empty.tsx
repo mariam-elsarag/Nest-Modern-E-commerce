@@ -18,7 +18,7 @@ const Empty = ({
     <figure className="flex flex-col items-center justify-center text-center gap-6 max-w-[273px] w-full mx-auto ">
       <img src={image} alt="empty" className="w-16 h-16" />
       {title && (
-        <h3 className="h3 font-bold text-neutral-black-900">{t(title)}</h3>
+        <h3 className="h4 font-bold text-neutral-black-900">{t(title)}</h3>
       )}
       {des && <p className="body text-neutral-black-500">{t(des)}</p>}
       {btnName && (

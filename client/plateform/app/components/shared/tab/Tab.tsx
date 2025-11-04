@@ -133,7 +133,9 @@ const Tap_Content = ({
       {list.map((item) => {
         const isActive =
           type !== "navigation" &&
-          ((!currentValue && item.default) || currentValue === item.value);
+          ((!currentValue && item.default) ||
+            currentValue[fieldName] === item.value ||
+            currentValue === item.value);
         const Icon = item.icon;
 
         const commonClasses = `${styles[variant]} ${isActive ? activeStyles[variant] : ""}`;

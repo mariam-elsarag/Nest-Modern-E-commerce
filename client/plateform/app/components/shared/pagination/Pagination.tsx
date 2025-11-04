@@ -48,8 +48,8 @@ const Pagination = ({
             height="24"
             fill={
               currentPage === 1
-                ? "var(--color-neutral-black-500)"
-                : "var(--color-neutral-black-900)"
+                ? "var(--color-neutral-black-200)"
+                : "var(--color-neutral-black-500)"
             }
           />
         </span>
@@ -59,7 +59,7 @@ const Pagination = ({
           return (
             <div
               key={index}
-              className="flex items-center justify-center w-10 h-10 rounded-lg dots"
+              className="flex items-center justify-center w-8 h-8 rounded-lg dots"
             >
               <svg
                 width="13"
@@ -80,7 +80,7 @@ const Pagination = ({
         return (
           <div
             key={index}
-            className={`body font-normal    transition-all ease-in-out duration-300 flex items-center justify-center w-10 h-10 rounded-lg ${
+            className={`body font-normal    transition-all ease-in-out duration-300 flex items-center justify-center w-8 h-8 rounded-lg ${
               pageNumber === currentPage
                 ? "bg-neutral-white-100 text-neutral-black-900"
                 : "cursor-pointer text-neutral-black-900"
@@ -94,7 +94,7 @@ const Pagination = ({
       <button
         className={`outline-none shadow-none ${
           currentPage === lastPage ? "cursor-default" : "cursor-pointer"
-        } flex items-center justify-center w-10 h-10 rounded-lg `}
+        } flex items-center justify-center w-8 h-8 rounded-lg `}
         onClick={onNext}
       >
         <span className={currentLanguageCode === "en" ? "rotate-180" : ""}>
@@ -103,8 +103,8 @@ const Pagination = ({
             height="24"
             fill={
               currentPage === lastPage
-                ? "var(--color-on-container-disapled)"
-                : "var(--color-neutral-black-900)"
+                ? "var(--color-neutral-black-200)"
+                : "var(--color-neutral-black-500)"
             }
           />
         </span>

@@ -43,7 +43,7 @@ const Button = ({
   const styles = {
     primary: `bg-neutral-black-900 text-white ${hasHover ? "hover:bg-neutral-black-800" : ""}`,
     secondary: "bg-neutral-white-100 text-neutral-black-500",
-    outline: `bg-white border border-neutral-black-200 text-neutral-black-500  ${hasHover ? "hover:text-neutral-black-900" : ""}`,
+    outline: `bg-white border border-neutral-black-100 text-neutral-black-500  ${hasHover ? "hover:text-neutral-black-900" : ""}`,
     tertiery: `bg-white text-neutral-black-800 ${hasHover ? "hover:bg-neutral-white-100" : ""}`,
     outline_dark:
       "bg-white border border-neutral-black-900 text-neutral-black-900 ",

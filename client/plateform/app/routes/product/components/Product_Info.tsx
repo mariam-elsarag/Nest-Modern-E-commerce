@@ -18,13 +18,17 @@ import Badge from "~/components/shared/badge/Badge";
 import { useTranslation } from "react-i18next";
 import { formatPrice } from "~/common/utils/formatPrice";
 import Counter from "~/components/shared/counter/Counter";
+import { useState } from "react";
 
 type ProductInfoPropsType = {
   product: Product | undefined;
 };
 const Product_Info = ({ product }: ProductInfoPropsType) => {
   const { t } = useTranslation();
-
+  const variants = product?.variants;
+  const [selectVariant, setSelectVariant] = useState(product?.variants[0]);
+  const colors = variants?.map(({ color }) => color) ?? [];
+  const sizes = variants?.filter(({ size }) => size) ?? [];
   return (
     <section className="overflow-x-hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[543px_1fr] gap-6 md:gap-10 2xl:gap-[120px] ">
       <figure className="bg-neutral-white-100 rounded-[5px] min-h-[375px]  lg:h-[500px]  pt-10 pb-6 ">
@@ -57,7 +61,9 @@ const Product_Info = ({ product }: ProductInfoPropsType) => {
         <header className="flex flex-col gap-3">
           <div className="flex items-center gap-1 justify-between">
             <h1 className="h3 text-neutral-black-900 font-bold line-clamp-1">
-              {product?.title}
+              {currentLanguageCode === "en"
+                ? product?.title
+                : product?.title_ar}
             </h1>
             <Button
               variant="tertiery"
@@ -68,33 +74,33 @@ const Product_Info = ({ product }: ProductInfoPropsType) => {
           </div>
           <div className="flex items-center gap-2 ">
             <Badge
-              label={`${t("_review", { rate: product.rate })}`}
+              label={`${t("_review", { rate: product.averageRating })}`}
               icon={<FullStarIcon />}
               variant="secondary"
             />
-            <Badge label="in_stock" />
+            <Badge label={product?.isAvalible ? "available" : "unavailable"} />
           </div>
         </header>
         {/* price */}
-        {product.price && (
+        {selectVariant?.price && (
           <h4 className="text-neutral-black-900 h4 font-semibold line-clamp-1">
-            {formatPrice(product.price)}
+            {formatPrice(selectVariant.price)}
           </h4>
         )}
         {/* colors */}
-        {product?.colors?.length > 0 && (
+        {colors?.length > 0 && (
           <div className="flex flex-col gap-3">
             <h4 className="label text-neutral-black-500 font-medium uppercase">
               {t("avalible_colors")}
             </h4>
             <div className="flex items-center gap-2.5">
-              {product?.colors?.map((item) => (
+              {colors?.map((item) => (
                 <span
-                  key={item}
+                  key={item.id}
                   className={`color_container border-neutral-black-100`}
                 >
                   <span
-                    style={{ background: item }}
+                    style={{ background: item.color }}
                     className="w-6 h-6 flex rounded-full"
                   />
                 </span>
@@ -103,36 +109,49 @@ const Product_Info = ({ product }: ProductInfoPropsType) => {
           </div>
         )}
         {/* sizes */}
-        {product?.sizes?.length > 0 && (
+        {sizes?.length > 0 && (
           <div className="flex flex-col gap-3">
             <h4 className="label text-neutral-black-500 font-medium uppercase">
               {t("select_size")}
             </h4>
             <div className="flex items-center gap-2.5">
-              {product?.sizes?.map((item) => (
+              {sizes?.map((item) => (
                 <div
-                  key={item}
+                  key={item?.id}
                   className={`size_container  border-neutral-black-100 label`}
                 >
-                  {item}
+                  {item?.label}
                 </div>
               ))}
             </div>
           </div>
         )}
         {/* quantity */}
-        {product?.quantity && (
+        {selectVariant?.quantity && (
           <div className="flex flex-col gap-3">
             <h4 className="label text-neutral-black-500 font-medium uppercase">
               {t("quantity")}
             </h4>
-            <Counter quantity={product?.quantity} />
+            <Counter quantity={selectVariant?.quantity} />
           </div>
         )}
         <footer className="flex items-center gap-4">
           <Button className="min-w-[284px]" text="add_to_cart" />
           <Button
-            icon={<FavoriteIcon />}
+            icon={
+              <FavoriteIcon
+                fill={
+                  product?.isFavorite
+                    ? "white"
+                    : "var(--color-semantic-red-900)"
+                }
+                stroke={
+                  product?.isFavorite
+                    ? "var(--color-neutral-black-500)"
+                    : "var(--color-semantic-red-900)"
+                }
+              />
+            }
             variant="outline"
             className="!w-[40px] md:!w-[45px] !px-0"
           />

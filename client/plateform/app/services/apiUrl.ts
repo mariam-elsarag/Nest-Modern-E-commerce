@@ -7,10 +7,15 @@ export const API = {
     verifyOtp: "/api/auth/verify-otp",
     resetPassword: "/api/auth/reset-password",
   },
+  home: {
+    highlights: "/api/v1/product/highlights",
+  },
+  list: {
+    categories: "/api/category/product",
+    colors: "/api/color/product",
+    sizes: "/api/size/product",
+  },
   products: "/api/v1/product",
   reviews: "/reviews",
-  categories: "/categories",
-  colors: "/colors",
-  sizes: "/sizes",
   cart: "/cart",
 };

@@ -19,8 +19,8 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 export async function clientLoader() {
-  // const response = await axiosInstance.get<Product[]>(API.products);
-  // return { data: response.data };
+  const highlights = await axiosInstance.get<Product[]>(API.home.highlights);
+  return { highlights: highlights.data };
 }
 export default function Home({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation();
@@ -32,10 +32,10 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   return (
     <section className="section_gap">
       <Hero />
-      {/* <Features />
-      <Best_Selling products={bestSelling} />
+      <Features />
+      {/* <Best_Selling products={bestSelling} /> */}
       <Category />
-      <Product_List data={data} /> */}
+      <Product_List />
     </section>
   );
 }

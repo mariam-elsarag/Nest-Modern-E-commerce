@@ -37,7 +37,7 @@ const Filter = ({ data, filter, setFilter }: FilterPropsType) => {
   };
 
   return (
-    <div>
+    <div className="">
       <Button
         icon={<MenuIcon />}
         size="xs"
@@ -46,13 +46,13 @@ const Filter = ({ data, filter, setFilter }: FilterPropsType) => {
         className="flex md:hidden ms-auto"
       />
       <div
-        className={`flex  ${
+        className={`flex   ${
           toggleMenu ? "  fixed inset-0 bg-black/10 h-full z-20" : ""
         } md:relative md:h-fit md:bg-transparent `}
       >
         <aside
           ref={ref}
-          className={`${toggleMenu ? "flex  translate-x-0" : "-translate-x-full  "} fixed top-0 bg-white z-20 w-[250px] start-0 h-dvh transition-all ease-in-out duration-300 md:top-auto md:translate-x-0 md:start-[0] md:h-fit md:w-fit md:relative md:flex flex-col gap-10 border border-neutral-black-100 pt-6 pb-8 px-3 rounded-[6px] `}
+          className={` ${toggleMenu ? "flex  translate-x-0" : "-translate-x-full  "} fixed top-0 bg-white  z-20 !w-[248px] start-0 h-dvh transition-all ease-in-out duration-300 md:top-auto md:translate-x-0 md:start-[0] md:h-fit md:w-fit md:relative md:flex flex-col gap-10 border border-neutral-black-100 pt-6 pb-8 px-3 rounded-[6px] `}
         >
           {data?.map((item, index) => (
             <>

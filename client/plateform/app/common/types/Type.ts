@@ -1,21 +1,35 @@
+export interface Size {
+  id: number;
+  label: string;
+}
+
+export type variants = {
+  id: number;
+  price: number;
+  quantity: number;
+  reserved: number;
+  color: ColorsType;
+  size: null | SizesType;
+};
 export interface Product {
   id: number;
   cover: string;
   images?: string[];
-  sizes?: "xs" | "s" | "m" | "l" | "xl" | "xxl"[];
   title: string;
-  description?: string;
+  title_ar: string;
+  isAvalible: boolean;
+  isFavorite?: boolean;
+  isCart?: boolean;
+  minPrice?: number;
   price: number;
-  rate: number;
-  isFavorite: null | boolean;
-  colors?: string[];
-  brand?: string;
+  averageRating: number;
+  description?: string;
+  description_ar?: string;
+
+  variants: variants[];
   categories?: string[];
-  stock?: number;
-  isFeatured?: boolean;
-  isBestSelling?: boolean;
+
   createdAt: Date;
-  quantity?: number;
 }
 
 export type ReviewType = {
@@ -35,12 +49,15 @@ export type CategoryType = {
 
 export type ColorsType = {
   id: number;
+  name: string;
+  name_ar: string;
   color: string;
+  createdAt: string;
 };
 
 export type SizesType = {
   id: number;
-  size: string;
+  label: string;
 };
 
 export type CartProductsType = {

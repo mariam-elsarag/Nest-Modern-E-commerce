@@ -8,24 +8,31 @@ import type {
   Product,
   SizesType,
 } from "~/common/types/Type";
+import Spinner from "~/components/loaders/Spinner";
 import Card from "~/components/shared/card/Card";
 import Empty from "~/components/shared/empty/Empty";
 import Filter from "~/components/shared/filter/Filter";
 import type { FilterListItem } from "~/components/shared/filter/Fiter.types";
 import Page_Header from "~/components/shared/header/page_header/Page_Header";
 import type { breadCrumbListType } from "~/components/shared/header/page_header/Page_Header.types";
+import Pagination from "~/components/shared/pagination/Pagination";
 import useGetData from "~/hooks/useGetData";
 import usePaginatedData from "~/hooks/usePaginatedData";
 import { API } from "~/services/apiUrl";
 
 const Products = () => {
   const { t } = useTranslation();
-  const { data: categories } = useGetData<CategoryType>(API.categories);
-  const { data: sizes } = useGetData<SizesType>(API.sizes);
-  const { data: colors } = useGetData<ColorsType>(API.colors);
-  const { data, query, setQuery } = usePaginatedData<Product>({
-    endpoint: API.products,
+  const { data: categories } = useGetData<CategoryType>({
+    endpoint: API.list.categories,
   });
+  const { data: sizes } = useGetData<SizesType>({ endpoint: API.list.sizes });
+  const { data: colors } = useGetData<ColorsType>({
+    endpoint: API.list.colors,
+  });
+  const { data, loading, query, setQuery, page, pages, handlePagination } =
+    usePaginatedData<Product>({
+      endpoint: API.products,
+    });
 
   const breadcrumbsList: breadCrumbListType[] = [
     {
@@ -65,14 +72,27 @@ const Products = () => {
       <div className="container grid md:grid-cols-[248px_1fr] gap-7">
         <Filter data={filterList} filter={query} setFilter={setQuery} />
         <div>
-          {data?.length > 0 ? (
+          {loading ? (
+            <div className="h-[40vh] flex items-center justify-center">
+              <Spinner />
+            </div>
+          ) : data?.length > 0 ? (
             <div className="grid sm:grid-cols-2  lg:grid-cols-2 xl:grid-cols-3 gap-6">
               {data?.map((product, index) => (
                 <Card key={index} data={product} />
               ))}
             </div>
           ) : (
-            <Empty message="no_products_yet" />
+            <div className="h-[50vh] flex items-center justify-center">
+              <Empty title="no_products_yet" />
+            </div>
+          )}
+          {data?.length > 0 && !(loading && page == 1) && (
+            <Pagination
+              currentPage={page}
+              pages={pages}
+              onPageChange={handlePagination}
+            />
           )}
         </div>
       </div>

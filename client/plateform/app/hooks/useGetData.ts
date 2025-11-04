@@ -3,16 +3,24 @@ import { useTranslation } from "react-i18next";
 import { handleError } from "~/common/utils/handleError";
 import axiosInstance from "~/services/axiosInstance";
 
-function useGetData<T>(endpoint: string) {
+type UseGetDataProps = {
+  endpoint: string;
+
+  queryDefault?: object;
+};
+function useGetData<T>({ endpoint, queryDefault = {} }: UseGetDataProps) {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<T[]>([]);
   const [error, setError] = useState();
+  const [query, setQuery] = useState(queryDefault);
 
   const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await axiosInstance.get(endpoint);
+      const response = await axiosInstance.get(endpoint, {
+        params: { ...query },
+      });
       setData(response.data);
     } catch (err) {
       handleError(err, t);
@@ -26,9 +34,9 @@ function useGetData<T>(endpoint: string) {
     if (endpoint) {
       fetchData();
     }
-  }, [endpoint]);
+  }, [endpoint, query]);
 
-  return { data, loading, error, fetchData };
+  return { data, loading, error, fetchData, query, setQuery };
 }
 
 export default useGetData;

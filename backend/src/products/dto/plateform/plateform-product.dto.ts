@@ -58,6 +58,9 @@ export class PlateformProductDetailsDto {
   description_ar: string;
 
   @Expose()
+  isAvalible: boolean;
+
+  @Expose()
   @Transform(({ obj }) => {
     const images = Array.isArray(obj.images) ? obj.images : [];
     const cover = obj.cover ? [obj.cover] : [];

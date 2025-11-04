@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import type { Product } from "~/common/types/Type";
+import { currentLanguageCode } from "~/common/utils/switchLang";
 type DetailsProps = {
   product: Product | undefined;
 };
@@ -13,7 +14,10 @@ const Details = ({ product }: DetailsProps) => {
       <p
         className="text-neutral-black-500 body max-w-[727px]"
         dangerouslySetInnerHTML={{
-          __html: product?.description?.replace(/\n/g, "<br />"),
+          __html:
+            currentLanguageCode === "en"
+              ? product?.description
+              : product?.description_ar,
         }}
       />
     </section>

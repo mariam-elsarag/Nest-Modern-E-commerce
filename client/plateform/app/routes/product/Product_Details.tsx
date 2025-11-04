@@ -14,22 +14,13 @@ import Product_Details_and_review from "./components/Product_Details_and_review"
 export async function clientLoader({ params }: Route.LoaderArgs) {
   const { id } = params;
 
-  const response = await axiosInstance.get<Product[]>(API.products);
+  const response = await axiosInstance.get<Product[]>(`${API.products}/${id}`);
 
-  const product = response.data.find((p) => p.id == id);
+  const similarProducts = await axiosInstance.get<Product[]>(
+    `${API.products}/${id}/similar`
+  );
 
-  let similarProducts: Product[] = [];
-
-  if (product && product.categories?.length > 0) {
-    similarProducts = response.data.filter(
-      (pro) =>
-        pro.id !== product.id &&
-        pro.categories &&
-        pro.categories.some((cat) => product.categories.includes(cat))
-    );
-  }
-
-  return { product, id, similarProducts };
+  return { product: response.data, id, similarProducts: similarProducts.data };
 }
 
 const Product_Details = ({ loaderData }: Route.ComponentProps) => {

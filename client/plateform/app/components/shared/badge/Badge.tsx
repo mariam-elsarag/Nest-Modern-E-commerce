@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 const Badge = ({ variant = "primary", label, icon }: BadgePropsType) => {
   const { t } = useTranslation();
   const style = {
-    primary: "border border-neutral-black-100",
+    primary: "border border-neutral-black-100 text-neutral-black-900 ",
     secondary: "border border-neutral-white-100 bg-neutral-white-100",
   };
   return (
