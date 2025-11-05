@@ -10,6 +10,7 @@ import { plainToInstance } from 'class-transformer';
 import { FavoriteResponesDto } from './dto/response-favorite.dto';
 import { FullPaginationDto } from 'src/common/pagination/pagination.dto';
 import { User } from 'src/users/entities/user.entity';
+import { CartService } from 'src/cart/cart.service';
 
 @Injectable()
 export class FavoriteService {
@@ -17,6 +18,7 @@ export class FavoriteService {
     @InjectRepository(Favorite)
     private readonly favoriteRepo: Repository<Favorite>,
     private readonly productAdminService: ProductsAdminService,
+    private readonly cartService: CartService,
   ) {}
   async findOne(userId: number, productId: number) {
     const existing = await this.favoriteRepo.findOne({
@@ -25,7 +27,7 @@ export class FavoriteService {
     return existing;
   }
 
-  async findAll(query: PaginationQueryDto, req: Request) {
+  async findAll(query: PaginationQueryDto, req: Request, user: User) {
     const { search, page = '1', limit = '10' } = query;
     const currentPage = parseInt(page, 10);
     const take = parseInt(limit, 10);
@@ -48,11 +50,23 @@ export class FavoriteService {
       .take(take)
       .getManyAndCount();
 
-    const data = results.map((item) =>
-      plainToInstance(FavoriteResponesDto, item, {
+    // to check if this product in a cart
+    const cart = await this.cartService.findSession(undefined, user.id);
+
+    const data = results.map((product) => {
+      const matchedItem = cart?.items.find(
+        (item) => item.product.id === product.id,
+      );
+      const item = {
+        ...product,
+        cartId: matchedItem ? matchedItem.id : null,
+        isCart: !!matchedItem,
+      };
+      return plainToInstance(FavoriteResponesDto, item, {
         excludeExtraneousValues: true,
-      }),
-    );
+      });
+    });
+
     return new FullPaginationDto(currentPage, count, take, req, data);
   }
 

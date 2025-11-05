@@ -1,10 +1,11 @@
-// routes/ProtectedRoute.tsx
 import { Navigate, Outlet } from "react-router";
+import Cookies from "js-cookie";
+import { useAuth } from "~/context/Auth_Context";
 
 const Protected_Route = () => {
-  const token = localStorage.getItem("token");
+  const { user, token } = useAuth();
 
-  if (!token) {
+  if (!token && user.role != "user") {
     return <Navigate to="/" replace />;
   }
 

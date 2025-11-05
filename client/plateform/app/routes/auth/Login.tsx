@@ -128,7 +128,7 @@ const Login = () => {
             <footer className="flex flex-col gap-6">
               <Button
                 loading={loading}
-                disabled={loading || !isValid}
+                disabled={loading}
                 text="login"
                 type="submit"
                 hasFullWidth

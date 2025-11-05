@@ -9,6 +9,7 @@ import { data, Link } from "react-router";
 import { formatDateToMonth } from "~/common/utils/formatDateToMonth";
 import axiosInstance from "~/services/axiosInstance";
 import { handleError } from "~/common/utils/handleError";
+import { currentLanguageCode } from "~/common/utils/switchLang";
 
 type CartItemProps = {
   product: CartProductsType;
@@ -86,18 +87,20 @@ const Cart_Item = ({ product, variant = "cart" }: CartItemProps) => {
   return (
     <section className="flex gap-8 sm:items-center flex-col sm:flex-row">
       <figure className="w-full h-[250px] sm:w-20 sm:h-20 rounded-[4px] bg-neutral-white-100 flex items-center justify-center">
-        {product?.cover && (
+        {product?.product.cover && (
           <img
-            src={product?.cover}
+            src={product.product?.cover}
             className="h-[200px] sm:h-[62px]"
-            alt={product?.title}
+            alt={product?.product.title}
           />
         )}
       </figure>
       <div className={`${containerBase} ${containerStyle[variant]} `}>
         <div className="flex flex-col gap-2">
           <h3 className="body font-medium text-neutral-black-900 line-clamp-1">
-            {product?.title}
+            {currentLanguageCode === "en"
+              ? product.product.title
+              : product.product.title_ar}
           </h3>
           {variant === "cart" ? (
             <div className="flex items-center gap-2">

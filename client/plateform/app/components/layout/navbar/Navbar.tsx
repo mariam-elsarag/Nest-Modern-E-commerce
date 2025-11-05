@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router";
-import { LanguageIcon, MenuIcon } from "~/assets/icons/Icon";
+import {
+  CartIcon,
+  LanguageIcon,
+  MenuIcon,
+  UserIcon,
+} from "~/assets/icons/Icon";
 import { Logo } from "~/assets/images/Image";
 import { menuList } from "~/common/lists/list";
 import Button from "~/components/shared/button/Button";
@@ -8,15 +13,24 @@ import type { MobileNavbarProps } from "./Navbar.types";
 import useOutsideClick from "~/hooks/useOutsideClick";
 import { useTranslation } from "react-i18next";
 import { switchLang } from "~/common/utils/switchLang";
-
+import { useAuth } from "~/context/Auth_Context";
 const buttonsList = [
   { text: "login", variant: "outline", to: "/login" },
   { text: "create_account", variant: "primary", to: "/register" },
 ] as const;
+const userList = [
+  {
+    icon: <CartIcon />,
+    to: "/cart",
+  },
+  { icon: <UserIcon />, to: "/profile/order" },
+];
 
 const Navbar = () => {
   const { t } = useTranslation();
   const [toggleNavbar, setToggleNavbar] = useState(false);
+  const { user, token } = useAuth();
+  const isUser = user.role === "user" || token;
   return (
     <>
       <header className="container bg-white py-5 flex items-center gap-2 justify-between ">
@@ -42,22 +56,37 @@ const Navbar = () => {
           ))}
         </nav>
         <div className="flex items-center gap-2">
-          <div className="hidden md:flex items-center gap-2">
-            {buttonsList?.map((btn) => (
-              <Button
-                to={btn.to}
-                key={btn.to}
-                variant={btn.variant}
-                text={btn.text}
-                size="sm"
-              />
-            ))}
-          </div>{" "}
+          {isUser ? (
+            <div className="flex items-center gap-2">
+              {userList?.map((btn) => (
+                <Button
+                  to={btn.to}
+                  variant="tertiery"
+                  size="sm"
+                  hasHover={false}
+                  icon={btn.icon}
+                  className="!px-0 !w-[38px]"
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="hidden md:flex items-center gap-2">
+              {buttonsList?.map((btn) => (
+                <Button
+                  to={btn.to}
+                  key={btn.to}
+                  variant={btn.variant}
+                  text={btn.text}
+                  size="sm"
+                />
+              ))}
+            </div>
+          )}
           <Button
             icon={<LanguageIcon width="20" height="20" />}
             variant="tertiery"
             size="sm"
-            className="hover:bg-transparent"
+            hasHover={false}
             handleClick={switchLang}
           />
           <Button

@@ -15,8 +15,10 @@ export const API = {
     colors: "/api/color/product",
     sizes: "/api/size/product",
   },
+  favorite: "/api/v1/favorite",
+  profile: {},
   support: "/api/v1/support",
   products: "/api/v1/product",
   reviews: "/reviews",
-  cart: "/cart",
+  cart: "/api/v1/cart",
 };

@@ -4,10 +4,15 @@ import Cart_Item from "~/components/shared/cart_item/Cart_Item";
 import Empty from "~/components/shared/empty/Empty";
 import Pagination from "~/components/shared/pagination/Pagination";
 
+import usePaginatedData from "~/hooks/usePaginatedData";
+import { API } from "~/services/apiUrl";
+
 const Wishlist = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const data = [];
+  const { data, loading, page, pages, handlePagination } = usePaginatedData({
+    endpoint: API.favorite,
+  });
   if (data?.length === 0) {
     return (
       <div className="h-full flex flex-col justify-center items-center">
@@ -40,11 +45,9 @@ const Wishlist = () => {
         {data?.length > 0 && (
           <div className="flex items-center justify-center">
             <Pagination
-              currentPage={1}
-              pages={10}
-              onPageChange={(n: number) => {
-                console.log(n);
-              }}
+              currentPage={page}
+              pages={pages}
+              onPageChange={handlePagination}
             />
           </div>
         )}

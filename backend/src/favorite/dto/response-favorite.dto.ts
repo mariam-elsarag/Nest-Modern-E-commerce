@@ -10,5 +10,11 @@ export class FavoriteResponesDto {
   product: FavoriteProductResponseDto;
 
   @Expose()
+  isCart: boolean;
+
+  @Expose()
+  cartId: number | null;
+
+  @Expose()
   createdAt: Date;
 }

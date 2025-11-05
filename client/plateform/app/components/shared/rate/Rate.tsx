@@ -4,7 +4,7 @@ import { FullStarIcon, StarIcon } from "~/assets/icons/Icon";
 
 const Rate = ({
   rate = 0,
-  fillColor = "var(--color-semantic-yellow-900)",
+  fillColor = "var(--color-neutral-black-500)",
   onChange,
   changeValue = false,
   hasText = true,

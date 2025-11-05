@@ -10,12 +10,15 @@ import Form_Builder from "~/components/shared/form_builder/Form_Builder";
 import type { FormListItemType } from "~/components/shared/form_builder/Form_Builder-types";
 import Page_Header from "~/components/shared/header/page_header/Page_Header";
 import type { breadCrumbListType } from "~/components/shared/header/page_header/Page_Header.types";
+import { useAuth } from "~/context/Auth_Context";
 import { API } from "~/services/apiUrl";
 import axiosInstance from "~/services/axiosInstance";
 
 const Contact = () => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
+  const { user, token } = useAuth();
+  const isUser = user.role === "user" || token;
   // ___________ useform _________
   const {
     control,
@@ -35,7 +38,7 @@ const Contact = () => {
   });
   //_______________ list _______________
   const formList: FormListItemType[] = [
-    {
+    !isUser && {
       id: "1",
       formType: "input",
       type: "text",
@@ -50,7 +53,7 @@ const Contact = () => {
         },
       },
     },
-    {
+    !isUser && {
       id: "2",
       formType: "input",
       type: "email",
@@ -111,7 +114,7 @@ const Contact = () => {
       isMultiple: false,
       containerClassName: "lg:col-span-2",
     },
-  ];
+  ].filter(Boolean);
   const breadcrumbsList: breadCrumbListType[] = [
     {
       label: t("home"),

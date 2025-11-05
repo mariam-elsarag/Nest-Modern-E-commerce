@@ -26,8 +26,12 @@ export class FavoriteController {
   constructor(private readonly favoriteService: FavoriteService) {}
 
   @Get()
-  findAll(@Query() query: PaginationQueryDto, @Req() req: Request) {
-    return this.favoriteService.findAll(query, req);
+  findAll(
+    @Query() query: PaginationQueryDto,
+    @Req() req: Request,
+    @currentUser() user: User,
+  ) {
+    return this.favoriteService.findAll(query, req, user);
   }
 
   @Patch(':id')

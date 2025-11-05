@@ -10,12 +10,9 @@ import { API } from "~/services/apiUrl";
 import type { Route } from "./+types/Cart";
 import axiosInstance from "~/services/axiosInstance";
 export async function clientLoader({ params }: Route.LoaderArgs) {
-  const { id } = params;
-
   const response = await axiosInstance.get<CartItemType[]>(API.cart);
-  const cart = response.data.filter((item) => item?.id === id)?.[0];
 
-  return { cart, id };
+  return { cart: response.data, id: 1 };
 }
 
 const Cart = ({ loaderData }: Route.ComponentProps) => {

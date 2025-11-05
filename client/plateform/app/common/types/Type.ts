@@ -62,15 +62,19 @@ export type SizesType = {
 
 export type CartProductsType = {
   orderId?: number;
-  title: string;
   color: string;
   price: number;
   quantity: number;
   discount: number | null;
   stock: number;
   size: SizesType | null;
-  cover: string;
   createdAt?: string;
+  product: {
+    id: number;
+    cover: string;
+    title: string;
+    title_ar: string;
+  };
 };
 export type CartItemType = {
   id: number;

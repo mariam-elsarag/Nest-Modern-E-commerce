@@ -21,9 +21,9 @@ const footerLinkList = [
   {
     title: "customer_service",
     links: [
-      { to: "profile", label: "my_account" },
-      { to: "cart", label: "cart" },
-      { to: "favorite", label: "favorite" },
+      { to: "/profile/order", label: "my_account" },
+      { to: "/cart", label: "cart" },
+      { to: "/profile/wishlist", label: "favorite" },
     ],
   },
 ];

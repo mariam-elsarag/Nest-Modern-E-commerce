@@ -10,6 +10,7 @@ import {
   UserIcon,
 } from "~/assets/icons/Icon";
 import Button from "~/components/shared/button/Button";
+import { useAuth } from "~/context/Auth_Context";
 type AsideListItem = {
   id: number;
   icon: React.ElementType;
@@ -17,48 +18,51 @@ type AsideListItem = {
   link?: string;
   action?: () => void;
 };
-const asideList: AsideListItem[] = [
-  {
-    id: 1,
-    icon: CartIcon,
-    label: "orders",
-    link: "/profile/order",
-  },
-  {
-    id: 2,
-    icon: FavoriteIcon,
-    label: "wishlist",
-    link: "/profile/wishlist",
-  },
-  {
-    id: 3,
-    icon: DeliveryIcon,
-    label: "address",
-    link: "/profile/address",
-  },
-  {
-    id: 4,
-    icon: KeyIcon,
-    label: "password",
-    link: "/profile/password",
-  },
-  {
-    id: 5,
-    icon: UserIcon,
-    label: "account_details",
-    link: "/profile/account",
-  },
-  {
-    id: 6,
-    icon: LogoutIcon,
-    label: "logout",
-    action() {
-      console.log("d");
-    },
-  },
-];
+
 const Profile_Aside = ({ toggleSm, setToggleSm }) => {
   const { t } = useTranslation();
+  const { logout } = useAuth();
+  const asideList: AsideListItem[] = [
+    {
+      id: 1,
+      icon: CartIcon,
+      label: "orders",
+      link: "/profile/order",
+    },
+    {
+      id: 2,
+      icon: FavoriteIcon,
+      label: "wishlist",
+      link: "/profile/wishlist",
+    },
+    {
+      id: 3,
+      icon: DeliveryIcon,
+      label: "address",
+      link: "/profile/address",
+    },
+    {
+      id: 4,
+      icon: KeyIcon,
+      label: "password",
+      link: "/profile/password",
+    },
+    {
+      id: 5,
+      icon: UserIcon,
+      label: "account_details",
+      link: "/profile/account",
+    },
+    {
+      id: 6,
+      icon: LogoutIcon,
+      label: "logout",
+      action() {
+        console.log("log");
+        logout();
+      },
+    },
+  ];
   return (
     <aside
       className={` ${toggleSm ? "hidden sm:flex" : "flex"} sm:border-r border-neutral-black-200 sm:pe-6 lg:pe-10  flex-col gap-6 `}
@@ -107,6 +111,7 @@ const Profile_Aside = ({ toggleSm, setToggleSm }) => {
             className={` !gap-3 !text-neutral-black-500 !rounded-lg `}
             hasFullWidth={true}
             isCenterd={false}
+            handleClick={nav.action}
           />
         );
       })}
