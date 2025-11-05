@@ -5,10 +5,14 @@ import axiosInstance from "~/services/axiosInstance";
 
 type UseGetDataProps = {
   endpoint: string;
-
   queryDefault?: object;
+  setValue?: (data: any) => void;
 };
-function useGetData<T>({ endpoint, queryDefault = {} }: UseGetDataProps) {
+function useGetData<T>({
+  endpoint,
+  queryDefault = {},
+  setValue,
+}: UseGetDataProps) {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<T[]>([]);
@@ -22,6 +26,9 @@ function useGetData<T>({ endpoint, queryDefault = {} }: UseGetDataProps) {
         params: { ...query },
       });
       setData(response.data);
+      if (setValue) {
+        setValue(response.data);
+      }
     } catch (err) {
       handleError(err, t);
       setError(err.response.data);
@@ -36,7 +43,7 @@ function useGetData<T>({ endpoint, queryDefault = {} }: UseGetDataProps) {
     }
   }, [endpoint, query]);
 
-  return { data, loading, error, fetchData, query, setQuery };
+  return { data, setData, loading, error, fetchData, query, setQuery };
 }
 
 export default useGetData;

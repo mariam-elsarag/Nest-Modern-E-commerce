@@ -10,11 +10,13 @@ import type {
 
 type CheckoutFormProps = Pick<FormBuiderProps, "errors" | "control"> & {
   isProfile?: boolean;
+  loading: boolean;
 };
 const Checkout_Form = ({
   control,
   errors,
   isProfile = false,
+  loading,
 }: CheckoutFormProps) => {
   const { t } = useTranslation();
 
@@ -139,7 +141,12 @@ const Checkout_Form = ({
         {t("shipping_address")}
       </h1>
       <div className="grid sm:grid-cols-1 md:grid-cols-2 sm:pe-6 md:pe-10 lg:pe-6 gap-4 max-w-[536px] ">
-        <Form_Builder formList={formList} control={control} errors={errors} />
+        <Form_Builder
+          formList={formList}
+          control={control}
+          errors={errors}
+          loading={loading}
+        />
       </div>
     </div>
   );

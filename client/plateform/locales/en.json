@@ -187,5 +187,7 @@
   "available": "Available",
   "unavailable": "Unavailable",
   "no_products_yet": "No products yet",
-  "successfully_send_support_ticket": "Your support request has been sent successfully. Our team will contact you soon via email."
+  "successfully_send_support_ticket": "Your support request has been sent successfully. Our team will contact you soon via email.",
+  "view_details": "View details",
+  "successfully_update_address": "Your address has been updated successfully"
 }

@@ -8,12 +8,29 @@ import { CartIcon, FavoriteIcon } from "~/assets/icons/Icon";
 import { Link } from "react-router";
 import { currentLanguageCode } from "~/common/utils/switchLang";
 import Badge from "../badge/Badge";
+import axiosInstance from "~/services/axiosInstance";
+import { API } from "~/services/apiUrl";
+import { handleError } from "~/common/utils/handleError";
 
-const Card = ({ data }: CardComponentProps) => {
+const Card = ({ data, setData }: CardComponentProps) => {
   const { t } = useTranslation();
-  const [toggleFavorite, setToggleFavorite] = useState(
-    data?.isFavorite || false
-  );
+
+  const toggleFavorite = async () => {
+    try {
+      const response = await axiosInstance.patch(`${API.favorite}/${data.id}`);
+      if (response.status === 200) {
+        setData((pre) =>
+          pre.map((item) =>
+            item.id === data.id
+              ? { ...item, isFavorite: !data.isFavorite }
+              : item
+          )
+        );
+      }
+    } catch (err) {
+      handleError(err, t);
+    }
+  };
   return (
     <article className="bg-white rounded-[4px] flex flex-col gap-6 z-[1]">
       <figure className="relative group   bg-neutral-white-100 h-[300px] flex items-center justify-center rounded-[4px]">
@@ -22,16 +39,18 @@ const Card = ({ data }: CardComponentProps) => {
             <FavoriteIcon
               width="20"
               height="20"
-              fill={toggleFavorite ? "var(--color-semantic-red-900)" : "white"}
+              fill={
+                data?.isFavorite ? "var(--color-semantic-red-900)" : "white"
+              }
               stroke={
-                toggleFavorite
+                data?.isFavorite
                   ? "var(--color-semantic-red-900)"
                   : "var(--color-neutral-black-500)"
               }
             />
           }
           handleClick={() => {
-            setToggleFavorite((pre) => !pre);
+            toggleFavorite();
           }}
           className="absolute top-2 end-2 z-10 opacity-0 transition-all ease-in-out duration-300 group-hover:opacity-100"
           size="xs"

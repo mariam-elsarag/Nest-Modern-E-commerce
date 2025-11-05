@@ -24,7 +24,7 @@ export class Address {
   @Column({ type: 'varchar', length: 100 })
   country: string;
 
-  @Column({ type: 'varchar', length: 5, nullable: true })
+  @Column({ type: 'varchar', length: 7, nullable: true })
   zipCode: string | null;
 
   @OneToOne(() => User, (user) => user.address, { onDelete: 'CASCADE' })

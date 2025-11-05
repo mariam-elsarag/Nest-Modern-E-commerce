@@ -75,6 +75,8 @@ export type CartProductsType = {
     title: string;
     title_ar: string;
   };
+  cartId?: number | null;
+  isCart?: boolean;
 };
 export type CartItemType = {
   id: number;
@@ -84,3 +86,22 @@ export type CartItemType = {
   tax: "no_tax" | number;
   total: number;
 };
+
+export interface AddressType {
+  street: string;
+  city: string;
+  country: string;
+  state: string;
+  zipCode: string | null;
+  fullAddress: string;
+}
+export interface ProfileType {
+  id: number;
+  fullName: string;
+  phone: string | null;
+  email: string;
+  role: string;
+  avatar: string | null;
+  address: AddressType;
+  createdAt: string;
+}

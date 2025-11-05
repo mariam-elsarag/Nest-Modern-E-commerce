@@ -184,5 +184,7 @@
   "available": "متاح",
   "unavailable": "غير متاح",
   "no_products_yet": "لا توجد منتجات بعد",
-  "successfully_send_support_ticket": "تم إرسال طلب الدعم الخاص بك بنجاح. سيتواصل معك فريقنا قريبًا عبر البريد الإلكتروني."
+  "successfully_send_support_ticket": "تم إرسال طلب الدعم الخاص بك بنجاح. سيتواصل معك فريقنا قريبًا عبر البريد الإلكتروني.",
+  "view_details": "عرض التفاصيل",
+  "successfully_update_address": "تم تحديث عنوانك بنجاح"
 }

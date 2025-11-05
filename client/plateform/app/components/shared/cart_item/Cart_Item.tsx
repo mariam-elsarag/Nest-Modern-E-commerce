@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { CartProductsType } from "~/common/types/Type";
 import { formatPrice } from "~/common/utils/formatPrice";
@@ -10,25 +10,26 @@ import { formatDateToMonth } from "~/common/utils/formatDateToMonth";
 import axiosInstance from "~/services/axiosInstance";
 import { handleError } from "~/common/utils/handleError";
 import { currentLanguageCode } from "~/common/utils/switchLang";
+import { API } from "~/services/apiUrl";
 
 type CartItemProps = {
   product: CartProductsType;
+  setData: React.Dispatch<React.SetStateAction<CartProductsType[]>>;
   variant?: "cart" | "wishlist" | "order";
 };
-const Cart_Item = ({ product, variant = "cart" }: CartItemProps) => {
+const Cart_Item = ({ product, variant = "cart", setData }: CartItemProps) => {
   const { t } = useTranslation();
-  console.log(product, "s");
+
   const toggleFavorite = async () => {
     try {
-      // const response=await axiosInstance.patch()
-    } catch (err) {
-      handleError(err, t);
-    }
-  };
-
-  const addToCart = async () => {
-    try {
-      // const respones=await axiosInstance.post()
+      const response = await axiosInstance.patch(
+        `${API.favorite}/${product.product.id}`
+      );
+      if (response.status === 200) {
+        setData((pre) =>
+          pre.filter((item) => item.product.id !== product.product.id)
+        );
+      }
     } catch (err) {
       handleError(err, t);
     }
@@ -39,13 +40,10 @@ const Cart_Item = ({ product, variant = "cart" }: CartItemProps) => {
       case "wishlist":
         return (
           <>
-            <span className="text-neutral-black-900 body font-medium">
-              {product?.price ? formatPrice(product?.price) : "0"}
-            </span>
             <Button
-              text="add_to_cart"
+              text="view_details"
               variant="outline_dark"
-              handleClick={addToCart}
+              to={`/product/${product.product.id}`}
             />
           </>
         );

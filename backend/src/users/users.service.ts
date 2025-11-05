@@ -23,7 +23,11 @@ export class UsersService {
   ) {}
 
   async findOne(id: number) {
-    const user = await this.userRepository.findOneBy({ id });
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: ['address'],
+    });
+
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -78,10 +82,15 @@ export class UsersService {
    */
   async updateUserInfo(id: number, body: UpdateUserDto) {
     const user = await this.findOne(id);
-
     let emailChanged = false;
 
-    for (const [key, value] of Object.entries(body)) {
+    const allowedFields = ['full_name', 'email', 'phone', 'avatar'];
+
+    for (const [key, rawValue] of Object.entries(body)) {
+      if (!allowedFields.includes(key)) continue;
+
+      const value = typeof rawValue === 'string' ? rawValue.trim() : rawValue;
+
       if (
         value === undefined ||
         value === null ||
@@ -90,9 +99,11 @@ export class UsersService {
       ) {
         continue;
       }
+
       if (key === 'email') {
+        const lowerEmail = value.toLowerCase();
         const isExist = await this.userRepository.findOne({
-          where: { email: value.toLowerCase() },
+          where: { email: lowerEmail },
         });
 
         if (isExist && isExist.id !== id) {
@@ -102,8 +113,11 @@ export class UsersService {
           });
         }
 
+        user.email = lowerEmail;
         emailChanged = true;
+        continue;
       }
+
       if (key === 'phone') {
         const isExist = await this.userRepository.findOne({
           where: { phone: value },
@@ -119,6 +133,7 @@ export class UsersService {
 
       user[key] = value;
     }
+
     if (
       emailChanged &&
       user.role === UserRole.User &&
@@ -130,9 +145,7 @@ export class UsersService {
 
     await this.userRepository.save(user);
 
-    return plainToInstance(UserDto, user, {
-      excludeExtraneousValues: true,
-    });
+    return plainToInstance(UserDto, user, { excludeExtraneousValues: true });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

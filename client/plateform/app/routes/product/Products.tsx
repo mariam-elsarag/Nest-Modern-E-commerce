@@ -29,10 +29,18 @@ const Products = () => {
   const { data: colors } = useGetData<ColorsType>({
     endpoint: API.list.colors,
   });
-  const { data, loading, query, setQuery, page, pages, handlePagination } =
-    usePaginatedData<Product>({
-      endpoint: API.products,
-    });
+  const {
+    data,
+    setData,
+    loading,
+    query,
+    setQuery,
+    page,
+    pages,
+    handlePagination,
+  } = usePaginatedData<Product>({
+    endpoint: API.products,
+  });
 
   const breadcrumbsList: breadCrumbListType[] = [
     {
@@ -79,7 +87,7 @@ const Products = () => {
           ) : data?.length > 0 ? (
             <div className="grid sm:grid-cols-2  lg:grid-cols-2 xl:grid-cols-3 gap-6">
               {data?.map((product, index) => (
-                <Card key={index} data={product} />
+                <Card key={index} data={product} setData={setData} />
               ))}
             </div>
           ) : (

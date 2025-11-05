@@ -13,7 +13,7 @@ const filterList: ListItemProps[] = [
   },
 ];
 const Product_List = () => {
-  const { data, query, setQuery } = useGetData({
+  const { data, query, setQuery, setData } = useGetData({
     endpoint: API.home.highlights,
     queryDefault: { type: "latest" },
   });
@@ -31,7 +31,7 @@ const Product_List = () => {
       </header>
       <div className="grid xs:grid-cols-2 lg:grid-cols-4 gap-6">
         {data?.map((product) => (
-          <Card key={product.id} data={product} />
+          <Card key={product.id} data={product} setData={setData} />
         ))}
       </div>
     </section>

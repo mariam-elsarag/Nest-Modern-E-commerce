@@ -20,6 +20,8 @@ import {
   PaymentStatus,
 } from 'src/common/utils/enum';
 import { StripeService } from 'src/stripe/stripe.service';
+import { ResponseAddressDto } from 'src/address/dto/response-address.dto';
+import { Address } from 'src/address/entities/address.entity';
 
 @Injectable()
 export class OrderService {
@@ -77,12 +79,14 @@ export class OrderService {
     // (5) update address
     const hasAddress =
       address.street || address.city || address.state || address.country;
-    let userAddress = activeUser?.address;
+    let userAddress;
     if (activeUser && hasAddress) {
       userAddress = await this.addressService.createOrUpdateAddress(
         address,
         activeUser,
       );
+    } else {
+      userAddress = activeUser?.address;
     }
 
     // (6) validate cart stock

@@ -2,6 +2,9 @@ import { Expose, Transform } from 'class-transformer';
 
 export class ResponseAddressDto {
   @Expose()
+  id: number;
+
+  @Expose()
   street: string;
 
   @Expose()
@@ -12,6 +15,9 @@ export class ResponseAddressDto {
 
   @Expose()
   state: string;
+
+  @Expose()
+  zipCode: string | null;
 
   @Expose()
   @Transform(({ obj }) =>

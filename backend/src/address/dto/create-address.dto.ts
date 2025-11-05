@@ -2,22 +2,22 @@ import { IsNotEmpty, IsOptional, MaxLength } from 'class-validator';
 
 export class CreateAddressDto {
   @MaxLength(255)
-  @IsNotEmpty()
+  @IsOptional()
   street: string;
 
   @MaxLength(100)
-  @IsNotEmpty()
+  @IsOptional()
   city: string;
 
   @MaxLength(100)
-  @IsNotEmpty()
+  @IsOptional()
   state: string;
 
   @MaxLength(100)
-  @IsNotEmpty()
+  @IsOptional()
   country: string;
 
-  @MaxLength(100)
+  @MaxLength(7)
   @IsOptional()
   zipCode: string | undefined;
 }

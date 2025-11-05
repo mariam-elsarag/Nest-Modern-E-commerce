@@ -16,7 +16,9 @@ export const API = {
     sizes: "/api/size/product",
   },
   favorite: "/api/v1/favorite",
-  profile: {},
+  profile: {
+    profile: "/api/v1/profile",
+  },
   support: "/api/v1/support",
   products: "/api/v1/product",
   reviews: "/reviews",

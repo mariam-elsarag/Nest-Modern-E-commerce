@@ -270,15 +270,18 @@ export class AuthService {
     fullName: string,
     address: CreateAddressDto,
   ) {
+    email = email.toLowerCase().trim();
     let user = await this.checkUserExist(email, false);
 
     if (!user?.id) {
-      const newUser = await this.userRepository.create({
+      const newUser = this.userRepository.create({
         email,
         fullName,
         status: AccountStatus.Active,
       });
+
       user = await this.userRepository.save(newUser);
+
       await this.addressRepository.save({
         user,
         street: address.street,
