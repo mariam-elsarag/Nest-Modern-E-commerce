@@ -1,11 +1,8 @@
-import { Product } from '../../products/entities/product.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
-  ManyToOne,
-  ManyToMany,
 } from 'typeorm';
 
 @Entity('colors')

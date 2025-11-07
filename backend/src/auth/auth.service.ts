@@ -23,6 +23,7 @@ import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UserDto } from 'src/users/dto/user.dto';
 import { Address } from 'src/address/entities/address.entity';
 import { CreateAddressDto } from 'src/address/dto/create-address.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -239,6 +240,42 @@ export class AuthService {
       await this.userRepository.save(user);
       return { message: 'Password changed successfully' };
     }
+  }
+
+  async changePassword(body: ChangePasswordDto, user: User) {
+    const { password, oldPassword } = body;
+    if (user.status === AccountStatus.Pending) {
+      throw new BadRequestException(
+        'Please activate your account before changing  password',
+      );
+    }
+    if (user.status === AccountStatus.Blocked) {
+      throw new ForbiddenException(
+        'Your account has been blocked. Please contact support for more information.',
+      );
+    }
+
+    if (
+      user.password &&
+      !(await this.comparePassword(oldPassword, user.password))
+    ) {
+      throw new BadRequestException('Incorrect old password.');
+    }
+
+    if (
+      user.password &&
+      (await this.comparePassword(password, user.password))
+    ) {
+      throw new BadRequestException(
+        'New password cannot be the same as the old password.',
+      );
+    }
+
+    user.password = await this.hashPassword(password);
+    user.passwordChangedAt = new Date();
+
+    await this.userRepository.save(user);
+    return { message: 'Password changed successfully' };
   }
 
   async inviteAdmin(body: CreateUserDto) {

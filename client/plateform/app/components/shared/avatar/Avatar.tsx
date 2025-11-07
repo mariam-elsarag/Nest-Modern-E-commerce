@@ -1,8 +1,12 @@
 import React from "react";
 import type { AvatarPropsType } from "./Avatar.types";
 
-const Avatar = ({ avatar, fullName }: AvatarPropsType) => {
-  const base = `w-[48px] h-[48px] rounded-full flex items-center justify-center text-center`;
+const Avatar = ({ avatar, fullName, size = "sm" }: AvatarPropsType) => {
+  const sizes = {
+    lg: "w-[90px] h-[90px]",
+    sm: "w-[48px] h-[48px]",
+  };
+  const base = ` ${sizes[size]} rounded-full flex items-center justify-center text-center`;
   const nameArray = fullName?.trim()?.split(" ")?.filter(Boolean);
   const initials =
     nameArray?.length > 0

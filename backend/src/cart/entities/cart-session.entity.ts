@@ -17,4 +17,7 @@ export class CartSession {
     onDelete: 'CASCADE',
   })
   items: CartItem[];
+
+  @Column({ type: 'timestamp', nullable: true })
+  expiresAt: Date;
 }

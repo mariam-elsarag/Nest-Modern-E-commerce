@@ -40,7 +40,8 @@ export class ProductsService {
       .createQueryBuilder('product')
       .leftJoinAndSelect('product.variants', 'variants')
       .where('product.isAvalible = :isAvalible', { isAvalible: true })
-      .andWhere('variants.quantity > 0');
+      .andWhere('variants.quantity > 0')
+      .take(4);
 
     if (type === 'latest') {
       qb.addOrderBy('product.createdAt', 'DESC');
@@ -49,8 +50,17 @@ export class ProductsService {
     }
 
     const products = await qb.getMany();
+
+    const expandedProducts = products.slice(0, 4).flatMap((product) =>
+      product.variants
+        .filter((variant) => variant.quantity > 0)
+        .map((variant) => ({
+          ...product,
+          variants: variant,
+        })),
+    );
     const productsList = await this.addFlagsToProduct(
-      products,
+      expandedProducts,
       user,
       cartToken,
     );
@@ -116,31 +126,34 @@ export class ProductsService {
       .take(take)
       .getManyAndCount();
 
-    const products = await this.addFlagsToProduct(results, user, cartToken);
+    const expandedProducts = results.flatMap((product) =>
+      product.variants
+        .filter((variant) => variant.quantity > 0)
+        .map((variant) => ({
+          ...product,
+          variants: variant,
+        })),
+    );
+
+    const products = await this.addFlagsToProduct(
+      expandedProducts,
+      user,
+      cartToken,
+    );
 
     return new FullPaginationDto(currentPage, count, take, req, products);
   }
 
   async findOne(id: number, user: User) {
-    const product = await this.productRepository
-      .createQueryBuilder('product')
-      .where('product.id = :id', { id })
-      .leftJoinAndSelect('product.variants', 'variants')
-      .leftJoinAndSelect('variants.color', 'color')
-      .leftJoinAndSelect('variants.size', 'size')
-      .getOne();
+    const product = await this.productRepository.findOne({
+      where: { id },
+    });
 
     if (!product) {
       throw new NotFoundException('Product not found');
     }
-    const isFavorite = await this.favoriteRepository.find({
-      where: { user: { id: user.id }, product: { id: product.id } },
-    });
-    const productWithFavorite = {
-      ...product,
-      isFavorite: isFavorite ? true : false,
-    };
-    return plainToInstance(PlateformProductDetailsDto, productWithFavorite, {
+
+    return plainToInstance(PlateformProductDetailsDto, product, {
       excludeExtraneousValues: true,
     });
   }
@@ -206,26 +219,36 @@ export class ProductsService {
     );
   }
 
-  async addFlagsToProduct(products: Product[], user: User, cartToken?: string) {
-    let favoriteProductIds: number[] = [];
+  async addFlagsToProduct(products: any[], user: User, cartToken?: string) {
+    let favoriteProductIds = new Set<number>();
     if (user?.id) {
       const favorites = await this.favoriteRepository.find({
         where: { user: { id: user.id } },
-        relations: ['product'],
+        relations: ['variant'],
       });
-      favoriteProductIds = favorites.map((fav) => fav.product.id);
+      favoriteProductIds = new Set(favorites.map((fav) => fav.variant.id));
     }
 
     const cartSession = await this.cartService.findSession(cartToken, user?.id);
-    const cartProductIds =
-      cartSession?.items?.map((item) => item.product.id) ?? [];
+    const cartItems = cartSession?.items ?? [];
+
+    const cartVariantMap = new Map<number, number>();
+    for (const item of cartItems) {
+      cartVariantMap.set(item.variant.id, item.id);
+    }
 
     const productsList = products.map((product) => {
+      const variantId = product.variants.id;
+
+      const matchedVariantId = cartVariantMap.has(variantId);
+
       const item = {
         ...product,
-        isFavorite: favoriteProductIds.includes(product.id),
-        isCart: cartProductIds.includes(product.id),
+        isFavorite: favoriteProductIds.has(product.variants.id),
+        isCart: !!matchedVariantId,
+        cartItemId: matchedVariantId ? cartVariantMap.get(variantId) : null,
       };
+
       return plainToInstance(PlateformProductDto, item, {
         excludeExtraneousValues: true,
       });

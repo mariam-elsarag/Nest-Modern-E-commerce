@@ -1,11 +1,13 @@
 import { Expose, Transform, Type } from 'class-transformer';
 import { VariantResponseDto } from '../response-variant.dto';
+import { ColorResponseDto } from 'src/colors/dto/response-color.dto';
 
 export class PlateformProductDto {
   @Expose()
   id: number;
 
   @Expose()
+  @Transform(({ obj }) => obj?.variants?.images?.[0] ?? obj.cover)
   cover: string;
 
   @Expose()
@@ -15,30 +17,34 @@ export class PlateformProductDto {
   title_ar: string;
 
   @Expose()
-  isAvalible: boolean;
-
-  @Expose()
   isFavorite: boolean;
 
   @Expose()
   isCart: boolean;
 
   @Expose()
+  cartItemId: number | null;
+
+  @Expose()
   averageRating: number;
 
   @Expose()
   @Transform(({ obj }) => {
-    if (!obj.variants?.length) return 0;
-    const prices = obj.variants.map((v) => +v.price);
-    const minPrice = Math.min(...prices);
-
+    const price = +obj.variants.price;
     if (obj.hasTax && obj.taxRate) {
-      return +(minPrice + (minPrice * obj.taxRate) / 100).toFixed(2);
+      return +(price + (price * obj.taxRate) / 100).toFixed(2);
     }
-
-    return +minPrice.toFixed(2);
+    return price;
   })
-  minPrice: number;
+  price: number;
+
+  @Expose()
+  @Transform(({ obj }) => obj.variants.quantity > 0)
+  isAvalible: boolean;
+
+  @Expose()
+  @Transform(({ obj }) => obj.variants.id)
+  variantId: number;
 }
 
 export class PlateformProductDetailsDto {
@@ -61,12 +67,7 @@ export class PlateformProductDetailsDto {
   isAvalible: boolean;
 
   @Expose()
-  @Transform(({ obj }) => {
-    const images = Array.isArray(obj.images) ? obj.images : [];
-    const cover = obj.cover ? [obj.cover] : [];
-    return [...cover, ...images];
-  })
-  images: string[];
+  cover: string;
 
   @Expose()
   isFavorite: boolean;

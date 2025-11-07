@@ -1,10 +1,16 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 import { emailRegex, phonePattern } from "~/common/constant/validator";
+import type { ProfileType } from "~/common/types/Type";
+import { handleError } from "~/common/utils/handleError";
 import Button from "~/components/shared/button/Button";
 import Form_Builder from "~/components/shared/form_builder/Form_Builder";
 import type { FormListItemType } from "~/components/shared/form_builder/Form_Builder-types";
+import useGetData from "~/hooks/useGetData";
+import { API } from "~/services/apiUrl";
+import axiosInstance from "~/services/axiosInstance";
 
 const Profile_Account = () => {
   const { t } = useTranslation();
@@ -13,6 +19,7 @@ const Profile_Account = () => {
   const {
     control,
     setError,
+    setValue,
     formState: { errors, isValid },
     handleSubmit,
   } = useForm({
@@ -23,8 +30,26 @@ const Profile_Account = () => {
     },
     mode: "onChange",
   });
+  const { data } = useGetData<ProfileType>({
+    endpoint: API.profile.profile,
+    queryDefault: {},
+    setValue: (data) => {
+      Object.entries(data).forEach(([key, value]) => {
+        setValue(key, value);
+      });
+    },
+  });
   // _______________ list ______________
   const formList: FormListItemType[] = [
+    {
+      id: "avatar",
+      formType: "media",
+      fieldName: "avatar",
+      variant: "profile",
+      validTypes: ["image/jpeg", "image/png", "image/jpg"],
+      isMultiple: false,
+      name: data.fullName,
+    },
     {
       id: "1",
       formType: "input",
@@ -81,12 +106,29 @@ const Profile_Account = () => {
       },
     },
   ];
+  const onSubmit = async (data) => {
+    try {
+      setLoading(true);
+      const formData = new FormData();
+      Object.entries(data).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+      const response = await axiosInstance.patch(API.profile.profile, formData);
+      if (response.status === 200) {
+        toast.success(t("successfully_update_profile"));
+      }
+    } catch (err) {
+      handleError(err, t, setError);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="max-w-[320px] flex flex-col gap-10 ">
       <h2 className="h5 font-semibold text-neutral-black-900">
         {t("account_details")}
       </h2>
-      <form className="flex flex-col gap-10">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-10">
         <fieldset className="flex flex-col gap-4">
           <Form_Builder formList={formList} control={control} errors={errors} />
         </fieldset>

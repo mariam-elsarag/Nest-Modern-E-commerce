@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import Page_Header from "~/components/shared/header/page_header/Page_Header";
 import type { breadCrumbListType } from "~/components/shared/header/page_header/Page_Header.types";
 import Order_Summary from "./component/Order_Summary";
@@ -9,15 +9,13 @@ import type { CartItemType } from "~/common/types/Type";
 import { API } from "~/services/apiUrl";
 import type { Route } from "./+types/Cart";
 import axiosInstance from "~/services/axiosInstance";
-export async function clientLoader({ params }: Route.LoaderArgs) {
-  const response = await axiosInstance.get<CartItemType[]>(API.cart);
+import Empty from "~/components/shared/empty/Empty";
+import useGetData from "~/hooks/useGetData";
 
-  return { cart: response.data, id: 1 };
-}
-
-const Cart = ({ loaderData }: Route.ComponentProps) => {
-  const { cart, id } = loaderData;
+const Cart = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { data: cart, setRefetch } = useGetData({ endpoint: API.cart });
   const breadcrumbsList: breadCrumbListType[] = [
     {
       label: t("home"),
@@ -34,10 +32,23 @@ const Cart = ({ loaderData }: Route.ComponentProps) => {
         breadcrumbsList={breadcrumbsList}
         variant="secondary"
       />
-      <section className="container grid lg:grid-cols-[1fr_300px] xl:grid-cols-[1fr_341px] gap-6 lg:gap-10 xl:gap-20">
-        <Order_Info data={cart} />
-        <Order_Summary data={cart} />
-      </section>
+      {cart?.items?.length > 0 ? (
+        <section className="container grid lg:grid-cols-[1fr_300px] xl:grid-cols-[1fr_341px] gap-6 lg:gap-10 xl:gap-20">
+          <Order_Info data={cart} setRefetch={setRefetch} />
+          <Order_Summary data={cart} />
+        </section>
+      ) : (
+        <section>
+          <Empty
+            des="empty_cart_description"
+            title="empty_cart_title"
+            btnName="empty_cart_button"
+            btnCta={() => {
+              navigate("/product");
+            }}
+          />
+        </section>
+      )}
     </section>
   );
 };

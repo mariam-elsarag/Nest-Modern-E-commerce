@@ -22,4 +22,7 @@ export class VariantResponseDto {
   @Expose()
   @Type(() => SizeResponseDto)
   size: SizeResponseDto;
+
+  @Expose()
+  images: string[];
 }

@@ -7,12 +7,13 @@ import { Product } from 'src/products/entities/product.entity';
 import { Favorite } from './entities/favorite.entity';
 import { ProductsModule } from 'src/products/products.module';
 import { CartModule } from 'src/cart/cart.module';
+import { Variant } from 'src/products/entities/variant.entity';
 
 @Module({
   imports: [
     ProductsModule,
     CartModule,
-    TypeOrmModule.forFeature([User, Product, Favorite]),
+    TypeOrmModule.forFeature([User, Product, Favorite, Variant]),
   ],
   controllers: [FavoriteController],
   providers: [FavoriteService],

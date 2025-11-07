@@ -1,4 +1,3 @@
-import { Product } from '../../products/entities/product.entity';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('sizes')

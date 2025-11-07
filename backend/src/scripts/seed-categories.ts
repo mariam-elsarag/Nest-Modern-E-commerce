@@ -5,15 +5,32 @@ import { Category } from '../category/entities/category.entity';
 import { Product } from '../products/entities/product.entity';
 import { Color } from '../colors/entities/color.entity';
 import { Size } from '../sizes/entities/size.entity';
+import { Variant } from '../products/entities/variant.entity';
+import { User } from '../users/entities/user.entity';
+import { Address } from '../address/entities/address.entity';
+import { Favorite } from '../favorite/entities/favorite.entity';
+import { Order } from '../order/entities/order.entity';
+import { OrderItem } from '../order/entities/order-items.entity';
 
 const AppDataSource = new DataSource({
   type: 'postgres',
   host: 'localhost',
   port: 5432,
   username: 'postgres',
-  password: '01150464958',
+  password: '',
   database: 'ecommerce',
-  entities: [Category, Product, Color, Size],
+  entities: [
+    Category,
+    Product,
+    Variant,
+    Color,
+    Size,
+    User,
+    Favorite,
+    Address,
+    Order,
+    OrderItem,
+  ],
   synchronize: true, // 👈 only for seeding/dev
   logging: false,
 });

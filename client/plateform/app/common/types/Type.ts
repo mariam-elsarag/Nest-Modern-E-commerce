@@ -10,22 +10,23 @@ export type variants = {
   reserved: number;
   color: ColorsType;
   size: null | SizesType;
+  images: string[] | null;
 };
 export interface Product {
   id: number;
   cover: string;
-  images?: string[];
+
   title: string;
   title_ar: string;
   isAvalible: boolean;
   isFavorite?: boolean;
   isCart?: boolean;
-  minPrice?: number;
   price: number;
+  variantId?: number;
   averageRating: number;
   description?: string;
   description_ar?: string;
-
+  cartItemId?: number | null;
   variants: variants[];
   categories?: string[];
 
@@ -61,29 +62,21 @@ export type SizesType = {
 };
 
 export type CartProductsType = {
-  orderId?: number;
-  color: string;
-  price: number;
-  quantity: number;
-  discount: number | null;
-  stock: number;
+  id: number;
+  cover: string;
+  title: string;
+  title_ar: string;
+  color: ColorsType;
   size: SizesType | null;
-  createdAt?: string;
-  product: {
-    id: number;
-    cover: string;
-    title: string;
-    title_ar: string;
-  };
-  cartId?: number | null;
-  isCart?: boolean;
+  quantity: number;
+  maxQuantity: number;
+  variantId: number;
+  price: number;
+  isValid: boolean;
 };
 export type CartItemType = {
   id: number;
-  products: CartProductsType[];
-  subtotal: number;
-  shipping: "free" | number;
-  tax: "no_tax" | number;
+  product: CartProductsType[];
   total: number;
 };
 

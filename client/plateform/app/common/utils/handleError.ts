@@ -67,6 +67,20 @@ export const handleError = <T extends FieldValues>(
     case "Your account has been blocked. Please contact support for more information.":
       toast.error(t("account_blocked"));
       break;
+    case "New password cannot be the same as the old password.":
+      toast.error(t("new_password_same_as_old"));
+      setError("password", {
+        type: "manual",
+        message: "new_password_same_as_old",
+      });
+      break;
+    case "Incorrect old password.":
+      toast.error(t("incorrect_old_password"));
+      setError("oldPassword", {
+        type: "manual",
+        message: "incorrect_old_password",
+      });
+      break;
     default:
       toast.error(t("network_error"));
       break;

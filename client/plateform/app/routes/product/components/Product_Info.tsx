@@ -18,17 +18,58 @@ import Badge from "~/components/shared/badge/Badge";
 import { useTranslation } from "react-i18next";
 import { formatPrice } from "~/common/utils/formatPrice";
 import Counter from "~/components/shared/counter/Counter";
-import { useState } from "react";
+import { use, useState } from "react";
+import { useNavigate, useParams, useSearchParams } from "react-router";
+import { handleError } from "~/common/utils/handleError";
+import axiosInstance from "~/services/axiosInstance";
+import { API } from "~/services/apiUrl";
+import { useAuth } from "~/context/Auth_Context";
+import Cookies from "js-cookie";
+import { toast } from "react-toastify";
 
 type ProductInfoPropsType = {
   product: Product | undefined;
 };
 const Product_Info = ({ product }: ProductInfoPropsType) => {
   const { t } = useTranslation();
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { token } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [searchParam, setSearchParsm] = useSearchParams();
+  const variant = searchParam.get("variant");
   const variants = product?.variants;
-  const [selectVariant, setSelectVariant] = useState(product?.variants[0]);
+  const [quantity, setQuantity] = useState(1);
+  const [selectVariant, setSelectVariant] = useState(
+    variant
+      ? product?.variants.find((item) => item.id == variant)
+      : product?.variants[0]
+  );
+
   const colors = variants?.map(({ color }) => color) ?? [];
-  const sizes = variants?.filter(({ size }) => size) ?? [];
+
+  const addToCart = async () => {
+    try {
+      setLoading(true);
+      let sendData = {
+        product: id,
+        variant: selectVariant?.id,
+        quantity,
+      };
+      if (!token) {
+        sendData.cartToken = Cookies.get("cartToken");
+      }
+      const response = await axiosInstance.put(API.cart, sendData);
+      if (response.status === 200) {
+        toast.success(t("successfully_add_to_cart"));
+        navigate(`/cart`);
+      }
+    } catch (err) {
+      handleError(err, t);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <section className="overflow-x-hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[543px_1fr] gap-6 md:gap-10 2xl:gap-[120px] ">
       <figure className="bg-neutral-white-100 rounded-[5px] min-h-[375px]  lg:h-[500px]  pt-10 pb-6 ">
@@ -45,15 +86,25 @@ const Product_Info = ({ product }: ProductInfoPropsType) => {
           modules={[Autoplay, Pagination]}
           className="h-full flex flex-col justify-center items-center"
         >
-          {product?.images?.map((pro, index) => (
-            <SwiperSlide key={index} className="">
+          {selectVariant?.images?.length > 0 ? (
+            selectVariant?.images?.map((pro, index) => (
+              <SwiperSlide key={index} className="">
+                <img
+                  src={pro}
+                  alt={product.title}
+                  className=" mx-auto  h-[280px]  md:h-[300px]  lg:h-[404px]"
+                />
+              </SwiperSlide>
+            ))
+          ) : (
+            <SwiperSlide className="">
               <img
-                src={pro}
+                src={product?.cover}
                 alt={product.title}
                 className=" mx-auto  h-[280px]  md:h-[300px]  lg:h-[404px]"
               />
             </SwiperSlide>
-          ))}
+          )}
         </Swiper>
       </figure>
       {/* info */}
@@ -97,7 +148,12 @@ const Product_Info = ({ product }: ProductInfoPropsType) => {
               {colors?.map((item) => (
                 <span
                   key={item.id}
-                  className={`color_container border-neutral-black-100`}
+                  onClick={() => {
+                    setSelectVariant(
+                      variants.filter((v) => v.color.id === item.id)?.[0]
+                    );
+                  }}
+                  className={`color_container  ${selectVariant?.color.id === item.id ? "border-neutral-black-900" : "border-neutral-black-100"} `}
                 >
                   <span
                     style={{ background: item.color }}
@@ -109,20 +165,22 @@ const Product_Info = ({ product }: ProductInfoPropsType) => {
           </div>
         )}
         {/* sizes */}
-        {sizes?.length > 0 && (
+        {selectVariant?.size && (
           <div className="flex flex-col gap-3">
             <h4 className="label text-neutral-black-500 font-medium uppercase">
               {t("select_size")}
             </h4>
             <div className="flex items-center gap-2.5">
-              {sizes?.map((item) => (
-                <div
-                  key={item?.id}
-                  className={`size_container  border-neutral-black-100 label`}
-                >
-                  {item?.label}
-                </div>
-              ))}
+              <div
+                // onClick={() => {
+                //   setSelectVariant(
+                //     variants.filter((v) => v.size.id === item.id)?.[0]
+                //   );
+                // }}
+                className={`size_container !cursor-default border-neutral-black-100  label`}
+              >
+                {selectVariant.size?.label}
+              </div>
             </div>
           </div>
         )}
@@ -132,11 +190,20 @@ const Product_Info = ({ product }: ProductInfoPropsType) => {
             <h4 className="label text-neutral-black-500 font-medium uppercase">
               {t("quantity")}
             </h4>
-            <Counter quantity={selectVariant?.quantity} />
+            <Counter
+              quantity={selectVariant?.quantity}
+              value={quantity}
+              setValue={setQuantity}
+            />
           </div>
         )}
         <footer className="flex items-center gap-4">
-          <Button className="min-w-[284px]" text="add_to_cart" />
+          <Button
+            className="min-w-[284px]"
+            text="add_to_cart"
+            loading={loading}
+            handleClick={addToCart}
+          />
           <Button
             icon={
               <FavoriteIcon

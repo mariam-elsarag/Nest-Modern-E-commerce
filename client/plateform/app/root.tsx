@@ -24,6 +24,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./assets/styles/config/tailwind_config.css";
 import "./assets/styles/base/style.css";
 import AppLayout from "./layout/AppLayout";
+import { AuthProvider } from "./context/Auth_Context";
 
 export const links: Route.LinksFunction = () => [
   { rel: "icon", href: "/logo.svg" },
@@ -51,7 +52,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <AuthProvider>{children}</AuthProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -63,7 +64,9 @@ export default function App() {
   return (
     <>
       <PrimeReactProvider>
-        <AppLayout />
+        <AuthProvider>
+          <AppLayout />
+        </AuthProvider>
       </PrimeReactProvider>
 
       <ToastContainer

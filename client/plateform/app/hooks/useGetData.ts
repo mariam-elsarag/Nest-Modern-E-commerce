@@ -18,6 +18,7 @@ function useGetData<T>({
   const [data, setData] = useState<T[]>([]);
   const [error, setError] = useState();
   const [query, setQuery] = useState(queryDefault);
+  const [refetch, setRefetch] = useState();
 
   const fetchData = async () => {
     try {
@@ -41,9 +42,19 @@ function useGetData<T>({
     if (endpoint) {
       fetchData();
     }
-  }, [endpoint, query]);
+  }, [endpoint, query, refetch]);
 
-  return { data, setData, loading, error, fetchData, query, setQuery };
+  return {
+    data,
+    setData,
+    loading,
+    error,
+    fetchData,
+    query,
+    setQuery,
+    refetch,
+    setRefetch,
+  };
 }
 
 export default useGetData;

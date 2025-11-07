@@ -3,8 +3,9 @@ import type { FormListItemType } from "./Form_Builder-types";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import Button from "../button/Button";
-import { CloseIcon, UploadCloudIcon } from "~/assets/icons/Icon";
+import { CloseIcon, EditIcon, UploadCloudIcon } from "~/assets/icons/Icon";
 import { truncateText } from "~/common/utils/truncateText";
+import Avatar from "../avatar/Avatar";
 
 const maxFileSizeInMB = Number(import.meta.env.VITE_REACT_APP_IMAGE_SIZE || 5);
 const maxFileSizeInBytes = maxFileSizeInMB * 1024 * 1024;
@@ -36,6 +37,7 @@ const Upload_Media: React.FC<UploadMediaProps> = ({
   const limit = item?.limit ?? 10;
   const setListDeleteImages = item?.setListDeleteImages;
   const fileInputRef = useRef(null);
+  const [isChanged, setIsChanged] = useState(false);
   const handleFileChange = (
     newFiles: FileList | File[],
     e: React.ChangeEvent<HTMLInputElement>
@@ -143,8 +145,10 @@ const Upload_Media: React.FC<UploadMediaProps> = ({
         variant === "file" ? file : URL.createObjectURL(file);
       setMedia(mediaPreview);
       handleChange(file);
+      if (!isChanged) {
+        setIsChanged(true);
+      }
     }
-
     e.target.value = "";
   };
 
@@ -178,8 +182,10 @@ const Upload_Media: React.FC<UploadMediaProps> = ({
   };
 
   useEffect(() => {
-    setMedia(value);
-  }, [value, item?.isEdit]);
+    if (!isChanged) {
+      setMedia(value);
+    }
+  }, [value, item?.isEdit, isChanged]);
 
   if (variant === "file") {
     return (
@@ -227,7 +233,29 @@ const Upload_Media: React.FC<UploadMediaProps> = ({
       </div>
     );
   }
-  return <div>Upload_Media</div>;
+  console.log(media, "vk");
+  return (
+    <div className="relative w-fit  group">
+      <Avatar avatar={media} fullName={item.name} size="lg" />
+      <Button
+        icon={<EditIcon fill="white" width="18" height="18" />}
+        variant="outline"
+        size="xs"
+        round="full"
+        className="absolute opacity-0 hover:opacity-100 !border-none  bottom-0 end-0  !h-full !w-full  !bg-black/40 "
+        handleClick={() => fileInputRef.current?.click()}
+      />
+      <input
+        type="file"
+        id={item?.id}
+        className="hidden"
+        accept=".jpg,.png,.jpeg"
+        onChange={(e) => handleFileChange(e.target.files, e)}
+        disabled={disabled}
+        ref={fileInputRef}
+      />
+    </div>
+  );
 };
 
 export default Upload_Media;

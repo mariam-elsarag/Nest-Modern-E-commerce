@@ -7,8 +7,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Order } from './order.entity';
-import { Variant } from 'src/products/entities/variant.entity';
-import { Product } from 'src/products/entities/product.entity';
+import { Variant } from '../../products/entities/variant.entity';
+import { Product } from '../../products/entities/product.entity';
+import { OrderStatus } from '../../common/utils/enum';
 
 @Entity('order-item')
 export class OrderItem {
@@ -21,6 +22,9 @@ export class OrderItem {
   @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
   price: number;
 
+  @Column({ type: 'enum', enum: OrderStatus, default: OrderStatus.Pending })
+  status: OrderStatus;
+
   @ManyToOne(() => Product)
   product: Product;
 
@@ -32,6 +36,4 @@ export class OrderItem {
 
   @CreateDateColumn()
   createdAt: Date;
-  @UpdateDateColumn()
-  updateAt: Date;
 }

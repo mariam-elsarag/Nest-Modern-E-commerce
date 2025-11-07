@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router";
 import { ArrowIcon } from "~/assets/icons/Icon";
 import { CategoryHeroImg } from "~/assets/images/Image";
 import { currentLanguageCode } from "~/common/utils/switchLang";
@@ -7,6 +8,7 @@ import Button from "~/components/shared/button/Button";
 
 const Category = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   return (
     <section className="home_category_cta_bg min-h-[304px] container py-10 grid md:grid-cols-2 gap-10 justify-center text-center md:justify-baseline md:text-start ">
       <div className="flex flex-col gap-6 justify-center items-center md:items-start">
@@ -23,6 +25,9 @@ const Category = () => {
               <ArrowIcon fill="white" />
             </span>
           }
+          handleClick={() => {
+            navigate("/product");
+          }}
         />
       </div>
       <figure className="flex justify-center md:justify-end">

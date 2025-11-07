@@ -32,45 +32,45 @@ export class CartService {
     user: JwtPayload,
     res: Response,
   ) {
-    const { cartToken, product: productId, variant, quantity } = createCartDto;
+    const { cartToken, variant, quantity } = createCartDto;
     const { id } = user;
 
     const cartSession = await this.findOrCreateSession(cartToken, id);
 
-    const product = await this.productAdminService.findAvalibleOne(productId);
     const productVariant = await this.productAdminService.checkVariant(
-      product,
       variant,
       quantity,
     );
 
-    const vatRate = product.hasTax ? product?.taxRate : 0;
+    const vatRate = productVariant.product.hasTax
+      ? productVariant.product.taxRate
+      : 0;
     const existingItem = await this.cartItemRepo.findOne({
       where: {
         session: { id: cartSession.id },
-        product: { id: productId },
         variant: { id: productVariant.id },
       },
     });
 
+    let cart;
     if (existingItem) {
       existingItem.quantity = quantity;
-      await this.cartItemRepo.save(existingItem);
+      cart = await this.cartItemRepo.save(existingItem);
     } else {
       const cartItem = this.cartItemRepo.create({
         session: cartSession,
-        product,
+        product: productVariant.product,
         variant: productVariant,
         quantity,
         price: productVariant.price,
         vatRate,
       });
-      await this.cartItemRepo.save(cartItem);
+      cart = await this.cartItemRepo.save(cartItem);
     }
-    const cart = await this.cartSessionRepo.findOne({
-      where: { id: cartSession.id },
-      relations: ['items', 'items.product', 'items.variant'],
-    });
+    // const cart = await this.cartSessionRepo.findOne({
+    //   where: { id: cartSession.id },
+    //   relations: ['items', 'items.product', 'items.variant'],
+    // });
 
     if (cartSession?.cartToken) {
       res.cookie('cart_token', cartSession.cartToken, {
@@ -79,7 +79,7 @@ export class CartService {
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
     }
-    const items = plainToInstance(CartResponseDto, cart?.items, {
+    const items = plainToInstance(CartResponseDto, cart, {
       excludeExtraneousValues: true,
     });
 
@@ -158,17 +158,29 @@ export class CartService {
   async findOrCreateSession(token?: string, user?: number) {
     let cartSession = await this.findSession(token, user);
 
+    if (cartSession?.expiresAt && cartSession.expiresAt < new Date()) {
+      await this.cartSessionRepo.remove(cartSession);
+      cartSession = null;
+    }
+
     if (!cartSession?.id) {
       const sessionToken = user ? null : uuidv4();
 
       cartSession = this.cartSessionRepo.create({
         userId: user ?? null,
         cartToken: sessionToken,
+        expiresAt: this.generateExpiryDate(),
       });
-      console.log(cartSession, 'sk');
+
       cartSession = await this.cartSessionRepo.save(cartSession);
     }
 
     return cartSession;
+  }
+
+  private generateExpiryDate(): Date {
+    const date = new Date();
+    date.setDate(date.getDate() + 7);
+    return date;
   }
 }

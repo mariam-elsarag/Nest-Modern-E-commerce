@@ -4,9 +4,11 @@ import type { CartItemType } from "~/common/types/Type";
 import Cart_Item from "~/components/shared/cart_item/Cart_Item";
 type OrderInfoType = {
   data: CartItemType;
+  setRefetch?: React.Dispatch<React.SetStateAction<any>>;
 };
-const Order_Info = ({ data }: OrderInfoType) => {
+const Order_Info = ({ data, setRefetch }: OrderInfoType) => {
   const { t } = useTranslation();
+  console.log(data, "s");
   return (
     <section className="flex flex-col gap-10">
       <header className="pb-5 border-b border-neutral-white-200">
@@ -15,8 +17,8 @@ const Order_Info = ({ data }: OrderInfoType) => {
         </h2>
       </header>
       <div className="flex flex-col gap-10">
-        {data?.products?.map((item) => (
-          <Cart_Item key={item?.id} product={item} />
+        {data?.items?.map((item) => (
+          <Cart_Item key={item?.id} product={item} setData={setRefetch} />
         ))}
       </div>
     </section>

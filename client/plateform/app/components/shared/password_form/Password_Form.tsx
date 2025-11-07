@@ -11,17 +11,19 @@ import { API } from "~/services/apiUrl";
 import axiosInstance from "~/services/axiosInstance";
 import { toast } from "react-toastify";
 import type { Route } from ".react-router/types/app/+types/root";
-
+import Cookies from "js-cookie";
+import { useAuth } from "~/context/Auth_Context";
 type PasswordFormProps = {
   isRest?: boolean;
-  loaderData: Route.ComponentProps;
+  email?: string;
 };
 
-const Password_Form = ({ isRest = true, loaderData }: PasswordFormProps) => {
+const Password_Form = ({ isRest = true, email }: PasswordFormProps) => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { email } = loaderData;
+  const { logout } = useAuth();
+
   // ___________ useform _________
   const {
     control,
@@ -32,6 +34,7 @@ const Password_Form = ({ isRest = true, loaderData }: PasswordFormProps) => {
   } = useForm({
     defaultValues: {
       email: email,
+      oldPassword: null,
       password: null,
       confirmPassword: null,
     },
@@ -44,7 +47,7 @@ const Password_Form = ({ isRest = true, loaderData }: PasswordFormProps) => {
       formType: "password",
       name: "old_password",
       label: "old_password",
-      fieldName: "old_password",
+      fieldName: "oldPassword",
       validator: {
         required: "old_password_is_required",
         pattern: {
@@ -91,7 +94,9 @@ const Password_Form = ({ isRest = true, loaderData }: PasswordFormProps) => {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-      const endppoint = isRest ? API.auth.resetPassword : "";
+      const endppoint = isRest
+        ? API.auth.resetPassword
+        : `${API.profile.profile}/change-password`;
       const response = await axiosInstance.patch(endppoint, data);
       if (response.status === 200) {
         let url = "/";
@@ -101,6 +106,7 @@ const Password_Form = ({ isRest = true, loaderData }: PasswordFormProps) => {
           message = "successfully_reset_password";
         } else {
           url = "/";
+          logout();
           message = "successfully_change_password";
         }
         toast.success(t(message));

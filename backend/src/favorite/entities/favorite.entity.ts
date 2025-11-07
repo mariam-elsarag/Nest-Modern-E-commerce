@@ -1,5 +1,5 @@
-import { Product } from 'src/products/entities/product.entity';
-import { User } from 'src/users/entities/user.entity';
+import { Variant } from '../../products/entities/variant.entity';
+import { User } from '../../users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -10,13 +10,13 @@ import {
 } from 'typeorm';
 
 @Entity('favorite')
-@Unique(['user', 'product'])
+@Unique(['user', 'variant'])
 export class Favorite {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Product, (product) => product.favorites)
-  product: Product;
+  @ManyToOne(() => Variant, (variant) => variant.favorites, { eager: true })
+  variant: Variant;
 
   @ManyToOne(() => User, (user) => user.favorites, { onDelete: 'CASCADE' })
   user: User;

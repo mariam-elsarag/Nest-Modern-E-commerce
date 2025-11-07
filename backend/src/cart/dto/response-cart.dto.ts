@@ -2,21 +2,26 @@ import { Expose, Transform, Type } from 'class-transformer';
 import { ColorResponseDto } from 'src/colors/dto/response-color.dto';
 import { SizeResponseDto } from 'src/sizes/dto/response-size.dto';
 
+class CartProductDto {
+  @Expose()
+  @Transform(({ obj }) => obj?.cover || null)
+  cover: string | null;
+
+  @Expose()
+  @Transform(({ obj }) => obj?.title)
+  title: string;
+
+  @Expose()
+  @Transform(({ obj }) => obj?.title_ar)
+  title_ar: string;
+}
 export class CartResponseDto {
   @Expose()
   id: number;
 
   @Expose()
-  @Transform(({ obj }) => obj.product?.cover || null)
-  cover: string | null;
-
-  @Expose()
-  @Transform(({ obj }) => obj.product?.title)
-  title: string;
-
-  @Expose()
-  @Transform(({ obj }) => obj.product?.title_ar)
-  title_ar: string;
+  @Type(() => CartProductDto)
+  product: CartProductDto;
 
   @Expose()
   @Type(() => ColorResponseDto)
@@ -31,6 +36,14 @@ export class CartResponseDto {
   @Expose()
   @Transform(({ obj }) => obj.quantity)
   quantity: number;
+
+  @Expose()
+  @Transform(({ obj }) => obj.variant.quantity)
+  maxQuantity: number;
+
+  @Expose()
+  @Transform(({ obj }) => obj.variant.id)
+  variantId: number;
 
   @Expose()
   isValid: boolean;

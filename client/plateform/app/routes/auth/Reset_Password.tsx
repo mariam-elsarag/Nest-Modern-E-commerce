@@ -15,11 +15,11 @@ export function meta({}: Route.MetaArgs) {
 export async function clientLoader({ params }: Route.LoaderArgs) {
   const { email } = params;
 
-  return { email };
+  return { email: email };
 }
 const Reset_Password = ({ loaderData }: Route.ComponentProps) => {
   const { t } = useTranslation();
-
+  const { email } = loaderData;
   const breadcrumbsList: breadCrumbListType[] = [
     {
       label: t("login"),
@@ -41,7 +41,7 @@ const Reset_Password = ({ loaderData }: Route.ComponentProps) => {
       />
       <section className="container">
         <div className=" max-w-[400px] sm:max-w-[320px] flex flex-col mx-auto w-full gap-8">
-          <Password_Form loaderData={loaderData} />
+          <Password_Form email={email} />
         </div>
       </section>
     </main>

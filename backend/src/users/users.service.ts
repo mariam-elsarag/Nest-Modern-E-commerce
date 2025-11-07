@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateProfileDto, UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
@@ -15,11 +15,13 @@ import { Request } from 'express';
 import { FullPaginationDto } from 'src/common/pagination/pagination.dto';
 
 import { AccountStatus, UserRole } from 'src/common/utils/enum';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   async findOne(id: number) {
@@ -80,26 +82,15 @@ export class UsersService {
    * @param body
    * @returns
    */
-  async updateUserInfo(id: number, body: UpdateUserDto) {
+  async updateUserInfo(
+    id: number,
+    body: UpdateUserDto | UpdateProfileDto,
+    file?: Express.Multer.File,
+  ) {
     const user = await this.findOne(id);
     let emailChanged = false;
 
-    const allowedFields = ['full_name', 'email', 'phone', 'avatar'];
-
-    for (const [key, rawValue] of Object.entries(body)) {
-      if (!allowedFields.includes(key)) continue;
-
-      const value = typeof rawValue === 'string' ? rawValue.trim() : rawValue;
-
-      if (
-        value === undefined ||
-        value === null ||
-        value === '' ||
-        value === user[key]
-      ) {
-        continue;
-      }
-
+    for (const [key, value] of Object.entries(body)) {
       if (key === 'email') {
         const lowerEmail = value.toLowerCase();
         const isExist = await this.userRepository.findOne({
@@ -115,7 +106,6 @@ export class UsersService {
 
         user.email = lowerEmail;
         emailChanged = true;
-        continue;
       }
 
       if (key === 'phone') {
@@ -134,18 +124,38 @@ export class UsersService {
       user[key] = value;
     }
 
-    if (
-      emailChanged &&
-      user.role === UserRole.User &&
-      user.status === AccountStatus.Active &&
-      body.status === undefined
-    ) {
-      user.status = AccountStatus.Pending;
+    if (file) {
+      let avatar = user.avatar;
+      if (file.fieldname === 'avatar') {
+        this.cloudinaryService.validateFileType(file, 'image');
+        const publicId = user.avatar
+          ? this.cloudinaryService.extractPublicIdFromUrl(user.avatar)
+          : null;
+        avatar = await this.cloudinaryService.updateImage(
+          publicId,
+          file,
+          'profile/images',
+        );
+      }
+      console.log(avatar, 'skkk');
+      user.avatar = avatar;
     }
 
-    await this.userRepository.save(user);
+    // Optionally, change status when email changes
+    // if (
+    //   emailChanged &&
+    //   user.role === UserRole.User &&
+    //   user.status === AccountStatus.Active &&
+    //   body.status === undefined
+    // ) {
+    //   user.status = AccountStatus.Pending;
+    // }
 
-    return plainToInstance(UserDto, user, { excludeExtraneousValues: true });
+    const savedUser = await this.userRepository.save(user);
+
+    return plainToInstance(UserDto, savedUser, {
+      excludeExtraneousValues: true,
+    });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

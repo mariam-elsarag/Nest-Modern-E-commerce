@@ -15,7 +15,7 @@ export class Support {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 30 })
+  @Column({ type: 'varchar', length: 100 })
   fullName: string;
 
   @Column({ type: 'varchar', length: 255 })

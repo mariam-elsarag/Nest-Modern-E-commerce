@@ -29,11 +29,12 @@ import { toast } from "react-toastify";
 type Variant = {
   index?: number;
   id?: number;
-  colors: string[];
-  sizes: [];
+  colors: string;
+  sizes: string;
   price: number;
   quantity: number;
   sku: string;
+  images: [];
 };
 const Product_Management = () => {
   const { t } = useTranslation();
@@ -44,7 +45,7 @@ const Product_Management = () => {
 
   const [loading, setLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
-  const [variantList, setVariantList] = useState<Variant>([]);
+  const [variantList, setVariantList] = useState<Variant[] | null>(null);
   // ___________ hooks _________
   const { data: categoryList } = useGetData(API.list.category);
   const { data: colorList } = useGetData(API.settting.color);
@@ -74,12 +75,12 @@ const Product_Management = () => {
       cover: null,
       isFeatured: false,
       isAvalible: true,
-      images: [],
       variants: {
         color: null,
         size: null,
         quantity: null,
         price: null,
+        images: [],
       },
     },
     mode: "onChange",
@@ -111,14 +112,16 @@ const Product_Management = () => {
           size: variants?.size || null,
           price: variants?.price || "",
           quantity: variants?.quantity || "",
+          images: variants.images,
         },
       ]);
 
       setValue("variants", {
         color: null,
         size: null,
-        price: "",
-        quantity: "",
+        price: null,
+        quantity: null,
+        images: [],
       });
       clearErrors("variants");
     }
@@ -206,15 +209,25 @@ const Product_Management = () => {
       },
     },
     {
-      id: "6",
-      formType: "media",
-      fieldName: "images",
-      variant: "upload",
-      label: "images",
-      isMultiple: true,
-      limit: 8,
-      placeholder: "choose_product_images",
+      id: "15",
+      formType: "input",
+      inputMode: "text",
+      type: "text",
+      name: "sku",
+      label: "sku",
+      placeholder: "sku",
+      fieldName: `sku`,
+      validator: {
+        required: "required_field",
+
+        pattern: {
+          value: skuPattern,
+          message: "sku_pattern",
+        },
+      },
+      inlineError: true,
     },
+
     {
       id: "7",
       formType: "editor",
@@ -235,25 +248,7 @@ const Product_Management = () => {
         required: "required_field",
       },
     },
-    {
-      id: "15",
-      formType: "input",
-      inputMode: "text",
-      type: "text",
-      name: "sku",
-      label: "sku",
-      placeholder: "sku",
-      fieldName: `sku`,
-      validator: {
-        required: "required_field",
 
-        pattern: {
-          value: skuPattern,
-          message: "sku_pattern",
-        },
-      },
-      inlineError: true,
-    },
     {
       id: "9",
       formType: "switch",
@@ -407,6 +402,16 @@ const Product_Management = () => {
       hasFilter: true,
       inlineError: true,
     },
+    {
+      id: "6",
+      formType: "media",
+      fieldName: "variants.images",
+      variant: "upload",
+      label: "images",
+      isMultiple: true,
+      limit: 8,
+      placeholder: "choose_product_images",
+    },
   ];
 
   const columns = [
@@ -445,6 +450,30 @@ const Product_Management = () => {
       header: "size",
       field: "size",
       body: (item) => <> {item.size?.label ?? "-"}</>,
+    },
+    {
+      header: "images",
+      field: "images",
+      body: (item) => (
+        <div className="flex items-center gap-3 flex-wrap">
+          {item?.images?.length > 0
+            ? item?.images?.map((img, i) => (
+                <figure
+                  key={i}
+                  className="w-12 h-12 flex items-center justify-center bg-neutral-white-100 rounded-[4px]"
+                >
+                  {img && (
+                    <img
+                      src={img.preview ?? img}
+                      alt={`product img ${i + 1}`}
+                      className="h-[46px] rounded-[4px]"
+                    />
+                  )}
+                </figure>
+              ))
+            : "-"}
+        </div>
+      ),
     },
 
     {
@@ -488,9 +517,7 @@ const Product_Management = () => {
         if (key === "taxRate" && data.defaultTax) {
           return;
         }
-        if (key === "images" && value?.length === 0) {
-          formData.append(key, "[]");
-        }
+
         if (key === "categories") {
           value?.map((cat, i) => {
             formData.append(`categories[${i}]`, cat);
@@ -508,6 +535,11 @@ const Product_Management = () => {
         if (item?.size) {
           formData.append(`variants[${index}][size]`, item?.size?.id);
         }
+
+        item.images?.forEach((img, i) => {
+          const file = img.image || img.file || img;
+          formData.append(`variants[${index}][images][${i}]`, file);
+        });
       });
 
       // for (const [key, value] of formData.entries()) {
@@ -529,6 +561,7 @@ const Product_Management = () => {
       setLoading(false);
     }
   };
+
   const getDetails = async () => {
     try {
       setLoadingData(true);
@@ -557,7 +590,7 @@ const Product_Management = () => {
     if (isEdit) {
       getDetails();
     }
-  }, []);
+  }, [isEdit]);
   return (
     <Page_Wraper
       list={breadcrumbsList}

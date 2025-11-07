@@ -6,3 +6,5 @@
 2- order
 
 payment success and failed
+
+- need to change favorite logic to work with variants 

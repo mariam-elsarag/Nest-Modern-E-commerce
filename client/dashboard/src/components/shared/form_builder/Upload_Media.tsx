@@ -41,6 +41,7 @@ const Upload_Media: React.FC<UploadMediaProps> = ({
   const limit = item?.limit ?? 10;
   const setListDeleteImages = item?.setListDeleteImages;
   const fileInputRef = useRef(null);
+  const [isChange, setIsChange] = useState(false);
   const handleFileChange = (
     newFiles: FileList | File[],
     e: React.ChangeEvent<HTMLInputElement>
@@ -159,6 +160,9 @@ const Upload_Media: React.FC<UploadMediaProps> = ({
         variant === "file" ? file : URL.createObjectURL(file);
       setMedia(mediaPreview);
       handleChange(file);
+      if (!isChange) {
+        setIsChange(true);
+      }
     }
 
     e.target.value = "";
@@ -194,10 +198,10 @@ const Upload_Media: React.FC<UploadMediaProps> = ({
   };
 
   useEffect(() => {
-    if (item?.isEdit && value && value !== media) {
+    if (!isChange) {
       setMedia(value);
     }
-  }, [value, item?.isEdit, media]);
+  }, [value, item?.isEdit, media, isChange]);
 
   if (variant === "file") {
     return (

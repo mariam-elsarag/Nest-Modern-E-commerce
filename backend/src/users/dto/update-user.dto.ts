@@ -15,3 +15,5 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   })
   status?: AccountStatus;
 }
+
+export class UpdateProfileDto extends PartialType(CreateUserDto) {}

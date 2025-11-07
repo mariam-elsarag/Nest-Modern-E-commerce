@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { CartProductsType } from "~/common/types/Type";
 import { formatPrice } from "~/common/utils/formatPrice";
@@ -11,14 +11,19 @@ import axiosInstance from "~/services/axiosInstance";
 import { handleError } from "~/common/utils/handleError";
 import { currentLanguageCode } from "~/common/utils/switchLang";
 import { API } from "~/services/apiUrl";
-
+import { useAuth } from "~/context/Auth_Context";
+import Cookies from "js-cookie";
+import { toast } from "react-toastify";
 type CartItemProps = {
   product: CartProductsType;
-  setData: React.Dispatch<React.SetStateAction<CartProductsType[]>>;
+  setData?: React.Dispatch<React.SetStateAction<CartProductsType[]>>;
   variant?: "cart" | "wishlist" | "order";
 };
 const Cart_Item = ({ product, variant = "cart", setData }: CartItemProps) => {
   const { t } = useTranslation();
+  const { token } = useAuth();
+  const cartToken = Cookies.get("cartToken");
+  const [quantity, setQuantity] = useState(product.quantity);
 
   const toggleFavorite = async () => {
     try {
@@ -35,6 +40,33 @@ const Cart_Item = ({ product, variant = "cart", setData }: CartItemProps) => {
     }
   };
 
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      if (quantity !== product.quantity) {
+        handleUpdateCart(quantity);
+      }
+    }, 500);
+
+    return () => clearTimeout(delay);
+  }, [quantity]);
+  const handleUpdateCart = async (quantity: number) => {
+    try {
+      let sendData = {
+        variant: product.variantId,
+        quantity: quantity,
+      };
+      if (!token) {
+        sendData.cartToken = cartToken;
+      }
+      const response = await axiosInstance.put(API.cart, sendData);
+      if (response.status === 200) {
+        toast.success(t("successfully_update_item_to_cart"));
+        setData(Date.now());
+      }
+    } catch (err) {
+      handleError(err, t);
+    }
+  };
   const renderRightContent = () => {
     switch (variant) {
       case "wishlist":
@@ -52,7 +84,7 @@ const Cart_Item = ({ product, variant = "cart", setData }: CartItemProps) => {
           <>
             <Link
               className="text-neutral-black-900 body font-medium border-b border-neutral-black-900"
-              to={`/${product?.orderId}/checkout`}
+              to={`/${product?.id}/checkout`}
             >
               {t("proceessing")}
             </Link>
@@ -66,7 +98,11 @@ const Cart_Item = ({ product, variant = "cart", setData }: CartItemProps) => {
       default:
         return (
           <>
-            <Counter quantity={product?.quantity} />
+            <Counter
+              quantity={product.maxQuantity}
+              value={quantity}
+              setValue={setQuantity}
+            />
             <Button
               size="md"
               variant="secondary"
@@ -110,7 +146,7 @@ const Cart_Item = ({ product, variant = "cart", setData }: CartItemProps) => {
 
                   <span
                     className="flex items-center justify-center w-3 h-3 border border-neutral-white-200 rounded-full"
-                    style={{ background: product?.color }}
+                    style={{ background: product?.color.color }}
                   />
                 </div>
               )}
@@ -119,7 +155,7 @@ const Cart_Item = ({ product, variant = "cart", setData }: CartItemProps) => {
                   <span className="text-neutral-black-500">—</span>
                   <p className="flex items-center gap-1 text-neutral-black-500 text-xs font-medium">
                     <span>{t("size")}:</span>
-                    <span>{product?.size}</span>
+                    <span>{product?.size.label}</span>
                   </p>
                 </div>
               )}

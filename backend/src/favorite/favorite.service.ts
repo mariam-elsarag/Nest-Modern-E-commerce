@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtPayload } from 'src/common/utils/types';
 import { Favorite } from './entities/favorite.entity';
@@ -11,6 +11,7 @@ import { FavoriteResponesDto } from './dto/response-favorite.dto';
 import { FullPaginationDto } from 'src/common/pagination/pagination.dto';
 import { User } from 'src/users/entities/user.entity';
 import { CartService } from 'src/cart/cart.service';
+import { Variant } from 'src/products/entities/variant.entity';
 
 @Injectable()
 export class FavoriteService {
@@ -19,10 +20,12 @@ export class FavoriteService {
     private readonly favoriteRepo: Repository<Favorite>,
     private readonly productAdminService: ProductsAdminService,
     private readonly cartService: CartService,
+    @InjectRepository(Variant)
+    private readonly variantRepo: Repository<Variant>,
   ) {}
-  async findOne(userId: number, productId: number) {
+  async findOne(userId: number, variantId: number) {
     const existing = await this.favoriteRepo.findOne({
-      where: { user: { id: userId }, product: { id: productId } },
+      where: { user: { id: userId }, variant: { id: variantId } },
     });
     return existing;
   }
@@ -35,7 +38,8 @@ export class FavoriteService {
 
     const qb = this.favoriteRepo
       .createQueryBuilder('favorite')
-      .leftJoinAndSelect('favorite.product', 'product');
+      .leftJoinAndSelect('favorite.variant', 'variant')
+      .leftJoinAndSelect('variant.product', 'product');
 
     if (search) {
       qb.andWhere(
@@ -50,16 +54,17 @@ export class FavoriteService {
       .take(take)
       .getManyAndCount();
 
-    // to check if this product in a cart
+    // to check if this variant in a cart
     const cart = await this.cartService.findSession(undefined, user.id);
 
     const data = results.map((product) => {
       const matchedItem = cart?.items.find(
-        (item) => item.product.id === product.id,
+        (item) => item.variant.id === product.variant.id,
       );
+
       const item = {
         ...product,
-        cartId: matchedItem ? matchedItem.id : null,
+        cartItemId: matchedItem ? matchedItem.id : null,
         isCart: !!matchedItem,
       };
       return plainToInstance(FavoriteResponesDto, item, {
@@ -73,9 +78,12 @@ export class FavoriteService {
   async update(id: number, user: User) {
     const { id: userId } = user;
     // check if proudct exist
-    const product = await this.productAdminService.findOne(id);
+    const variant = await this.variantRepo.findOne({ where: { id } });
+    if (!variant) {
+      throw new BadRequestException('Product not found');
+    }
 
-    const existing = await this.findOne(userId, product.id);
+    const existing = await this.findOne(userId, variant.id);
 
     if (existing) {
       await this.favoriteRepo.remove(existing);
@@ -83,7 +91,7 @@ export class FavoriteService {
     } else {
       const favorite = this.favoriteRepo.create({
         user: user,
-        product: product,
+        variant,
       });
       await this.favoriteRepo.save(favorite);
       return { isFavorite: true };

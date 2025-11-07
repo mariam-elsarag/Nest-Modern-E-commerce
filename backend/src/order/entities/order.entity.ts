@@ -2,7 +2,7 @@ import {
   OrderStatus,
   PaymentMethod,
   PaymentStatus,
-} from 'src/common/utils/enum';
+} from '../../common/utils/enum';
 import {
   Column,
   CreateDateColumn,
@@ -13,16 +13,13 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { OrderItem } from './order-items.entity';
-import { User } from 'src/users/entities/user.entity';
-import { Address } from 'src/address/entities/address.entity';
+import { User } from '../../users/entities/user.entity';
+import { Address } from '../../address/entities/address.entity';
 
 @Entity('order')
 export class Order {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({ type: 'enum', enum: OrderStatus, default: OrderStatus.Pending })
-  status: OrderStatus;
 
   @Column({ type: 'enum', enum: PaymentMethod })
   paymentMethod: PaymentMethod;

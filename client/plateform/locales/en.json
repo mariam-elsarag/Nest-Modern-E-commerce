@@ -189,5 +189,15 @@
   "no_products_yet": "No products yet",
   "successfully_send_support_ticket": "Your support request has been sent successfully. Our team will contact you soon via email.",
   "view_details": "View details",
-  "successfully_update_address": "Your address has been updated successfully"
+  "successfully_update_address": "Your address has been updated successfully",
+  "successfully_update_profile": "Your profile has been updated successfully.",
+  "new_password_same_as_old": "New password cannot be the same as the old password.",
+  "incorrect_old_password": "Incorrect old password.",
+  "empty_cart_title": "Your cart is empty",
+  "empty_cart_description": "Start shopping now and fill your cart with amazing products!",
+  "empty_cart_button": "Shop Now",
+  "remove_from_cart": "Remove from cart",
+  "successfully_remove_product_from_cart": "Product removed from cart successfully",
+  "successfully_add_item_to_cart": "Item added to cart successfully",
+  "successfully_update_item_to_cart": "Item updated successfully in your cart"
 }

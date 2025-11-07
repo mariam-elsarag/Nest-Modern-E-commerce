@@ -41,134 +41,119 @@ export class OrderService {
    * Create or checkout order
    */
   async checkout(body: CreateOrderDto, user?: User) {
-    // (1) Validate guest fields
-    if (!user?.id) {
-      const missing = Object.entries(body)
-        .filter(([_, v]) => !v)
-        .map(([k]) => `${k} is required`);
-      if (missing.length > 0) {
-        throw new BadRequestException({
-          message: 'Bad Request',
-          errors: missing,
-        });
-      }
-    }
-
-    // (2) Validate cart
-    const cart = await this.checkCart(body.cart, body.cartToken, user?.id);
-
-    // (3) Prepare address
-    const address = {
-      street: body.street ?? '',
-      city: body.city ?? '',
-      state: body.state ?? '',
-      country: body.country ?? '',
-      zipCode: body.zipCode ?? '',
-    };
-
-    // (4) Ensure user exists or create guest user
-    let activeUser = user;
-    if (!user?.id) {
-      activeUser = await this.authService.createOrReturnUserFromOrder(
-        body.email,
-        body.fullName,
-        address,
-      );
-    }
-
-    // (5) update address
-    const hasAddress =
-      address.street || address.city || address.state || address.country;
-    let userAddress;
-    if (activeUser && hasAddress) {
-      userAddress = await this.addressService.createOrUpdateAddress(
-        address,
-        activeUser,
-      );
-    } else {
-      userAddress = activeUser?.address;
-    }
-
-    // (6) validate cart stock
-    const reservedVariants = await this.validateCartVariant(cart.items);
-
-    // totla price
-    const totalPrice = cart.items.reduce((sum, item) => {
-      const price = Number(item.variant.price) * item.quantity;
-      return sum + price;
-    }, 0);
-
-    // (7) Create order + order items inside a transaction
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-
-    try {
-      // --- Create order ---
-      const order = queryRunner.manager.create(Order, {
-        user: activeUser,
-        address: userAddress,
-        totalPrice,
-        paymentMethod: body.paymentMethod,
-        paymentStatus: PaymentStatus.Pending,
-        status: OrderStatus.Pending,
-      });
-
-      await queryRunner.manager.save(order);
-
-      // --- Create order items ---
-      for (const item of cart.items) {
-        const orderItem = queryRunner.manager.create(OrderItem, {
-          order,
-          variant: item.variant,
-          product: item.variant.product,
-          quantity: item.quantity,
-          price: Number(item.variant.price),
-        });
-        await queryRunner.manager.save(orderItem);
-
-        // Update variant stock
-        const variant = reservedVariants.find((v) => v.id === item.variant.id);
-        if (variant) {
-          variant.quantity -= item.quantity;
-          variant.reserved -= item.quantity;
-          await queryRunner.manager.save(variant);
-        }
-      }
-      let checkoutUrl: string | null = null;
-      if (body.paymentMethod === PaymentMethod.Gateway) {
-        const stripeSession = await this.stripeService.createCheckoutSession(
-          cart.items.map((i) => ({
-            title: i.variant.product?.title ?? `Product #${i.variant.id}`,
-            cover: i.variant.product?.cover ?? '',
-            price: Number(i.variant.price),
-            quantity: i.quantity,
-          })),
-          order.id,
-        );
-
-        // Save transactionId in order
-        order.transactionId = stripeSession.id;
-        await queryRunner.manager.save(order);
-
-        checkoutUrl = stripeSession.url;
-      }
-      // --- Clear cart ---
-      await queryRunner.manager.delete(CartSession, { id: cart.id });
-
-      await queryRunner.commitTransaction();
-
-      return {
-        message: 'Order created successfully',
-        checkoutUrl,
-      };
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
-      console.error('Order transaction failed:', error);
-      throw new BadRequestException('Failed to create order');
-    } finally {
-      await queryRunner.release();
-    }
+    // // (1) Validate guest fields
+    // if (!user?.id) {
+    //   const missing = Object.entries(body)
+    //     .filter(([_, v]) => !v)
+    //     .map(([k]) => `${k} is required`);
+    //   if (missing.length > 0) {
+    //     throw new BadRequestException({
+    //       message: 'Bad Request',
+    //       errors: missing,
+    //     });
+    //   }
+    // }
+    // // (2) Validate cart
+    // const cart = await this.checkCart(body.cart, body.cartToken, user?.id);
+    // // (3) Prepare address
+    // const address = {
+    //   street: body.street ?? '',
+    //   city: body.city ?? '',
+    //   state: body.state ?? '',
+    //   country: body.country ?? '',
+    //   zipCode: body.zipCode ?? '',
+    // };
+    // // (4) Ensure user exists or create guest user
+    // let activeUser = user;
+    // if (!user?.id) {
+    //   activeUser = await this.authService.createOrReturnUserFromOrder(
+    //     body.email,
+    //     body.fullName,
+    //     address,
+    //   );
+    // }
+    // // (5) update address
+    // const hasAddress =
+    //   address.street || address.city || address.state || address.country;
+    // let userAddress;
+    // if (activeUser && hasAddress) {
+    //   userAddress = await this.addressService.createOrUpdateAddress(
+    //     address,
+    //     activeUser,
+    //   );
+    // } else {
+    //   userAddress = activeUser?.address;
+    // }
+    // // (6) validate cart stock
+    // const reservedVariants = await this.validateCartVariant(cart.items);
+    // // totla price
+    // const totalPrice = cart.items.reduce((sum, item) => {
+    //   const price = Number(item.variant.price) * item.quantity;
+    //   return sum + price;
+    // }, 0);
+    // // (7) Create order + order items inside a transaction
+    // const queryRunner = this.dataSource.createQueryRunner();
+    // await queryRunner.connect();
+    // await queryRunner.startTransaction();
+    // try {
+    //   // --- Create order ---
+    //   const order = queryRunner.manager.create(Order, {
+    //     user: activeUser,
+    //     address: userAddress,
+    //     totalPrice,
+    //     paymentMethod: body.paymentMethod,
+    //     paymentStatus: PaymentStatus.Pending,
+    //   });
+    //   await queryRunner.manager.save(order);
+    //   // --- Create order items ---
+    //   for (const item of cart.items) {
+    //     const orderItem = queryRunner.manager.create(OrderItem, {
+    //       order,
+    //       variant: item.variant,
+    //       product: item.variant.product,
+    //       quantity: item.quantity,
+    //       price: Number(item.variant.price),
+    //       status: OrderStatus.Pending,
+    //     });
+    //     await queryRunner.manager.save(orderItem);
+    //     // Update variant stock
+    //     const variant = reservedVariants.find((v) => v.id === item.variant.id);
+    //     if (variant) {
+    //       variant.quantity -= item.quantity;
+    //       variant.reserved -= item.quantity;
+    //       await queryRunner.manager.save(variant);
+    //     }
+    //   }
+    //   let checkoutUrl: string | null = null;
+    //   if (body.paymentMethod === PaymentMethod.Gateway) {
+    //     const stripeSession = await this.stripeService.createCheckoutSession(
+    //       cart.items.map((i) => ({
+    //         title: i.variant.product?.title ?? `Product #${i.variant.id}`,
+    //         cover: i.variant.product?.cover ?? '',
+    //         price: Number(i.variant.price),
+    //         quantity: i.quantity,
+    //       })),
+    //       order.id,
+    //     );
+    //     // Save transactionId in order
+    //     order.transactionId = stripeSession.id;
+    //     await queryRunner.manager.save(order);
+    //     checkoutUrl = stripeSession.url;
+    //   }
+    //   // --- Clear cart ---
+    //   await queryRunner.manager.delete(CartSession, { id: cart.id });
+    //   await queryRunner.commitTransaction();
+    //   return {
+    //     message: 'Order created successfully',
+    //     checkoutUrl,
+    //   };
+    // } catch (error) {
+    //   await queryRunner.rollbackTransaction();
+    //   console.error('Order transaction failed:', error);
+    //   throw new BadRequestException('Failed to create order');
+    // } finally {
+    //   await queryRunner.release();
+    // }
   }
 
   private async checkCart(cartId: number, token?: string, userId?: number) {

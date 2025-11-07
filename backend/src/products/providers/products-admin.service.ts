@@ -58,25 +58,42 @@ export class ProductsAdminService {
     }
 
     const coverFile = files.find((f) => f.fieldname === 'cover');
-    const imagesFiles = files.filter((f) => f.fieldname === 'images');
 
-    let coverUpload;
+    let coverImage;
     if (coverFile) {
       this.cloudinaryService.validateFileType(coverFile, 'image');
-      coverUpload = await this.cloudinaryService.uploadImage(
+      coverImage = await this.cloudinaryService.uploadImage(
         coverFile,
-        'products/covers',
+        'product/cover',
       );
     }
+    const imagesFiles = files.reduce(
+      (acc, file) => {
+        const match = file.fieldname.match(/variants\[(\d+)\]\[images\]/);
+        if (match) {
+          const index = parseInt(match[1]);
+          if (!acc[index]) acc[index] = [];
+          acc[index].push(file);
+        }
+        return acc;
+      },
+      {} as Record<number, Express.Multer.File[]>,
+    );
 
-    let imagesUpload;
-    if (imagesFiles?.length) {
-      this.cloudinaryService.validateFiles(imagesFiles, 'image');
-      imagesUpload = await this.cloudinaryService.uploadMany(
-        imagesFiles,
-        'products/images',
-      );
-    }
+    const imagesUpload: Record<number, string[]> = {};
+
+    await Promise.all(
+      Object.entries(imagesFiles).map(async ([index, files]) => {
+        if (files.length > 0) {
+          this.cloudinaryService.validateFiles(files, 'image');
+          const uploaded = await this.cloudinaryService.uploadMany(
+            files,
+            'products/images',
+          );
+          imagesUpload[Number(index)] = uploaded;
+        }
+      }),
+    );
 
     //  Check  category exists
     const categoryEntity = await this.categoryService.checkCategoryExists({
@@ -102,15 +119,15 @@ export class ProductsAdminService {
       taxRate: tax,
       defaultTax: defaultTax,
       categories: categoryEntity,
-      cover: coverUpload,
-      images: imagesUpload,
+      cover: coverImage,
     });
 
-    const resolvedVariants = variants.map((v) => ({
+    const resolvedVariants = variants.map((v, i) => ({
       ...v,
       product: savedProduct,
       color: { id: v.color },
       size: v.size ? { id: v.size } : undefined,
+      images: imagesUpload[i] || [],
     }));
 
     await this.variantRepository.save(resolvedVariants);
@@ -203,120 +220,137 @@ export class ProductsAdminService {
     updateProductDto: UpdateProductDto,
     files: Express.Multer.File[],
   ) {
-    const { images, categories, variants, taxRate, defaultTax, ...rest } =
+    const { categories, variants, taxRate, defaultTax, ...rest } =
       updateProductDto;
     const product = await this.findOne(id);
 
-    const coverFile = files.find((f) => f.fieldname === 'cover');
-    const imagesFiles = files.filter((f) => f.fieldname === 'images');
-
-    //  cover
+    //  cover img update
     let coverUrl = product.cover;
+    const coverFile = files.find((f) => f.fieldname === 'cover');
     if (coverFile) {
       this.cloudinaryService.validateFileType(coverFile, 'image');
       const oldPicId = this.cloudinaryService.extractPublicIdFromUrl(
         product.cover,
       );
-
-      const uploadedCover = await this.cloudinaryService.updateImage(
+      coverUrl = await this.cloudinaryService.updateImage(
         oldPicId,
         coverFile,
         'products/covers',
       );
-
-      coverUrl = uploadedCover;
     }
 
-    let finalImages: string[] = [];
+    // --- variant images
+    const imagesFiles = files.reduce(
+      (acc, file) => {
+        const match = file.fieldname.match(
+          /variants\[(\d+)\]\[images\](?:\[\d+\])?/,
+        );
+        if (match) {
+          const index = parseInt(match[1]);
+          if (!acc[index]) acc[index] = [];
+          acc[index].push(file);
+        }
+        return acc;
+      },
+      {} as Record<number, Express.Multer.File[]>,
+    );
 
-    if (imagesFiles?.length) {
-      this.cloudinaryService.validateFiles(imagesFiles, 'image');
-      const uploadedImages = await this.cloudinaryService.uploadMany(
-        imagesFiles,
-        'products/images',
-      );
+    const imagesUpload: Record<number, string[]> = {};
 
-      const existingImages = Array.isArray(images)
-        ? images.filter((url) => product.images.includes(url))
-        : [];
+    await Promise.all(
+      Object.entries(imagesFiles).map(async ([index, files]) => {
+        if (files.length > 0) {
+          this.cloudinaryService.validateFiles(files, 'image');
+          const uploaded = await this.cloudinaryService.uploadMany(
+            files,
+            'products/images',
+          );
+          imagesUpload[Number(index)] = uploaded;
+        }
+      }),
+    );
 
-      finalImages = [...existingImages, ...uploadedImages];
-    } else if (Array.isArray(images) && images.length) {
-      finalImages = images.filter((url) => product.images.includes(url));
-    } else {
-      finalImages = product.images;
-    }
-
-    //  Check  category exists
+    // --- Category and tax
     let categoryEntity = product.categories;
     if (categories?.length) {
       categoryEntity = await this.categoryService.checkCategoryExists({
         categories,
       });
     }
+
     let tax = taxRate ?? 0;
     if (defaultTax) {
       const setting = await this.settingService.findOne();
       tax = setting.taxRate ?? 0;
     }
+
+    // --- Update main product
     await this.productRepository.save({
       ...product,
       ...rest,
       taxRate: tax,
-      defaultTax: defaultTax,
+      defaultTax,
       cover: coverUrl,
-      images: finalImages,
       categories: categoryEntity,
     });
-    if (variants) {
-      if (!variants?.length && product.variants?.length === 0) {
-        throw new BadRequestException(
-          'Each product must have at least one variant.',
-        );
-      }
-      const incomingVariantIds = variants.filter((v) => v.id).map((v) => v.id);
 
+    // --- Handle variants
+    if (variants) {
+      const incomingVariantIds = variants.filter((v) => v.id).map((v) => v.id);
       const variantsToRemove = product.variants?.filter(
         (pv) => !incomingVariantIds.includes(pv.id),
       );
 
+      // remove deleted variant
       if (variantsToRemove?.length) {
         const ids = variantsToRemove.map((v) => v.id);
         await this.variantRepository.delete({ id: In(ids) });
-        //make related cart items as invalid
         await this.cartItemReop.update(
           { variant: In(ids) },
           { isValid: false },
         );
       }
 
-      const newVariants = await Promise.all(
-        variants
-          .filter((v) => !v.id)
-          .map(async (v) => {
-            const [size, color] = await Promise.all([
-              v.size ? this.sizeService.findOne(v.size) : null,
-              v.color ? this.colorServices.findOne(v.color) : null,
-            ]);
+      //  create new variants or update  it
+      for (const [i, v] of variants.entries()) {
+        const [size, color] = await Promise.all([
+          v.size ? this.sizeService.findOne(v.size) : null,
+          v.color ? this.colorServices.findOne(v.color) : null,
+        ]);
 
-            if (v.price == null || v.quantity == null || !color) {
-              throw new BadRequestException(
-                `Each new variant must include price, quantity, and color.`,
-              );
-            }
-
-            return this.variantRepository.create({
-              price: v.price,
-              quantity: v.quantity,
-              product,
-              size: size ? { id: size.id } : undefined,
-              color: color ? { id: color.id } : undefined,
+        if (!v.id) {
+          // New one
+          if (v.price == null || v.quantity == null || !color) {
+            throw new BadRequestException(
+              'Each new variant must include price, quantity, and color.',
+            );
+          }
+          await this.variantRepository.save({
+            price: v.price,
+            quantity: v.quantity,
+            product,
+            size: size ? { id: size.id } : undefined,
+            color: color ? { id: color.id } : undefined,
+            images: imagesUpload[i] || [],
+          });
+        } else {
+          // update data of existing variant
+          const existingVariant = await this.variantRepository.findOneBy({
+            id: v.id,
+          });
+          if (existingVariant) {
+            await this.variantRepository.save({
+              ...existingVariant,
+              price: v.price ?? existingVariant.price,
+              quantity: v.quantity ?? existingVariant.quantity,
+              size: size ? { id: size.id } : existingVariant.size,
+              color: color ? { id: color.id } : existingVariant.color,
+              images: imagesUpload[i]?.length
+                ? imagesUpload[i]
+                : existingVariant.images,
             });
-          }),
-      );
-
-      if (newVariants.length) {
-        await this.variantRepository.save(newVariants);
+          }
+        }
       }
     }
 
@@ -351,13 +385,15 @@ export class ProductsAdminService {
     return products;
   }
 
-  async checkVariant(product: Product, variantId: number, quantity: number) {
-    const productVariant = product.variants.find(({ id }) => id == variantId);
-
+  async checkVariant(variantId: number, quantity: number) {
     const variant = await this.variantRepository.findOne({
       where: { id: variantId },
+      relations: ['product'],
     });
-    if (!productVariant || !variant) {
+    if (!variant?.product.isAvalible) {
+      throw new NotFoundException('Product not found or unavailable');
+    }
+    if (!variant) {
       throw new BadRequestException('Variant not found for this product');
     }
 

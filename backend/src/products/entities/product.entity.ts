@@ -11,8 +11,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { Favorite } from 'src/favorite/entities/favorite.entity';
-import { Variant } from './variant.entity';
+import { Variant } from '../entities/variant.entity';
 
 @Entity('products')
 export class Product {
@@ -42,9 +41,6 @@ export class Product {
 
   @Column({ type: 'float', default: 0 })
   averageRating: number;
-
-  @Column({ type: 'simple-array', nullable: true })
-  images: string[];
 
   @Column({ type: 'boolean', default: true })
   isAvalible: boolean;
@@ -77,9 +73,6 @@ export class Product {
     name: 'product_categories',
   })
   categories: Category[];
-
-  @OneToMany(() => Favorite, (favorite) => favorite.product)
-  favorites: Favorite[];
 
   @OneToMany(() => Variant, (variant) => variant.product, {
     cascade: true,

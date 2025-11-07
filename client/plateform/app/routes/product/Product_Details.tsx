@@ -6,7 +6,7 @@ import type { Route } from "./+types/Product_Details";
 import Similar_Products from "./components/Similar_Products";
 import Page_Header from "~/components/shared/header/page_header/Page_Header";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import type { breadCrumbListType } from "~/components/shared/header/page_header/Page_Header.types";
 import Product_Info from "./components/Product_Info";
 import Product_Details_and_review from "./components/Product_Details_and_review";
@@ -26,6 +26,7 @@ export async function clientLoader({ params }: Route.LoaderArgs) {
 const Product_Details = ({ loaderData }: Route.ComponentProps) => {
   const { id, product, similarProducts } = loaderData;
   const { t } = useTranslation();
+
   const breadcrumbsList: breadCrumbListType[] = [
     {
       label: t("home"),

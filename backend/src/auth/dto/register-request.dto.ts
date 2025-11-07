@@ -11,7 +11,7 @@ import { phoneNumberRegx } from 'src/common/utils/validator';
 
 export class RegisterDto {
   @IsString()
-  @MaxLength(30)
+  @MaxLength(100)
   @IsNotEmpty()
   fullName: string;
 

@@ -1,7 +1,7 @@
-import { Address } from 'src/address/entities/address.entity';
-import { AccountStatus, UserRole } from 'src/common/utils/enum';
-import { Favorite } from 'src/favorite/entities/favorite.entity';
-import { Order } from 'src/order/entities/order.entity';
+import { Address } from '../../address/entities/address.entity';
+import { AccountStatus, UserRole } from '../../common/utils/enum';
+import { Favorite } from '../../favorite/entities/favorite.entity';
+import { Order } from '../../order/entities/order.entity';
 import {
   Column,
   CreateDateColumn,
@@ -17,7 +17,7 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 30 })
+  @Column({ type: 'varchar', length: 100, nullable: false })
   fullName: string;
 
   @Index()
