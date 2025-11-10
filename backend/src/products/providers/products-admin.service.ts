@@ -33,6 +33,8 @@ export class ProductsAdminService {
     private readonly variantRepository: Repository<Variant>,
     @InjectRepository(CartItem)
     private readonly cartItemReop: Repository<CartItem>,
+    @InjectRepository(Favorite)
+    private readonly favoriteRepo: Repository<Favorite>,
     private readonly cloudinaryService: CloudinaryService,
     private readonly colorServices: ColorsService,
     private readonly sizeService: SizesService,
@@ -122,12 +124,14 @@ export class ProductsAdminService {
       cover: coverImage,
     });
 
+    console.log(variants, 'variant');
     const resolvedVariants = variants.map((v, i) => ({
       ...v,
       product: savedProduct,
       color: { id: v.color },
       size: v.size ? { id: v.size } : undefined,
       images: imagesUpload[i] || [],
+      discountPercent: v.discountPercent,
     }));
 
     await this.variantRepository.save(resolvedVariants);
@@ -304,14 +308,17 @@ export class ProductsAdminService {
       // remove deleted variant
       if (variantsToRemove?.length) {
         const ids = variantsToRemove.map((v) => v.id);
-        await this.variantRepository.delete({ id: In(ids) });
-        await this.cartItemReop.update(
-          { variant: In(ids) },
-          { isValid: false },
-        );
+        if (ids?.length > 0) {
+          await this.variantRepository.softDelete({ id: In(ids) });
+          await this.favoriteRepo.delete({ variant: In(ids) });
+          await this.cartItemReop.update(
+            { variant: In(ids) },
+            { isValid: false },
+          );
+        }
       }
 
-      //  create new variants or update  it
+      //  create or update  variant
       for (const [i, v] of variants.entries()) {
         const [size, color] = await Promise.all([
           v.size ? this.sizeService.findOne(v.size) : null,
@@ -332,6 +339,7 @@ export class ProductsAdminService {
             size: size ? { id: size.id } : undefined,
             color: color ? { id: color.id } : undefined,
             images: imagesUpload[i] || [],
+            discountPercent: v.discountPercent ?? 0,
           });
         } else {
           // update data of existing variant
@@ -342,6 +350,8 @@ export class ProductsAdminService {
             await this.variantRepository.save({
               ...existingVariant,
               price: v.price ?? existingVariant.price,
+              discountPercent:
+                v.discountPercent ?? existingVariant.discountPercent,
               quantity: v.quantity ?? existingVariant.quantity,
               size: size ? { id: size.id } : existingVariant.size,
               color: color ? { id: color.id } : existingVariant.color,

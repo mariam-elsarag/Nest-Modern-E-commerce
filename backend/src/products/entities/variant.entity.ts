@@ -1,5 +1,6 @@
 import {
   Column,
+  DeleteDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
@@ -26,6 +27,9 @@ export class Variant {
   @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
   price: number;
 
+  @Column({ type: 'float', nullable: true })
+  discountPercent: number;
+
   @Column({ type: 'int', default: 0 })
   quantity: number;
 
@@ -38,6 +42,11 @@ export class Variant {
   @ManyToOne(() => Size, { eager: true, nullable: true })
   size: Size;
 
-  @OneToMany(() => Favorite, (favorite) => favorite.variant)
+  @OneToMany(() => Favorite, (favorite) => favorite.variant, {
+    onDelete: 'CASCADE',
+  })
   favorites: Favorite[];
+
+  @DeleteDateColumn({ nullable: true })
+  deletedAt?: Date;
 }

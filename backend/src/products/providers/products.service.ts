@@ -36,11 +36,11 @@ export class ProductsService {
   async highlights(query: HiglightProductsQueryDto, user: User) {
     const { type = 'latest', cartToken } = query;
 
-    const qb = this.productRepository
-      .createQueryBuilder('product')
-      .leftJoinAndSelect('product.variants', 'variants')
+    const qb = this.variantRepo
+      .createQueryBuilder('variant')
+      .leftJoinAndSelect('variant.product', 'product')
       .where('product.isAvalible = :isAvalible', { isAvalible: true })
-      .andWhere('variants.quantity > 0')
+      .andWhere('variant.quantity > 0')
       .take(4);
 
     if (type === 'latest') {
@@ -51,16 +51,8 @@ export class ProductsService {
 
     const products = await qb.getMany();
 
-    const expandedProducts = products.slice(0, 4).flatMap((product) =>
-      product.variants
-        .filter((variant) => variant.quantity > 0)
-        .map((variant) => ({
-          ...product,
-          variants: variant,
-        })),
-    );
     const productsList = await this.addFlagsToProduct(
-      expandedProducts,
+      products,
       user,
       cartToken,
     );
@@ -86,10 +78,12 @@ export class ProductsService {
     const skip = (currentPage - 1) * take;
     const categoryIds = categories ? categories.split(',').map(Number) : [];
 
-    const qb = this.productRepository
-      .createQueryBuilder('product')
+    const qb = this.variantRepo
+      .createQueryBuilder('variant')
+      .leftJoinAndSelect('variant.product', 'product')
       .leftJoinAndSelect('product.categories', 'category')
-      .leftJoinAndSelect('product.variants', 'variant')
+      .leftJoinAndSelect('variant.color', 'color')
+      .leftJoinAndSelect('variant.size', 'size')
       .where('product.isAvalible = :isAvalible', { isAvalible: true })
       .andWhere('variant.quantity > 0');
 
@@ -126,20 +120,7 @@ export class ProductsService {
       .take(take)
       .getManyAndCount();
 
-    const expandedProducts = results.flatMap((product) =>
-      product.variants
-        .filter((variant) => variant.quantity > 0)
-        .map((variant) => ({
-          ...product,
-          variants: variant,
-        })),
-    );
-
-    const products = await this.addFlagsToProduct(
-      expandedProducts,
-      user,
-      cartToken,
-    );
+    const products = await this.addFlagsToProduct(results, user, cartToken);
 
     return new FullPaginationDto(currentPage, count, take, req, products);
   }
@@ -226,6 +207,7 @@ export class ProductsService {
         where: { user: { id: user.id } },
         relations: ['variant'],
       });
+      console.log(favorites, 'test fav');
       favoriteProductIds = new Set(favorites.map((fav) => fav.variant.id));
     }
 
@@ -238,13 +220,13 @@ export class ProductsService {
     }
 
     const productsList = products.map((product) => {
-      const variantId = product.variants.id;
+      const variantId = product.id;
 
       const matchedVariantId = cartVariantMap.has(variantId);
 
       const item = {
         ...product,
-        isFavorite: favoriteProductIds.has(product.variants.id),
+        isFavorite: favoriteProductIds.has(product.id),
         isCart: !!matchedVariantId,
         cartItemId: matchedVariantId ? cartVariantMap.get(variantId) : null,
       };

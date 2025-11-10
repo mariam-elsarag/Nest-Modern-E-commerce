@@ -4,16 +4,19 @@ import { ColorResponseDto } from 'src/colors/dto/response-color.dto';
 
 export class PlateformProductDto {
   @Expose()
+  @Transform(({ obj }) => obj?.product.id)
   id: number;
 
   @Expose()
-  @Transform(({ obj }) => obj?.variants?.images?.[0] ?? obj.cover)
+  @Transform(({ obj }) => obj?.images?.[0] ?? obj.product.cover)
   cover: string;
 
   @Expose()
+  @Transform(({ obj }) => obj?.product.title)
   title: string;
 
   @Expose()
+  @Transform(({ obj }) => obj?.product.title_ar)
   title_ar: string;
 
   @Expose()
@@ -30,20 +33,40 @@ export class PlateformProductDto {
 
   @Expose()
   @Transform(({ obj }) => {
-    const price = +obj.variants.price;
-    if (obj.hasTax && obj.taxRate) {
-      return +(price + (price * obj.taxRate) / 100).toFixed(2);
+    const price = +obj.price;
+    if (obj.product.hasTax && obj.product.taxRate) {
+      return +(price + (price * obj.product.taxRate) / 100).toFixed(2);
     }
     return price;
   })
   price: number;
 
   @Expose()
-  @Transform(({ obj }) => obj.variants.quantity > 0)
+  @Transform(({ obj }) => {
+    if (obj.discountPercent) {
+      const price = +obj.price;
+      if (obj.product.hasTax && obj.product.taxRate) {
+        const priceAfterTax = +(
+          price +
+          (price * obj.product.taxRate) / 100
+        ).toFixed(2);
+        return +(
+          priceAfterTax +
+          (priceAfterTax * obj.discountPercent) / 100
+        ).toFixed(2);
+      }
+    } else {
+      return 0;
+    }
+  })
+  priceAfterDiscount: number;
+
+  @Expose()
+  @Transform(({ obj }) => obj.quantity > 0)
   isAvalible: boolean;
 
   @Expose()
-  @Transform(({ obj }) => obj.variants.id)
+  @Transform(({ obj }) => obj.id)
   variantId: number;
 }
 

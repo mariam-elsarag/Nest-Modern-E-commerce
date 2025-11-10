@@ -199,5 +199,6 @@
   "remove_from_cart": "Remove from cart",
   "successfully_remove_product_from_cart": "Product removed from cart successfully",
   "successfully_add_item_to_cart": "Item added to cart successfully",
-  "successfully_update_item_to_cart": "Item updated successfully in your cart"
+  "successfully_update_item_to_cart": "Item updated successfully in your cart",
+  "terms_&_condition": "Terms & Conditions"
 }

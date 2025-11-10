@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsNotEmpty, IsNumber, IsOptional, Min } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, Max, Min } from 'class-validator';
 
 export class CreateVariantDto {
   @Type(() => Number)
@@ -25,4 +25,11 @@ export class CreateVariantDto {
 
   @IsOptional()
   size?: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber({ allowNaN: false }, { message: 'taxRate must be a number' })
+  @Min(0, { message: 'discountPercent cannot be negative' })
+  @Max(100, { message: 'discountPercent cannot exceed 100%' })
+  discountPercent?: number;
 }

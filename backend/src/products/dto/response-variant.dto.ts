@@ -13,6 +13,10 @@ export class VariantResponseDto {
 
   @Expose()
   @Type(() => Number)
+  discountPercent: number;
+
+  @Expose()
+  @Type(() => Number)
   quantity: number;
 
   @Expose()

@@ -35,6 +35,7 @@ type Variant = {
   quantity: number;
   sku: string;
   images: [];
+  discountPercent: number;
 };
 const Product_Management = () => {
   const { t } = useTranslation();
@@ -81,6 +82,7 @@ const Product_Management = () => {
         quantity: null,
         price: null,
         images: [],
+        discountPercent: null,
       },
     },
     mode: "onChange",
@@ -110,9 +112,10 @@ const Product_Management = () => {
         {
           color: variants?.color || null,
           size: variants?.size || null,
-          price: variants?.price || "",
+          price: +variants?.price || 0,
           quantity: variants?.quantity || "",
           images: variants.images,
+          discountPercent: +variants?.discountPercent || 0,
         },
       ]);
 
@@ -122,6 +125,7 @@ const Product_Management = () => {
         price: null,
         quantity: null,
         images: [],
+        discountPercent: null,
       });
       clearErrors("variants");
     }
@@ -412,6 +416,41 @@ const Product_Management = () => {
       limit: 8,
       placeholder: "choose_product_images",
     },
+    {
+      id: "18",
+      formType: "input",
+      type: "text",
+      name: "discountRate",
+      label: "discountRate",
+      placeholder: "discountRate",
+      fieldName: `variants.discountPercent`,
+      validator: {
+        pattern: {
+          value: taxRatePattern,
+          message: "discount_tax_rate",
+        },
+      },
+      onKeyDown: (e) => {
+        const allowedKeys = [
+          "Backspace",
+          "Tab",
+          "ArrowLeft",
+          "ArrowRight",
+          "Delete",
+          "Home",
+          "End",
+          ".",
+        ];
+
+        if (!/^[0-9]$/.test(e.key) && !allowedKeys.includes(e.key)) {
+          e.preventDefault();
+        }
+
+        if (e.key === "." && e.currentTarget.value.includes(".")) {
+          e.preventDefault();
+        }
+      },
+    },
   ];
 
   const columns = [
@@ -424,6 +463,11 @@ const Product_Management = () => {
       header: "unit_price",
       field: "price",
       body: (item) => (item?.price ? formatPrice(item?.price) : 0),
+    },
+    {
+      header: "discountRate",
+      field: "discountRate",
+      body: (item) => item?.discountPercent ?? 0,
     },
     {
       header: "color",
@@ -525,6 +569,7 @@ const Product_Management = () => {
         }
         formData.append(key, value);
       });
+
       variantList.map((item, index) => {
         if (item?.id) {
           formData.append(`variants[${index}][id]`, item?.id);
@@ -532,6 +577,12 @@ const Product_Management = () => {
         formData.append(`variants[${index}][price]`, item?.price);
         formData.append(`variants[${index}][quantity]`, item?.quantity);
         formData.append(`variants[${index}][color]`, item?.color?.id);
+        if (item.discountPercent) {
+          formData.append(
+            `variants[${index}][discountPercent]`,
+            item?.discountPercent
+          );
+        }
         if (item?.size) {
           formData.append(`variants[${index}][size]`, item?.size?.id);
         }

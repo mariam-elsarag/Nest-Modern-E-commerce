@@ -193,5 +193,6 @@
   "remove_from_cart": "إزالة من السلة",
   "successfully_remove_product_from_cart": "تمت إزالة المنتج من السلة بنجاح",
   "successfully_add_item_to_cart": "تمت إضافة المنتج إلى السلة بنجاح",
-  "successfully_update_item_to_cart": "تم تحديث المنتج بنجاح في سلة التسوق الخاصة بك"
+  "successfully_update_item_to_cart": "تم تحديث المنتج بنجاح في سلة التسوق الخاصة بك",
+  "terms_&_condition": "الشروط والأحكام"
 }

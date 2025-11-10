@@ -20,6 +20,12 @@ import useGetData from "~/hooks/useGetData";
 import usePaginatedData from "~/hooks/usePaginatedData";
 import { API } from "~/services/apiUrl";
 
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "Products" },
+    { name: "description", content: "Discover our products" },
+  ];
+}
 const Products = () => {
   const { t } = useTranslation();
   const { data: categories } = useGetData<CategoryType>({

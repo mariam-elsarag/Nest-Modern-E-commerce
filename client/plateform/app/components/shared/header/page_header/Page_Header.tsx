@@ -8,11 +8,10 @@ const Page_Header = ({
   type = "breadCrumb",
   breadcrumbsList = [],
   label,
-  variant = "primary",
+  variant = "secondary",
 }: PageHeaderTypes) => {
   const { t } = useTranslation();
   const style = {
-    primary: ``,
     secondary: `bg-neutral-white-100 container py-[18px] `,
     success: `bg-semantic-green-100 container py-[18px] `,
     error: `bg-semantic-red-100 container py-[18px] `,

@@ -73,3 +73,14 @@ button.ql-active {
     fill: var(--color-neutral-black-300) !important;
   }
 }
+
+.ql-color option {
+  background-color: currentColor;
+  color: white;
+}
+.ql-size option[value="Normal"]::before {
+  content: "16px";
+}
+.ql-size option[value="Large"]::before {
+  content: "18px";
+}

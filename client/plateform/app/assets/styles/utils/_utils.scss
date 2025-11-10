@@ -41,3 +41,9 @@
     rgba(255, 255, 255, 0) 100%
   );
 }
+.ql-size option[value="Normal"]::before {
+  content: "16px";
+}
+.ql-size option[value="Large"]::before {
+  content: "18px";
+}

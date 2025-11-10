@@ -111,6 +111,7 @@
   "cover_image": "Cover image",
   "tax_message": "If enabled, tax will be applied at the specified rate",
   "invalid_tax_rate": "Enter a valid tax rate (0–100 with up to 2 decimals)",
+  "discount_tax_rate": "Enter a valid discount rate (0–100 with up to 2 decimals)",
   "tax_rate": "Tax Rate",
   "tax": "Tax",
   "description": "Description",
@@ -219,5 +220,6 @@
   "delete_faq": "Delete FAQ",
   "successfully_delete_faq": "FAQ deleted successfully",
   "successfully_update_terms": "Terms and Conditions updated successfully",
-  "successfully_update_privacy": "Privacy Policy updated successfully"
+  "successfully_update_privacy": "Privacy Policy updated successfully",
+  "discountRate": "Discount rate"
 }

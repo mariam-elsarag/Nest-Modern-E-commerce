@@ -98,3 +98,9 @@ export interface ProfileType {
   address: AddressType;
   createdAt: string;
 }
+
+export interface TermsAndPrivacyType {
+  id: number;
+  content: string;
+  content_ar: string;
+}

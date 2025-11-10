@@ -111,6 +111,7 @@
   "cover_image": "صورة الغلاف",
   "tax_message": "عند التفعيل، سيتم تطبيق الضريبة بالنسبة المحددة",
   "invalid_tax_rate": "أدخل نسبة ضريبة صحيحة (0–100 مع حد أقصى رقمين عشريين)",
+  "discount_tax_rate": "أدخل نسبة خصم صحيحة (من 0 إلى 100 مع رقمين عشريين كحد أقصى)",
   "tax_rate": "نسبة الضريبة",
   "tax": "الضريبة",
   "description": "الوصف",
@@ -217,5 +218,6 @@
   "delete_faq": "حذف الأسئلة الشائعة",
   "successfully_delete_faq": "تم حذف الأسئلة الشائعة بنجاح",
   "successfully_update_terms": "تم تحديث الشروط والأحكام بنجاح",
-  "successfully_update_privacy": "تم تحديث سياسة الخصوصية بنجاح"
+  "successfully_update_privacy": "تم تحديث سياسة الخصوصية بنجاح",
+  "discountRate": "نسبة الخصم"
 }

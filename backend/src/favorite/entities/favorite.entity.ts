@@ -15,7 +15,9 @@ export class Favorite {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Variant, (variant) => variant.favorites, { eager: true })
+  @ManyToOne(() => Variant, (variant) => variant.favorites, {
+    eager: true,
+  })
   variant: Variant;
 
   @ManyToOne(() => User, (user) => user.favorites, { onDelete: 'CASCADE' })

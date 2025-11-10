@@ -23,4 +23,8 @@ export const API = {
   products: "/api/v1/product",
   reviews: "/reviews",
   cart: "/api/v1/cart",
+  cms: {
+    terms: "/api/v1/cms/terms",
+    privacy: "/api/v1/cms/privacy",
+  },
 };
