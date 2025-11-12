@@ -1,10 +1,9 @@
 1- colors will create endpoint for filter to get colors that used in products
 
 - will work on
-1- home products
+1- home best selling
 
 2- order
 
 payment success and failed
 
-- need to change favorite logic to work with variants 
