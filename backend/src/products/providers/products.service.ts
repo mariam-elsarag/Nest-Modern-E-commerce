@@ -207,7 +207,7 @@ export class ProductsService {
         where: { user: { id: user.id } },
         relations: ['variant'],
       });
-      console.log(favorites, 'test fav');
+
       favoriteProductIds = new Set(favorites.map((fav) => fav.variant.id));
     }
 

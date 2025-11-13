@@ -10,11 +10,16 @@ export class ResponseCartDetailsDto {
   items: CartResponseDto[];
 
   @Expose()
+  subTotal: number;
+
+  @Expose()
+  @Type(() => Number)
+  shipping: number;
+
+  @Expose()
   @Transform(({ obj }) => {
-    if (!obj.items) return 0;
-    return +obj.items
-      .reduce((sum, item) => sum + (item.totalWithVat || 0), 0)
-      .toFixed(2);
+    const price = (+obj.subTotal + +obj.shipping).toFixed(2);
+    return +price;
   })
   total: number;
 }
