@@ -51,3 +51,15 @@ export interface FaqType {
   question: string;
   question_ar: string;
 }
+
+export interface SizeType {
+  id: number;
+  label: string;
+}
+
+export interface ColorType {
+  id: number;
+  name: string;
+  name_ar: string;
+  createdAt: string;
+}

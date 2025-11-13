@@ -308,7 +308,7 @@ const Image_Item = ({ item, handleRemove, isMultiple }) => {
       />
 
       <img
-        src={isMultiple ? item?.preview : item}
+        src={isMultiple ? item ?? item?.preview : item}
         alt="product image"
         className="h-[39px] "
       />

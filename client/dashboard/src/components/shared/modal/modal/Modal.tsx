@@ -2,11 +2,21 @@ import { Dialog } from "primereact/dialog";
 import type { ModalPropsType } from "./Modal.types";
 import { useTranslation } from "react-i18next";
 
-const Modal = ({ open, onClose, title, children }: ModalPropsType) => {
+const Modal = ({
+  open,
+  onClose,
+  title,
+  children,
+  className,
+}: ModalPropsType) => {
   const { t } = useTranslation();
   return (
     <Dialog
-      className="max-w-[300px] md:max-w-[95%] w-[90%] md:w-[450px] "
+      className={`${
+        className
+          ? className
+          : "max-w-[300px] md:max-w-[95%] w-[90%] md:w-[450px]"
+      }  `}
       visible={open}
       onHide={onClose}
       draggable={false}

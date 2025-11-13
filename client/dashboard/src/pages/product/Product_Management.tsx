@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import type { BreadCrumbListType } from "../../components/breadCrumb/Bread_Crumb.types";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { data, Link, useNavigate, useParams } from "react-router-dom";
 import { handleError } from "../../common/utils/handleError";
 import Page_Wraper from "../../components/layout/page_wraper/Page_Wraper";
 import Page_Title from "../../components/layout/header/page_title/Page_Title";
@@ -17,7 +17,7 @@ import {
 } from "../../common/constant/validator";
 
 import type { FormListItemType } from "../../components/shared/form_builder/Form_Builder-types";
-import { TrashIcon } from "../../assets/icons/Icon";
+import { EditIcon, TrashIcon } from "../../assets/icons/Icon";
 import { formatPrice } from "../../common/utils/formatPrice";
 import Table from "../../components/shared/table/Table";
 import useGetData from "../../hooks/useGetData";
@@ -25,12 +25,14 @@ import { API } from "../../services/apiUrl";
 import axiosInstance from "../../services/axiosInstance";
 import View_Colors from "../../components/shared/form_builder/View_Colors";
 import { toast } from "react-toastify";
+import Update_Modal from "./component/Update_Modal";
+import type { ColorType, SizeType } from "../../common/constant/types";
 
-type Variant = {
+export type Variant = {
   index?: number;
   id?: number;
-  colors: string;
-  sizes: string;
+  color: string;
+  size: string;
   price: number;
   quantity: number;
   sku: string;
@@ -47,10 +49,12 @@ const Product_Management = () => {
   const [loading, setLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const [variantList, setVariantList] = useState<Variant[] | null>(null);
+  const [variantModal, setVariantModal] = useState<boolean>(false);
+  const [selectedVariant, setSelectedVariant] = useState<Variant | null>();
   // ___________ hooks _________
   const { data: categoryList } = useGetData(API.list.category);
-  const { data: colorList } = useGetData(API.settting.color);
-  const { data: sizeList } = useGetData(API.list.size);
+  const { data: colorList } = useGetData<ColorType>(API.settting.color);
+  const { data: sizeList } = useGetData<SizeType>(API.list.size);
 
   // ___________ useform _________
   const {
@@ -524,15 +528,27 @@ const Product_Management = () => {
       header: "action",
       field: "action",
       body: (item) => (
-        <Button
-          round="full"
-          icon={<TrashIcon width="20" height="20" />}
-          variant="tertiery_error"
-          size="xs"
-          handleClick={() => {
-            handleRemoveField(item?.id);
-          }}
-        />
+        <div className="flex items-center gap-3">
+          <Button
+            round="full"
+            icon={<EditIcon width="20" height="20" />}
+            variant="tertiery_error"
+            size="xs"
+            handleClick={() => {
+              setSelectedVariant(item);
+              setVariantModal(true);
+            }}
+          />
+          <Button
+            round="full"
+            icon={<TrashIcon width="20" height="20" />}
+            variant="tertiery_error"
+            size="xs"
+            handleClick={() => {
+              handleRemoveField(item?.id);
+            }}
+          />
+        </div>
       ),
     },
   ];
@@ -716,6 +732,14 @@ const Product_Management = () => {
           hasFullWidth
         />
       </form>
+      <Update_Modal
+        open={variantModal}
+        onClose={() => setVariantModal(false)}
+        colorList={colorList}
+        sizeList={sizeList}
+        data={selectedVariant}
+        updateVariants={setVariantList}
+      />
     </Page_Wraper>
   );
 };

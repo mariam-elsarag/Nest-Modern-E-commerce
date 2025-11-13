@@ -5,4 +5,5 @@ export type ModalPropsType = {
   onClose: () => void;
   title: string;
   children?: React.ReactElement;
+  className?: string;
 };
