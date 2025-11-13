@@ -24,6 +24,7 @@ const Cart_Item = ({ product, variant = "cart", setData }: CartItemProps) => {
   const { token } = useAuth();
   const cartToken = Cookies.get("cartToken");
   const [quantity, setQuantity] = useState(product.quantity);
+  const [loadingRemoveFromCart, setLoadingRemoveFromCart] = useState(false);
 
   const toggleFavorite = async () => {
     try {
@@ -67,6 +68,19 @@ const Cart_Item = ({ product, variant = "cart", setData }: CartItemProps) => {
       handleError(err, t);
     }
   };
+  const handleRemoveFromCart = async () => {
+    try {
+      setLoadingRemoveFromCart(true);
+      const response = await axiosInstance.delete(`${API.cart}/${product.id}`);
+      if (response.status === 204) {
+        setData(Date.now());
+      }
+    } catch (err) {
+      handleError(err, t);
+    } finally {
+      setLoadingRemoveFromCart(false);
+    }
+  };
   const renderRightContent = () => {
     switch (variant) {
       case "wishlist":
@@ -107,6 +121,8 @@ const Cart_Item = ({ product, variant = "cart", setData }: CartItemProps) => {
               size="md"
               variant="secondary"
               icon={<CloseIcon fill="var(--color-neutral-black-500)" />}
+              handleClick={() => handleRemoveFromCart()}
+              loading={loadingRemoveFromCart}
             />
           </>
         );
