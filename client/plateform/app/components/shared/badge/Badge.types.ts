@@ -1,5 +1,5 @@
 export type BadgePropsType = {
   label: string;
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "error";
   icon?: React.ReactNode;
 };

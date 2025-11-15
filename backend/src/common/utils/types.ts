@@ -21,3 +21,11 @@ export type ContextType = {
   url?: string;
   expire?: number;
 };
+
+export type InvalidCartItemType = {
+  type: 'product_unavailable' | 'variant_deleted' | 'quantity_not_available';
+  variantId: number;
+  available?: number;
+  productTitle?: string;
+  productTitleAr?: string;
+};

@@ -200,5 +200,8 @@
   "successfully_remove_product_from_cart": "Product removed from cart successfully",
   "successfully_add_item_to_cart": "Item added to cart successfully",
   "successfully_update_item_to_cart": "Item updated successfully in your cart",
-  "terms_&_condition": "Terms & Conditions"
+  "terms_&_condition": "Terms & Conditions",
+  "include_vat": "Inc vat",
+  "invalid_cart": "Some items in your cart are invalid",
+  "invalid": "Invalid"
 }

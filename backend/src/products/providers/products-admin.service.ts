@@ -372,14 +372,24 @@ export class ProductsAdminService {
 
   async remove(id: number) {
     const product = await this.findOne(id);
+
+    const variantIds = product.variants?.map((v) => v.id) || [];
+
     await this.productRepository.softDelete(id);
+
+    if (variantIds.length > 0) {
+      await this.variantRepository.softDelete({ id: In(variantIds) });
+    }
     await this.cartItemReop.update({ product }, { isValid: false });
 
     return `Product has been deleted successfully`;
   }
 
   async restore(id: number) {
+    const product = await this.findOne(id);
     await this.productRepository.restore(id);
+    const variantIds = product.variants?.map((v) => v.id) || [];
+    await this.variantRepository.restore({ id: In(variantIds) });
 
     return { message: 'Product has been restored successfully' };
   }

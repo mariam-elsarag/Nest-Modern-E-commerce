@@ -7,23 +7,21 @@ import Button from "~/components/shared/button/Button";
 
 type OrderSummaryType = {
   data: CartItemType;
+  handleClick: () => void;
+  loadingBtn: boolean;
 };
-const Order_Summary = ({ data }: OrderSummaryType) => {
+const Order_Summary = ({ data, handleClick, loadingBtn }: OrderSummaryType) => {
   const { t } = useTranslation();
   const list = [
     {
-      title: "subtotal",
-      value: data?.subtotal ? formatPrice(data?.subtotal) : 0,
+      title: `${t("subtotal")} (${t("include_vat")}) `,
+      value: data?.subTotal ? formatPrice(data?.subTotal) : 0,
     },
     {
       title: "shipping",
       value: Number(data?.shipping)
         ? formatPrice(data?.shipping)
         : `${t(data?.shipping)}`,
-    },
-    {
-      title: "tax",
-      value: Number(data?.tax) ? formatPrice(data?.tax) : data?.tax,
     },
   ];
   return (
@@ -50,7 +48,12 @@ const Order_Summary = ({ data }: OrderSummaryType) => {
           </span>
         </div>
         <footer className="flex flex-col gap-8">
-          <Button text="checkout" hasFullWidth to={`/${data?.id}/checkout`} />
+          <Button
+            text="checkout"
+            hasFullWidth
+            handleClick={handleClick}
+            loading={loadingBtn}
+          />
           <Link
             className="text-neutral-black-900 text-xs text-center underline decoration-neutral-900 font-medium"
             to="/product"

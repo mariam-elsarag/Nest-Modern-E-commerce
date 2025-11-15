@@ -66,17 +66,24 @@ export type CartProductsType = {
   cover: string;
   title: string;
   title_ar: string;
+};
+export type CartItemType = {
+  id: number;
+  product: CartProductsType[];
   color: ColorsType;
   size: SizesType | null;
   quantity: number;
   maxQuantity: number;
   variantId: number;
-  price: number;
   isValid: boolean;
+  price: number;
 };
-export type CartItemType = {
+
+export type CartType = {
   id: number;
-  product: CartProductsType[];
+  items: CartItemType[];
+  subTotal: number;
+  shipping: number;
   total: number;
 };
 

@@ -7,10 +7,11 @@ import { CartItem } from './entities/cart-items.entity';
 import { AuthModule } from 'src/auth/auth.module';
 import { User } from 'src/users/entities/user.entity';
 import { ProductsModule } from 'src/products/products.module';
+import { Variant } from 'src/products/entities/variant.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([CartSession, CartItem, User]),
+    TypeOrmModule.forFeature([CartSession, CartItem, User, Variant]),
     AuthModule,
     forwardRef(() => ProductsModule),
   ],

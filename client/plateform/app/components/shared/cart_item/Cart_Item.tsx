@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { CartProductsType } from "~/common/types/Type";
+import type { CartItemType, CartProductsType } from "~/common/types/Type";
 import { formatPrice } from "~/common/utils/formatPrice";
 import Counter from "../counter/Counter";
 import Button from "../button/Button";
@@ -14,12 +14,18 @@ import { API } from "~/services/apiUrl";
 import { useAuth } from "~/context/Auth_Context";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
+import Badge from "../badge/Badge";
 type CartItemProps = {
-  product: CartProductsType;
-  setData?: React.Dispatch<React.SetStateAction<CartProductsType[]>>;
+  product: CartItemType;
+  setRefetch?: React.Dispatch<React.SetStateAction<string>>;
+  setDate?: React.Dispatch<React.SetStateAction<CartProductsType[]>>;
   variant?: "cart" | "wishlist" | "order";
 };
-const Cart_Item = ({ product, variant = "cart", setData }: CartItemProps) => {
+const Cart_Item = ({
+  product,
+  variant = "cart",
+  setRefetch,
+}: CartItemProps) => {
   const { t } = useTranslation();
   const { token } = useAuth();
   const cartToken = Cookies.get("cartToken");
@@ -73,7 +79,7 @@ const Cart_Item = ({ product, variant = "cart", setData }: CartItemProps) => {
       setLoadingRemoveFromCart(true);
       const response = await axiosInstance.delete(`${API.cart}/${product.id}`);
       if (response.status === 204) {
-        setData(Date.now());
+        setRefetch(Date.now());
       }
     } catch (err) {
       handleError(err, t);
@@ -147,11 +153,16 @@ const Cart_Item = ({ product, variant = "cart", setData }: CartItemProps) => {
       </figure>
       <div className={`${containerBase} ${containerStyle[variant]} `}>
         <div className="flex flex-col gap-2">
-          <h3 className="body font-medium text-neutral-black-900 line-clamp-1">
-            {currentLanguageCode === "en"
-              ? product.product.title
-              : product.product.title_ar}
-          </h3>
+          <div className="flex items-center gap-1">
+            <h3
+              className={`body font-medium ${product.isValid ? "text-neutral-black-900" : "text-neutral-black-500"} line-clamp-1`}
+            >
+              {currentLanguageCode === "en"
+                ? product.product.title
+                : product.product.title_ar}
+            </h3>
+            {!product.isValid && <Badge variant="error" label="invalid" />}
+          </div>
           {variant === "cart" ? (
             <div className="flex items-center gap-2">
               {product?.color && (

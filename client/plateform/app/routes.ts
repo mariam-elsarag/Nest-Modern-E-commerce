@@ -26,7 +26,7 @@ export default [
   route("terms", "routes/terms_and_privacy/Terms.tsx"),
   route("contact", "routes/contact/Contact.tsx"),
   route("cart", "routes/cart/Cart.tsx"),
-  route(":id/checkout", "routes/checkout/Checkout.tsx"),
+  route("checkout", "routes/checkout/Checkout.tsx"),
   route("success-payment", "routes/payment/Payment_Success.tsx"),
   route(":id/failed-payment", "routes/payment/Payment_Failed.tsx"),
   layout("routes/Protected_Route.tsx", [

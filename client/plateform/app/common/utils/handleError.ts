@@ -16,11 +16,11 @@ export const handleError = <T extends FieldValues>(
     });
     return;
   }
-  console.log(err, "error");
 
-  const showToast = () => {
-    toast.error(details || "Something went wrong. Please try again.");
-  };
+  if (err.message === "Invalid cart items") {
+    toast.error(t("invalid_cart_items_remove_them_to_procced"));
+    return;
+  }
 
   switch (details) {
     case "OTP expired":

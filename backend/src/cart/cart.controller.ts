@@ -49,6 +49,15 @@ export class CartController {
     return this.cartService.cartDetails(query, user);
   }
 
+  @Post('validate')
+  @HttpCode(HttpStatus.OK)
+  validateCartForCheckout(
+    @Query() query: QueryCartDto,
+    @currentUser() user: JwtPayload,
+  ) {
+    return this.cartService.validateCartForCheckout(query, user);
+  }
+
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   remove(

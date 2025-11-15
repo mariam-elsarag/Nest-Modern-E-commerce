@@ -20,7 +20,17 @@ export class CartResponseDto {
   id: number;
 
   @Expose()
-  @Type(() => CartProductDto)
+  @Transform(({ obj }) => {
+    return {
+      cover:
+        obj.variant.images?.length > 0
+          ? obj.variant.images?.[0]
+          : obj.product.cover,
+
+      title: obj.product.title,
+      title_ar: obj.product.title_ar,
+    };
+  })
   product: CartProductDto;
 
   @Expose()

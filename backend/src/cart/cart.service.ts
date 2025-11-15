@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -7,15 +8,17 @@ import { CreateCartDto } from './dto/create-cart.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CartSession } from './entities/cart-session.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CartItem } from './entities/cart-items.entity';
-import { JwtPayload } from 'src/common/utils/types';
+import { InvalidCartItemType, JwtPayload } from 'src/common/utils/types';
 import { ProductsAdminService } from 'src/products/providers/products-admin.service';
 import { plainToInstance } from 'class-transformer';
 import { CartResponseDto } from './dto/response-cart.dto';
 import { Request, Response } from 'express';
 import { QueryCartDto } from './dto/query-cart.dto';
 import { ResponseCartDetailsDto } from './dto/response-cart_detials.dto';
+import { Variant } from 'src/products/entities/variant.entity';
+import { error } from 'console';
 @Injectable()
 export class CartService {
   constructor(
@@ -23,6 +26,9 @@ export class CartService {
     private readonly cartSessionRepo: Repository<CartSession>,
     @InjectRepository(CartItem)
     private readonly cartItemRepo: Repository<CartItem>,
+
+    @InjectRepository(Variant)
+    private readonly variantRepo: Repository<Variant>,
 
     private readonly productAdminService: ProductsAdminService,
   ) {}
@@ -98,6 +104,80 @@ export class CartService {
     return plainToInstance(ResponseCartDetailsDto, cart, {
       excludeExtraneousValues: true,
     });
+  }
+
+  async validateCartForCheckout(query: QueryCartDto, user: JwtPayload) {
+    const { id } = user;
+    const { cartToken } = query;
+
+    // 1 check cart exist
+    const cart = await this.findSession(cartToken, id);
+
+    if (!cart) {
+      throw new NotFoundException('Cart not found');
+    }
+    if (cart.expiresAt && new Date() > cart.expiresAt) {
+      throw new BadRequestException('Cart expired');
+    }
+    // 2 check variant exist in db and their products are avalible
+    const invalidItems: InvalidCartItemType[] = [];
+    const validItems: number[] = [];
+    const variantIds = cart.items.map(({ variant }) => variant.id);
+
+    const variants = await this.variantRepo.find({
+      where: { id: In(variantIds) },
+      relations: ['product'],
+    });
+
+    const variantMap = new Map(variants.map((v) => [v.id, v]));
+    for (const variantItem of cart.items) {
+      const v = variantMap.get(variantItem.variant.id);
+      if (!variantItem.isValid) {
+        invalidItems.push({
+          type: 'variant_deleted',
+          variantId: variantItem.variant.id,
+        });
+        continue;
+      }
+
+      if (!v) {
+        invalidItems.push({
+          type: 'variant_deleted',
+          variantId: variantItem.variant.id,
+        });
+        continue;
+      }
+
+      if (!v.product.isAvalible) {
+        invalidItems.push({
+          type: 'product_unavailable',
+          variantId: variantItem.variant.id,
+        });
+        continue;
+      }
+
+      const avalibleVariant = v.quantity - v.reserved;
+      if (avalibleVariant < variantItem.quantity) {
+        invalidItems.push({
+          type: 'quantity_not_available',
+          variantId: variantItem.variant.id,
+          available: avalibleVariant,
+          productTitle: variantItem.product.title,
+          productTitleAr: variantItem.product.title_ar,
+        });
+        continue;
+      }
+
+      validItems.push(variantItem.variant.id);
+    }
+
+    if (invalidItems.length > 0) {
+      throw new BadRequestException({
+        message: 'Invalid cart items',
+        error: { variants: invalidItems },
+      });
+    }
+    return { message: 'Successfully proceed to checkout' };
   }
 
   async remove(id: number, query: QueryCartDto, user: JwtPayload) {

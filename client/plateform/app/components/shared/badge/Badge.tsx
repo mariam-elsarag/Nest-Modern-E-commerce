@@ -7,6 +7,7 @@ const Badge = ({ variant = "primary", label, icon }: BadgePropsType) => {
   const style = {
     primary: "border border-neutral-black-100 text-neutral-black-900 ",
     secondary: "border border-neutral-white-100 bg-neutral-white-100",
+    error: "bg-semantic-red-100 text-semantic-red-900",
   };
   return (
     <span
