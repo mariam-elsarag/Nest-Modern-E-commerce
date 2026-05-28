@@ -10,10 +10,10 @@ const AppDataSource = new DataSource({
   host: 'localhost',
   port: 5432,
   username: 'postgres',
-  password: '',
+  password: '01150464958',
   database: 'ecommerce',
 
-  entities: [Category, Product, Color, Size],
+  entities: [Color],
   synchronize: true,
   logging: false,
 });

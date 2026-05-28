@@ -48,7 +48,7 @@ const Product_Management = () => {
 
   const [loading, setLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
-  const [variantList, setVariantList] = useState<Variant[] | null>(null);
+  const [variantList, setVariantList] = useState<Variant[] | []>([]);
   const [variantModal, setVariantModal] = useState<boolean>(false);
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>();
   // ___________ hooks _________
@@ -596,7 +596,7 @@ const Product_Management = () => {
         if (item.discountPercent) {
           formData.append(
             `variants[${index}][discountPercent]`,
-            item?.discountPercent
+            item?.discountPercent,
           );
         }
         if (item?.size) {
@@ -637,7 +637,7 @@ const Product_Management = () => {
         if (key === "categories") {
           setValue(
             key,
-            value?.map(({ id }) => id)
+            value?.map(({ id }) => id),
           );
         } else if (key === "variants") {
           setVariantList(value);

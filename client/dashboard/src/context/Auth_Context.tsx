@@ -1,6 +1,7 @@
 import React, {
   createContext,
   useContext,
+  useEffect,
   useState,
   type ReactNode,
 } from "react";
@@ -12,6 +13,7 @@ import type {
   UserType,
 } from "./Auth_Context.types";
 import Cookies from "js-cookie";
+import { setLogoutHandler } from "../services/axiosInstance";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -47,6 +49,10 @@ const AuthProvider = ({ children }: AuthProviderType) => {
     setToken(null);
     setUser({ id: null, fullName: null, avatar: null, role: null });
   };
+
+  useEffect(() => {
+    setLogoutHandler(logout);
+  }, []);
 
   return (
     <AuthContext.Provider

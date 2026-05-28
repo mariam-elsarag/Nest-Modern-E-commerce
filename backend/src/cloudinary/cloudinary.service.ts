@@ -33,6 +33,7 @@ export class CloudinaryService {
     if (!file?.buffer) throw new BadRequestException('File buffer is missing');
     const options: any = { folder, resource_type: 'image' };
     const result = await this.uploadStream(file, options);
+    console.log(result);
     return result.secure_url;
   }
 
