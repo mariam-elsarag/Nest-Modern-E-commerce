@@ -1,0 +1,38 @@
+@use "../utils/font";
+.invalid {
+  border: 1px solid var(--color-semantic-red-900);
+}
+.input {
+  background-color: transparent;
+  display: flex;
+  width: 100%;
+  flex-grow: 1;
+  border: 1px solid var(--color-neutral-black-200);
+  padding: 10px 15px;
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -o-border-radius: 6px;
+  outline: none;
+  box-shadow: none;
+  @extend .body;
+  font-weight: 500;
+  color: var(--color-neutral-black-500);
+  &::placeholder {
+    color: var(--color-neutral-black-300);
+    @extend .body;
+    font-weight: 500;
+  }
+  &.invalid {
+    @extend .invalid;
+  }
+}
+input {
+  // remove arrows from number input
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}

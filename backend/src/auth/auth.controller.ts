@@ -1,11 +1,15 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Patch,
   Post,
   Query,
+  Req,
+  Res,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AcceptFormData } from 'src/common/decrators/accept-form-data.decorator';
@@ -14,6 +18,7 @@ import { LoginDto } from './dto/login-request.dto';
 import { SendOtpDto } from './dto/send-otp.dto';
 import { OtpQueryDto } from './dto/otp-query.dto';
 import { VerifyOtpDto } from './dto/verify-otp.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('/api/auth')
 export class AuthController {
@@ -30,6 +35,20 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async login(@Body() body: LoginDto) {
     return this.authService.login(body);
+  }
+
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth() {}
+
+  @Get('google/redirect')
+  @UseGuards(AuthGuard('google'))
+  async googleRedirect(@Req() req, @Res() res) {
+    const result = await this.authService.validateGoogleUser(req.user);
+
+    return res.redirect(
+      `${process?.env?.FRONT_SERVER}?token=${result.accessToken}`,
+    );
   }
 
   @Post('send-otp')

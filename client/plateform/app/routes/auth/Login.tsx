@@ -15,6 +15,10 @@ import { API } from "~/services/apiUrl";
 import { toast } from "react-toastify";
 import { useAuth } from "~/context/Auth_Context";
 
+type dataType = {
+  email: string | null;
+  password: string | null;
+};
 const Login = () => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
@@ -79,7 +83,7 @@ const Login = () => {
     },
   ];
   // _________________function __________-
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: dataType) => {
     try {
       setLoading(true);
       const response = await axiosInstance.post(API.auth.login, data);

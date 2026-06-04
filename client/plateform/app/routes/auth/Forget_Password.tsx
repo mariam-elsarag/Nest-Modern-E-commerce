@@ -11,7 +11,17 @@ import Page_Header from "~/components/shared/header/page_header/Page_Header";
 import type { breadCrumbListType } from "~/components/shared/header/page_header/Page_Header.types";
 import { API } from "~/services/apiUrl";
 import axiosInstance from "~/services/axiosInstance";
+import type { Route } from "../+types/Public_Route";
 
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "Forget password" },
+    { name: "description", content: "Welcome to Ecommerce!" },
+  ];
+}
+type dataType = {
+  email: string | null;
+};
 const Forget_Password = () => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
@@ -61,18 +71,18 @@ const Forget_Password = () => {
     },
   ];
   // _________________function __________-
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: dataType) => {
     try {
       setLoading(true);
       const response = await axiosInstance.post(
         `${API.auth.sendOtp}?type=forget`,
-        data
+        data,
       );
       if (response.status === 200) {
         navigate(`/${data?.email}/otp`);
       }
     } catch (err) {
-      handleError(err, t, setError);
+      handleError(err, t, setError, ["email"]);
     } finally {
       setLoading(false);
     }

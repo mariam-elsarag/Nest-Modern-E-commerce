@@ -1,5 +1,9 @@
 import { Address } from '../../address/entities/address.entity';
-import { AccountStatus, UserRole } from '../../common/utils/enum';
+import {
+  AccountStatus,
+  ProvidersEnum,
+  UserRole,
+} from '../../common/utils/enum';
 import { Favorite } from '../../favorite/entities/favorite.entity';
 import { Order } from '../../order/entities/order.entity';
 import {
@@ -40,6 +44,13 @@ export class User {
     default: AccountStatus.Pending,
   })
   status: AccountStatus;
+
+  @Column({
+    type: 'enum',
+    enum: ProvidersEnum,
+    default: ProvidersEnum.local,
+  })
+  provider: ProvidersEnum;
 
   @Column({ type: 'boolean', default: false })
   isPasswordReset: boolean;

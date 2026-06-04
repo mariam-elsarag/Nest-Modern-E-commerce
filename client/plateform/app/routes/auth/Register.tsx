@@ -17,7 +17,11 @@ import Button from "~/components/shared/button/Button";
 import axiosInstance from "~/services/axiosInstance";
 import { API } from "~/services/apiUrl";
 import { toast } from "react-toastify/unstyled";
-
+type dataType = {
+  fullName: string | null;
+  email: string | null;
+  password: string | null;
+};
 const Register = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -124,7 +128,7 @@ const Register = () => {
     },
   ];
   // _________________function __________-
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: dataType) => {
     try {
       setLoading(true);
       const response = await axiosInstance.post(API.auth.register, data);
@@ -133,7 +137,7 @@ const Register = () => {
         navigate(`/${response.data.email}/activate-account`);
       }
     } catch (err) {
-      handleError(err, t, setError);
+      handleError(err, t, setError, ["email", "fullName", "password"]);
     } finally {
       setLoading(false);
     }

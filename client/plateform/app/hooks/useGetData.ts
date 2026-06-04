@@ -31,8 +31,10 @@ function useGetData<T>({
         setValue(response.data);
       }
     } catch (err) {
-      handleError(err, t);
-      setError(err.response.data);
+      if (err?.response?.data?.error !== "Unauthorized") {
+        handleError(err, t);
+        setError(err.response.data);
+      }
     } finally {
       setLoading(false);
     }

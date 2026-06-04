@@ -1,3 +1,11 @@
+=> To DO
+1- login with google
+
+
+
+
+
+
 1- colors will create endpoint for filter to get colors that used in products
 
 - will work on
@@ -7,3 +15,8 @@
 
 payment success and failed
 
+- add login using google
+- color will be multiselect
+
+
+- size in future will be in group adn has like info for this group that user see to explain it 

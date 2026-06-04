@@ -1,0 +1,100 @@
+@use "../utils/font";
+.Toastify__toast-container {
+  .Toastify__progress-bar--wrp {
+    height: 2.5px !important;
+  }
+  .Toastify__close-button {
+    top: 50%;
+    right: auto !important;
+    inset-inline-end: 12px !important;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    & svg {
+      fill: var(--color-neutral-500);
+      stroke: var(--color-neutral-500);
+    }
+  }
+
+  // success
+  .toast_main_content_style {
+    box-shadow: 0px 2px 8px 0px #0000001a;
+    border-radius: 12px;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    -ms-border-radius: 12px;
+    -o-border-radius: 12px;
+    padding: 12px;
+    overflow: hidden !important;
+  }
+  .Toastify__toast {
+    position: relative;
+
+    font-size: 13px;
+    &::before {
+      content: "";
+      position: absolute;
+      display: flex;
+      inset-inline-start: 0;
+      width: 4px;
+      height: 100%;
+    }
+    &--success {
+      @extend .toast_main_content_style;
+      color: var(--color-semantic-green-900);
+      .Toastify__toast-icon svg {
+        fill: var(--color-semantic-green-900);
+      }
+      &::before {
+        background-color: var(--color-semantic-green-900);
+      }
+    }
+    &--info {
+      @extend .toast_main_content_style;
+
+      color: var(--color-neutral-black-900);
+      .Toastify__toast-icon svg {
+        fill: var(--color-neutral-black-900);
+      }
+      &::before {
+        background-color: var(--color-neutral-black-900);
+      }
+    }
+    &--error {
+      @extend .toast_main_content_style;
+      color: var(--color-semantic-red-900);
+      .Toastify__toast-icon svg {
+        fill: var(--color-semantic-red-900);
+      }
+      &::before {
+        background-color: var(--color-semantic-red-900);
+      }
+    }
+    &--warning {
+      @extend .toast_main_content_style;
+      color: var(--color-orange-400);
+      .Toastify__toast-icon svg {
+        fill: var(--color-orange-400);
+      }
+      &::before {
+        background-color: var(--color-orange-400);
+      }
+    }
+  }
+  .Toastify__progress-bar {
+    &--success {
+      background-color: var(--color-semantic-green-900) !important;
+    }
+    &--info {
+      background-color: var(--color-neutral-black-900) !important;
+    }
+    &--error {
+      background-color: var(--color-semantic-red-900) !important;
+    }
+    &--warning {
+      background-color: var(--color-orange-400) !important;
+    }
+  }
+}

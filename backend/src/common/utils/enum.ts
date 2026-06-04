@@ -3,6 +3,11 @@ export enum UserRole {
   User = 'user',
 }
 
+export enum ProvidersEnum {
+  local = 'local',
+  google = 'google',
+}
+
 export enum AccountStatus {
   Pending = 'pending',
   Active = 'active',

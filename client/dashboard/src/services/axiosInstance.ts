@@ -35,17 +35,11 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (res) => res,
   (error) => {
-    console.log(error, "sk");
-    let message =
-      currentLanguageCode === "en"
-        ? "Your session has expired. Please log in again."
-        : "انتهت صلاحية الجلسة. الرجاء تسجيل الدخول مرة أخرى.";
-
     if (error?.response?.data?.error === "Unauthorized") {
       Cookies.remove("token");
       if (!showExpireTokenToast) {
         showExpireTokenToast = true;
-        toast.error(message);
+        toast.error(error?.response?.data?.message);
       }
       if (onLogout) onLogout();
     }

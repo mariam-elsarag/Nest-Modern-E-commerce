@@ -1,0 +1,198 @@
+import React, { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import axiosInstance from "@/app/_service/axiosInstance";
+import { toast } from "react-toastify";
+import { useTranslations } from "next-intl";
+const Cart_Item = ({ product, variant = "cart", setRefetch }) => {
+  const t = useTranslations();
+  const { token } = useAuth();
+  const cartToken = Cookies.get("cartToken");
+  const [quantity, setQuantity] = useState(product.quantity);
+  const [loadingRemoveFromCart, setLoadingRemoveFromCart] = useState(false);
+
+  const toggleFavorite = async () => {
+    try {
+      const response = await axiosInstance.patch(
+        `${API.favorite}/${product.product.id}`,
+      );
+      if (response.status === 200) {
+        setData((pre) =>
+          pre.filter((item) => item.product.id !== product.product.id),
+        );
+      }
+    } catch (err) {
+      handleError(err, t);
+    }
+  };
+
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      if (quantity !== product.quantity) {
+        handleUpdateCart(quantity);
+      }
+    }, 500);
+
+    return () => clearTimeout(delay);
+  }, [quantity]);
+  const handleUpdateCart = async (quantity) => {
+    try {
+      let sendData = {
+        variant: product.variantId,
+        quantity: quantity,
+      };
+      if (!token) {
+        sendData.cartToken = cartToken;
+      }
+      const response = await axiosInstance.put(API.cart, sendData);
+      if (response.status === 200) {
+        toast.success(t("successfully_update_item_to_cart"));
+        setData(Date.now());
+      }
+    } catch (err) {
+      handleError(err, t);
+    }
+  };
+  const handleRemoveFromCart = async () => {
+    try {
+      setLoadingRemoveFromCart(true);
+      const response = await axiosInstance.delete(`${API.cart}/${product.id}`);
+      if (response.status === 204) {
+        setRefetch(Date.now());
+      }
+    } catch (err) {
+      handleError(err, t);
+    } finally {
+      setLoadingRemoveFromCart(false);
+    }
+  };
+  const renderRightContent = () => {
+    switch (variant) {
+      case "wishlist":
+        return (
+          <>
+            <Button
+              text="view_details"
+              variant="outline_dark"
+              to={`/product/${product.product.id}`}
+            />
+          </>
+        );
+      case "order":
+        return (
+          <>
+            <Link
+              className="text-neutral-black-900 body font-medium border-b border-neutral-black-900"
+              to={`/${product?.id}/checkout`}
+            >
+              {t("proceessing")}
+            </Link>
+            <Button
+              text="view_item"
+              variant="outline_dark"
+              to={`/product/${product?.id}`}
+            />
+          </>
+        );
+      default:
+        return (
+          <>
+            <Counter
+              quantity={product.maxQuantity}
+              value={quantity}
+              setValue={setQuantity}
+            />
+            <Button
+              size="md"
+              variant="secondary"
+              icon={<CloseIcon fill="var(--color-neutral-black-500)" />}
+              handleClick={() => handleRemoveFromCart()}
+              loading={loadingRemoveFromCart}
+            />
+          </>
+        );
+    }
+  };
+  const containerBase = `flex-1 flex  `;
+  const containerStyle = {
+    cart: "items-center justify-between",
+    order: "flex-col gap-2",
+    wishlist: "flex-col gap-2",
+  };
+  return (
+    <section className="flex gap-8 sm:items-center flex-col sm:flex-row">
+      <figure className="w-full h-[250px] sm:w-20 sm:h-20 rounded-[4px] bg-neutral-white-100 flex items-center justify-center">
+        {product?.product.cover && (
+          <img
+            src={product.product?.cover}
+            className="h-[200px] sm:h-[62px]"
+            alt={product?.product.title}
+          />
+        )}
+      </figure>
+      <div className={`${containerBase} ${containerStyle[variant]} `}>
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-1">
+            <h3
+              className={`body font-medium ${product.isValid ? "text-neutral-black-900" : "text-neutral-black-500"} line-clamp-1`}
+            >
+              {currentLanguageCode === "en"
+                ? product.product.title
+                : product.product.title_ar}
+            </h3>
+            {!product.isValid && <Badge variant="error" label="invalid" />}
+          </div>
+          {variant === "cart" ? (
+            <div className="flex items-center gap-2">
+              {product?.color && (
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-neutral-black-500 font-medium">
+                    {t("color")}
+                  </span>
+
+                  <span
+                    className="flex items-center justify-center w-3 h-3 border border-neutral-white-200 rounded-full"
+                    style={{ background: product?.color.color }}
+                  />
+                </div>
+              )}
+              {product?.size && (
+                <div className="flex items-center gap-2">
+                  <span className="text-neutral-black-500">—</span>
+                  <p className="flex items-center gap-1 text-neutral-black-500 text-xs font-medium">
+                    <span>{t("size")}:</span>
+                    <span>{product?.size.label}</span>
+                  </p>
+                </div>
+              )}
+            </div>
+          ) : (
+            <p className="flex items-center gap-1 label font-medium text-neutral-black-500">
+              <span>{t(variant === "order" ? "ordered_on" : "added_on")}</span>
+              <span>
+                {product?.createdAt
+                  ? formatDateToMonth(product?.createdAt)
+                  : "-"}
+              </span>
+            </p>
+          )}
+        </div>
+        {variant === "wishlist" ? (
+          <span
+            className="label text-neutral-black-900 font-medium cursor-pointer"
+            onClick={toggleFavorite}
+          >
+            {t("remove_item")}
+          </span>
+        ) : (
+          <span className="text-neutral-black-900 body font-medium">
+            {product?.price ? formatPrice(product?.price) : "0"}
+          </span>
+        )}
+      </div>
+      {/* remove and quantity */}
+      <div className="flex items-center gap-4 ">{renderRightContent()}</div>
+    </section>
+  );
+};
+
+export default Cart_Item;

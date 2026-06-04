@@ -5,11 +5,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { MailModule } from 'src/mail/mail.module';
 import { Address } from 'src/address/entities/address.entity';
+import { GoogleStrategy } from './strategies/google.strategy';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Address]), MailModule],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, GoogleStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}

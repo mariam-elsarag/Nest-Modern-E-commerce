@@ -10,7 +10,10 @@ import axiosInstance from "~/services/axiosInstance";
 import type { Product } from "~/common/types/Type";
 import { API } from "~/services/apiUrl";
 import Product_List from "./components/product_list/Product_List";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router";
+import Cookies from "js-cookie";
+import { useAuth } from "~/context/Auth_Context";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -24,11 +27,25 @@ export async function clientLoader() {
 }
 export default function Home({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation();
+  const { setToken } = useAuth();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const googleToken = searchParams.get("token");
 
-  // const { data } = loaderData;
-  // const bestSelling = data.filter(
-  //   (product) => product.isBestSelling && product
-  // );
+  useEffect(() => {
+    if (!googleToken) return;
+
+    setToken(googleToken);
+
+    Cookies.set("token", googleToken, {
+      expires: 30,
+    });
+
+    const newParams = new URLSearchParams(searchParams);
+
+    newParams.delete("token");
+
+    setSearchParams(newParams);
+  }, [googleToken, searchParams]);
   return (
     <section className="section_gap">
       <Hero />

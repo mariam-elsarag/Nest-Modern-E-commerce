@@ -1,7 +1,9 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { redirect } from "react-router";
 import { GoogleIcon } from "~/assets/icons/Icon";
 import Button from "~/components/shared/button/Button";
+import { API, apiKey } from "~/services/apiUrl";
 
 const Google_Btn = () => {
   const { t } = useTranslation();
@@ -13,6 +15,10 @@ const Google_Btn = () => {
         icon={<GoogleIcon />}
         iconDirection="left"
         hasFullWidth
+        handleClick={() => {
+          console.log("click");
+          window.location.href = `${apiKey}${API.auth.google}`;
+        }}
       />
       <div className="flex items-center gap-4">
         <span className="flex-1 flex items-center justify-center bg-neutral-black-100 h-[1px]" />

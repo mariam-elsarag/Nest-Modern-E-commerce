@@ -1,0 +1,6 @@
+.swiper-pagination-bullet {
+  background-color: var(--color-neutral-black-300) !important;
+  &-active {
+    background-color: var(--color-neutral-black-900) !important;
+  }
+}

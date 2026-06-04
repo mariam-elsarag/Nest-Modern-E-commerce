@@ -14,6 +14,7 @@ import useOutsideClick from "~/hooks/useOutsideClick";
 import { useTranslation } from "react-i18next";
 import { switchLang } from "~/common/utils/switchLang";
 import { useAuth } from "~/context/Auth_Context";
+
 const buttonsList = [
   { text: "login", variant: "outline", to: "/login" },
   { text: "create_account", variant: "primary", to: "/register" },

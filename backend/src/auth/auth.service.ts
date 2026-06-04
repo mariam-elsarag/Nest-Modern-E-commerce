@@ -11,7 +11,7 @@ import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { RegisterDto } from './dto/register-request.dto';
 import { LoginDto } from './dto/login-request.dto';
-import { AccountStatus, UserRole } from 'src/common/utils/enum';
+import { AccountStatus, ProvidersEnum, UserRole } from 'src/common/utils/enum';
 import { LoginResponseDto } from './dto/login.response.dto';
 import { JwtPayload } from 'src/common/utils/types';
 import { plainToInstance } from 'class-transformer';
@@ -63,6 +63,36 @@ export class AuthService {
       message:
         'Registration successful. We’ve sent an activation code to your email to activate your account.',
       email: user.email,
+    };
+  }
+
+  async validateGoogleUser(googleUser: any) {
+    let user = await this.userRepository.findOne({
+      where: {
+        email: googleUser?.email.toLowerCase(),
+      },
+    });
+    if (!user) {
+      const newUser = {
+        email: googleUser?.email,
+        fullName: googleUser?.fullName,
+        avatar: googleUser?.avatar,
+        role: UserRole.User,
+        provider: ProvidersEnum.google,
+        status: AccountStatus.Active,
+      };
+      const userEntity = this.userRepository.create(newUser);
+      user = await this.userRepository.save(userEntity);
+    }
+    const payload = {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    };
+    const token = await this.generateJwtToken(payload);
+    return {
+      user,
+      accessToken: token,
     };
   }
 
@@ -148,6 +178,12 @@ export class AuthService {
   async sendOtp(body: SendOtpDto, query: OtpQueryDto) {
     const { email } = body;
     const user = await this.checkUserExist(email, false);
+
+    if (user?.provider === ProvidersEnum.google) {
+      throw new BadRequestException(
+        'This account was created with Google. Please continue with Google login.',
+      );
+    }
     if (user) {
       const otp = await this.generateOtp(3, user);
       let type = 'Activate Account';
@@ -181,6 +217,11 @@ export class AuthService {
     const { email, otp } = body;
     const user = await this.checkUserExist(email, false);
     if (user) {
+      if (user?.provider === ProvidersEnum.google) {
+        throw new BadRequestException(
+          'This account was created with Google. Please continue with Google login.',
+        );
+      }
       // check if he has no otp
       if (!user.otp || !user.otpExpiredAt) {
         throw new BadRequestException('No OTP was generated for this user');

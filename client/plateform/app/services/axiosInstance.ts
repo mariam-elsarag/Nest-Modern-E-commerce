@@ -28,16 +28,16 @@ axiosInstance.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 axiosInstance.interceptors.response.use(
   (res) => res,
   (error) => {
-    const details = error.response.data.message;
+    const details = error?.response?.data?.error;
     console.log(details, "skskjfkdjkfdj");
     let message;
-    if (details === "Invalid or expired token.") {
+    if (details === "Unauthorized") {
       message =
         currentLanguageCode === "en"
           ? "Your session has expired. Please log in again."
@@ -45,14 +45,14 @@ axiosInstance.interceptors.response.use(
 
       if (!showExpireTokenToast) {
         showExpireTokenToast = true;
-        toast.error(message);
+        console.log(error, "error");
+        toast.error(error?.response?.data?.message);
       }
       Cookies.remove("token");
-      if (onLogout) onLogout();
+      // window.location.href = "/login";
     }
-    console.log(error, "error");
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axiosInstance;

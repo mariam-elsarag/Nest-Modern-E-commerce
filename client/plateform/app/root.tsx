@@ -64,9 +64,7 @@ export default function App() {
   return (
     <>
       <PrimeReactProvider>
-        <AuthProvider>
-          <AppLayout />
-        </AuthProvider>
+        <AppLayout />
       </PrimeReactProvider>
 
       <ToastContainer
@@ -98,6 +96,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     details = error.message;
     stack = error.stack;
   }
+  console.log("bound");
 
   return (
     <main className="pt-16 p-4 container mx-auto">
