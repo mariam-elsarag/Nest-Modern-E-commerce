@@ -1,5 +1,7 @@
 import { NextIntlClientProvider } from "next-intl";
 import Navbar from "../_components/layout/navbar/Navbar";
+import Footer from "../_components/layout/footer/Footer";
+import Newsletter from "../_components/layout/newsletter/Newsletter";
 
 export default async function RootLayout({ children, params }) {
   const { locale } = await params;
@@ -15,8 +17,8 @@ export default async function RootLayout({ children, params }) {
           <div className="flex flex-col gap-20 flex-1">
             <div className="flex-1">{children}</div>
             <div>
-              {/* <Newsletter /> */}
-              {/* <Footer /> */}
+              <Newsletter />
+              <Footer />
             </div>
           </div>
         </div>

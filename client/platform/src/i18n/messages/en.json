@@ -14,7 +14,7 @@
   "checkout": "Checkout",
   "cart": "Cart",
   "accepted_payment": "Accepted Payments",
-  "copy_right": "{{year}}. All rights reserved.",
+  "copy_right": "{year}. All rights reserved.",
   "footer_about": "Your one-stop shop for the latest trends and best deals.",
   "men": "Men",
   "women": "Women",
@@ -203,5 +203,9 @@
   "terms_&_condition": "Terms & Conditions",
   "include_vat": "Inc vat",
   "invalid_cart": "Some items in your cart are invalid",
-  "invalid": "Invalid"
+  "invalid": "Invalid",
+  "min_value": "Minimum value is {value}",
+  "max_value": "Maximum value is {value}",
+  "max_email": "Maximum email length is {value} characters",
+  "max_password": "Maximum password length is {value} characters"
 }

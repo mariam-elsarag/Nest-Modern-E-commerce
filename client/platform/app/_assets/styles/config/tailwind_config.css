@@ -87,4 +87,7 @@
   .size_container {
     @apply w-10 h-10 flex items-center justify-center rounded-[4px] border text-neutral-black-500  font-medium  cursor-pointer transition-all ease-in-out duration-300;
   }
+  .disabled_outline_shadow {
+    @apply outline-none shadow-none;
+  }
 }
