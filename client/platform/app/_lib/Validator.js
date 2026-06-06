@@ -11,6 +11,10 @@ export const validaition = {
     value: emailRegex,
     message: "email_pattern_error",
   },
+  password: {
+    value: passwordPattern,
+    message: "password_pattern_error",
+  },
   min: (t, type = "value", value = 1) => ({
     value: value,
     message: `${t(`min_${type}`, { value })}`,

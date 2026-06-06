@@ -1,15 +1,18 @@
-export const handleError = (error, t, setError, allowedFields) => {
-  const data = error?.response?.data;
+import { toast } from "react-toastify";
 
-  // network / server error
+export const handleError = (error, t, setError, allowedFields = []) => {
+  const data = error?.response?.data || error || null;
+
+  console.log(data, "error");
+
   if (!data) {
     toast.error(t("network_error"));
     return;
   }
 
-  const fieldErrors = data.error;
+  // Field errors (if backend sends object errors)
+  const fieldErrors = data?.error;
 
-  // handle field errors
   if (fieldErrors && typeof fieldErrors === "object") {
     Object.entries(fieldErrors).forEach(([key, value]) => {
       const isAllowed = allowedFields.includes(key);
@@ -20,16 +23,15 @@ export const handleError = (error, t, setError, allowedFields) => {
           message: value,
         });
       } else {
-        toast.error(t(value));
+        toast.error(value);
       }
     });
 
     return;
   }
 
-  // fallback message
-  if (data.message) {
-    toast.error(t(data.message));
+  if (data?.message) {
+    toast.error(data.message);
     return;
   }
 

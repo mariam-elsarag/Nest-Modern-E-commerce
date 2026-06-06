@@ -3,10 +3,11 @@ import { EyeOffIcon, EyeOnIcon, InfoIcon } from "@/app/_assets/icons/Icon";
 import Link from "next/link";
 import React, { useState } from "react";
 import Error_Message from "./Error_Message";
+import { useTranslations } from "next-intl";
 
 const Password_Field = ({ item, disabled, isInvalid, field, error }) => {
+  const t = useTranslations();
   const [showPassword, setShowPassword] = useState(false);
-
   return (
     <div
       className={`flex flex-col  ${item?.inlineError || item?.showForgetPassword ? "gap-4" : ""} `}
@@ -48,7 +49,7 @@ const Password_Field = ({ item, disabled, isInvalid, field, error }) => {
         {item?.showForgetPassword && (
           <Link
             className="text-neutral-black-500 label font-medium  flex  justify-end "
-            to="/forget-password"
+            href="/forget-password"
           >
             {t("_forget_password")}
           </Link>
